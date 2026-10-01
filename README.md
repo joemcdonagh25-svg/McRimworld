@@ -18,7 +18,7 @@ McRimworld/
 | Folder | Package | Status |
 |--------|---------|--------|
 | `mods/the-ark-rimworld/` | `joemcdonagh.theark` | RimWorld 1.6 — M1 + M2 debug UI + New Game scenario; runtime verify pending (fixture save/load) |
-| `mods/vampire-lord/` | `joemcdonagh.vampirelord` | RimWorld 1.6 — M1 RUNTIME VERIFIED; M2 Playtest Keep implemented (runtime pending) |
+| `mods/vampire-lord/` | `joemcdonagh.vampirelord` | RimWorld 1.6 — M1 + M2 RUNTIME VERIFIED; M3 Blood Tithe planned |
 
 ### The Ark
 
@@ -42,7 +42,8 @@ Gothic keep tower-defence campaign. Defend the keep. Read the warning. Prepare t
 - Package: `joemcdonagh.vampirelord`
 - Requires **Biotech**
 - **M1:** Wave Director V0 — RUNTIME VERIFIED
-- **M2:** Playtest Keep — New Game → **Vampire Lord** (1 lord + 2 thralls, courtyard, auto campaign); runtime verify pending
+- **M2:** Playtest Keep — New Game → **Vampire Lord** (1 lord + 2 thralls, courtyard, open gate, map reveal, auto campaign) — RUNTIME VERIFIED
+- **M3:** Blood Tithe V0 — **PLANNING** (keep blood reserve from wave kills); no code until Joe confirms
 - Design / milestones: `mods/vampire-lord/docs/`
 - Junction/copy `mods/vampire-lord/` into your RimWorld `Mods` folder (the folder that contains `About/` is the mod root)
 

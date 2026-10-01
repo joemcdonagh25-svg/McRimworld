@@ -4,6 +4,53 @@ Newest entries first.
 
 ---
 
+## 2026-10-01 — M3 planning: Blood Tithe V0
+
+### What shipped
+- Docs only: M3 milestone card — **Blood Tithe V0** (keep blood reserve fed by wave kills; wave-cost pressure recommended).
+- M4+ parking lot: fortification, approach lanes, UI panel, prisoners, Dark Boons, Ideology polish.
+- No M3 code until Joe confirms this card (or picks a different M3).
+
+### What we learned
+- After threat (M1) + stage (M2), blood is the next unique Vampire Lord fantasy; castle upgrades/UI are amplifiers, not the identity.
+- Keep V0 tiny: scribed reserve + death credits + one pressure rule + letters/debug.
+
+### Key paths
+- `docs/MILESTONES.md` (M3 card)
+- `README.md`
+
+### Operator notes
+- Read the M3 card; say **confirm Blood Tithe** to start impl, or name another candidate from M4+.
+
+### Next steps
+- Joe confirm or redirect; then implementation branch.
+
+---
+
+## 2026-10-01 — M2 RUNTIME VERIFIED (live RimWorld)
+
+### What shipped
+- Docs only: M2 Playtest Keep marked **RUNTIME VERIFIED** after Joe's live session.
+- Proven: open south gate, map reveal, courtyard, campaign auto-start, thralls reassigned to player; The Ark stayed inactive with both mods enabled.
+
+### What we learned
+- Log proof lines that matter: `open gate`, `Revealed map (PostMapGenerate)`, `Campaign activated`, `Reassigned 3 humanlike`.
+- Ideology `ChooseIdeoPreset` NRE still fires on settle but does not block the playable keep; Anomaly/History errors are separate noise.
+- Enabling The Ark alongside Vampire Lord is fine for this playtest.
+
+### Key paths
+- `docs/MILESTONES.md`
+- `README.md`
+- parent `README.md` / `CHANGELOG.md`
+
+### Operator notes
+- No pull required for gameplay (docs-only). M2 happy path is proven.
+
+### Next steps
+- No M3 until Joe asks. Optional later: Ideo settle page polish; natural warning/raid on the scenario path.
+
+---
+
 ## 2026-10-01 — Fix: scenario ConfigErrors after outside-access merge
 
 ### What shipped
