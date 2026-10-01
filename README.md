@@ -10,6 +10,7 @@ McRimworld/
   CHANGELOG.md
   mods/
     the-ark-rimworld/   # The Ark (git subtree from joemcdonagh25-svg/the-ark-rimworld)
+    vampire-lord/       # Vampire Lord (M1 Wave Director)
 ```
 
 ## Mods
@@ -17,6 +18,7 @@ McRimworld/
 | Folder | Package | Status |
 |--------|---------|--------|
 | `mods/the-ark-rimworld/` | `joemcdonagh.theark` | RimWorld 1.6 — M1 campaign foundation implemented; runtime verify pending |
+| `mods/vampire-lord/` | `joemcdonagh.vampirelord` | RimWorld 1.6 — M1 Wave Director implemented; runtime verify pending |
 
 ### The Ark
 
@@ -25,6 +27,15 @@ Nomadic gravship total conversion: the ship is the colony. Land. Explore. Salvag
 - Upstream: https://github.com/joemcdonagh25-svg/the-ark-rimworld
 - Imported via **git subtree** (full Ark history preserved under this prefix)
 - Design / milestones: `mods/the-ark-rimworld/docs/`
+
+### Vampire Lord
+
+Gothic keep tower-defence campaign. Defend the keep. Read the warning. Prepare the walls. Survive the wave.
+
+- Package: `joemcdonagh.vampirelord`
+- **M1:** Wave Director V0 — scheduled warnings, escalating vanilla raids (Mob / Hunters / Breachers / Fire / Siege), Dev Mode start
+- Design / milestones: `mods/vampire-lord/docs/`
+- Junction/copy `mods/vampire-lord/` into your RimWorld `Mods` folder (the folder that contains `About/` is the mod root)
 
 ## Working on a mod
 
@@ -45,10 +56,11 @@ Nomadic gravship total conversion: the ship is the colony. Land. Explore. Salvag
 
 - Never force-push either repo; preserve history.
 
-## Build (The Ark)
+## Build
 
 ```bash
 dotnet build ./mods/the-ark-rimworld/Source/TheArk/TheArk.csproj
+dotnet build ./mods/vampire-lord/Source/VampireLord/VampireLord.csproj
 ```
 
-Point RimWorld at `mods/the-ark-rimworld/` (or copy/symlink into your RimWorld `Mods` folder) for in-game testing.
+Point RimWorld at the mod folder under `mods/` (or copy/symlink/junction into your RimWorld `Mods` folder) for in-game testing.
