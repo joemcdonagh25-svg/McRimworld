@@ -138,16 +138,37 @@ Target: RimWorld **1.6** via `Krafs.Rimworld.Ref` 1.6.4871 (Cloud/CI) or local S
 
 ---
 
+### 2026-10-01 — Scenario + ScenPart playtest setup (M2)
+
+- **Goal:** New Game scenario with xenotype cast, courtyard footprint, campaign auto-start — scenario-scoped only.
+- **Evidence:** MetadataLoadContext on `Krafs.Rimworld.Ref` 1.6.4871.
+- **API:**
+  - `RimWorld.ScenarioDef` / `RimWorld.Scenario` parts list
+  - `RimWorld.ScenPart` hooks: `GenerateIntoMap(Map)`, `PostGameStart()`
+  - `RimWorld.ScenPart_ConfigPage_ConfigureStartingPawns_Xenotypes` + `RimWorld.XenotypeCount` (`xenotype`, `count`, `description`, `requiredAtStart`, `allowedDevelopmentalStages`)
+  - `RimWorld.XenotypeDefOf.Sanguophage`, `Baseliner`
+  - `Verse.MapGenerator.PlayerStartSpot` / `PlayerStartSpotValid`
+  - `Verse.CellRect.CenteredOn`, `ContractedBy`, `ClipInsideMap`, `GetCenterCellOnEdge(Rot4)`
+  - `Verse.ThingMaker.MakeThing` + `Verse.GenSpawn.Spawn` for `ThingDefOf.Wall` / `Door` with `ThingDefOf.BlocksGranite`
+  - `RimWorld.TerrainDefOf.FlagstoneSandstone`
+  - `RimWorld.ScenPart_GameStartDialog`, `ScenPart_StartingThing_Defined`, `ScenPart_StartingResearch`, `ScenPart_PlayerPawnsArriveMethod`
+- **Decision for Vampire Lord:** Custom `ScenPart_VampireLordPlaytestSetup` embedded in scenario XML (no global map-gen patch). Courtyard in `GenerateIntoMap`; `ActivateCampaign` in `PostGameStart`.
+- **Related milestone:** M2
+
+---
+
 ## Pending / runtime verification
 
 | Topic | Status |
 |-------|--------|
-| Save/load round-trip of VL scribe fields | PENDING |
-| Warning letter once-only across save | PENDING |
-| RaidEnemy.TryExecute with forced strategy | PENDING |
-| DefName resolution for Breaching / Siege / Smart | PENDING |
+| M1 save/load round-trip of VL scribe fields | PENDING (optional) |
+| M1 natural 3-day warning→raid without debug | PENDING (optional) |
+| M1 RaidEnemy strategy defNames in live session | PARTIAL (Mob wave proven) |
 | Fire archetype — no incendiary force | Documented limitation |
-| Debug action discovery under Dev mode | PENDING |
+| M2 New Game scenario appears + xenotype page | PENDING |
+| M2 courtyard + gate at player start | PENDING |
+| M2 campaign auto-start without Dev Mode | PENDING |
+| M2 start dialog + keep-flavoured warning letter | PENDING |
 
 ---
 

@@ -18,7 +18,7 @@ McRimworld/
 | Folder | Package | Status |
 |--------|---------|--------|
 | `mods/the-ark-rimworld/` | `joemcdonagh.theark` | RimWorld 1.6 — M1 campaign foundation implemented; runtime verify pending |
-| `mods/vampire-lord/` | `joemcdonagh.vampirelord` | RimWorld 1.6 — M1 Wave Director RUNTIME VERIFIED (2026-10-01) |
+| `mods/vampire-lord/` | `joemcdonagh.vampirelord` | RimWorld 1.6 — M1 RUNTIME VERIFIED; M2 Playtest Keep implemented (runtime pending) |
 
 ### The Ark
 
@@ -33,7 +33,9 @@ Nomadic gravship total conversion: the ship is the colony. Land. Explore. Salvag
 Gothic keep tower-defence campaign. Defend the keep. Read the warning. Prepare the walls. Survive the wave.
 
 - Package: `joemcdonagh.vampirelord`
-- **M1:** Wave Director V0 — scheduled warnings, escalating vanilla raids (Mob / Hunters / Breachers / Fire / Siege), Dev Mode start
+- Requires **Biotech**
+- **M1:** Wave Director V0 — RUNTIME VERIFIED
+- **M2:** Playtest Keep — New Game → **Vampire Lord** (1 lord + 2 thralls, courtyard, auto campaign); runtime verify pending
 - Design / milestones: `mods/vampire-lord/docs/`
 - Junction/copy `mods/vampire-lord/` into your RimWorld `Mods` folder (the folder that contains `About/` is the mod root)
 

@@ -4,6 +4,39 @@ Newest entries first.
 
 ---
 
+## 2026-10-01 — M2 Playtest Keep (IMPLEMENTATION COMPLETE)
+
+### What shipped
+- New Game scenario **Vampire Lord** (`VampireLord_PlaytestKeep`): keep identity copy, start dialog, standing arrival.
+- Starting cast: **1 Sanguophage (Vampire Lord) + 2 Baseliner thralls** via xenotype configure page.
+- Starter gear/materials (food, medicine, steel/wood/granite blocks, components, rifles, gladius, parkas, hemogen packs) + Smithing / Complex Clothing research.
+- `ScenPart_VampireLordPlaytestSetup`: ~15×15 granite courtyard, flagstone interior, south gate/door; Wave Director **auto-starts** on `PostGameStart`.
+- Warning letters polished for Black Keep fantasy (product name remains Vampire Lord).
+- About.xml declares **Biotech** dependency; rebuilt `Assemblies/VampireLord.dll`.
+
+### What we learned
+- Scenario-scoped `ScenPart` (`GenerateIntoMap` + `PostGameStart`) keeps the courtyard/auto-campaign off non-scenario colonies — better than patching global `MapGeneratorDef`.
+- Place courtyard on `MapGenerator.PlayerStartSpot` before pawns arrive; re-assert start spot to courtyard center.
+- Xenotype cast uses `ScenPart_ConfigPage_ConfigureStartingPawns_Xenotypes` + `XenotypeDefOf.Sanguophage` / `Baseliner`.
+
+### Key paths
+- `Defs/Scenarios/VampireLordScenario.xml`
+- `Source/VampireLord/Scenario/ScenPart_VampireLordPlaytestSetup.cs`
+- `Source/VampireLord/Campaign/VampireLordLetters.cs`
+- `About/About.xml`
+- `Assemblies/VampireLord.dll`
+
+### Operator notes
+- Junction already: `C:\McRimworld\mods\vampire-lord` → RimWorld `Mods` (pull main / this branch, rebuild not required if DLL committed).
+- Enable Biotech + Vampire Lord → New Game → **Vampire Lord**.
+- Debug force actions still available under Dev Mode.
+
+### Next steps
+- RUNTIME VERIFIED: New Game path through courtyard + auto campaign + warning/raid.
+- Do not start M3 until Joe asks.
+
+---
+
 ## 2026-10-01 — M1 RUNTIME VERIFIED (live RimWorld)
 
 ### What shipped

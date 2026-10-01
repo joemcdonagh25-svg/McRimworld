@@ -4,6 +4,34 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — Vampire Lord M2 Playtest Keep
+
+### What shipped
+- Vampire Lord **M2 Playtest Keep**: New Game scenario, 1 Sanguophage lord + 2 thrall baseliners, simple courtyard Gen via scenario ScenPart, campaign auto-start, keep-flavoured letters, Biotech dependency.
+- Rebuilt `mods/vampire-lord/Assemblies/VampireLord.dll`.
+- Branch: `cursor/vampire-lord-m2-playtest-keep-c5ad` → draft PR into `main`.
+
+### What we learned
+- Scenario-scoped `ScenPart` is the right seam for courtyard + auto-campaign (avoids affecting Ark / sandbox colonies).
+- Joe’s junction (`C:\McRimworld\mods\vampire-lord`) means a `git pull` after merge is enough to pick up the new DLL/Defs.
+
+### Key paths
+- `mods/vampire-lord/Defs/Scenarios/VampireLordScenario.xml`
+- `mods/vampire-lord/Source/VampireLord/Scenario/ScenPart_VampireLordPlaytestSetup.cs`
+- `mods/vampire-lord/About/About.xml`
+- `mods/vampire-lord/docs/MILESTONES.md`
+
+### Operator notes
+- Repo: `joemcdonagh25-svg/McRimworld` — branch `cursor/vampire-lord-m2-playtest-keep-c5ad` — base `main`.
+- No force-push.
+- After merge: pull `main` on `C:\McRimworld` → New Game → **Vampire Lord** (Biotech on).
+
+### Next steps
+- Merge draft PR; Joe RUNTIME VERIFIED pass on New Game path.
+- No M3 until Joe asks.
+
+---
+
 ## 2026-10-01 — Vampire Lord M1 RUNTIME VERIFIED
 
 ### What shipped
