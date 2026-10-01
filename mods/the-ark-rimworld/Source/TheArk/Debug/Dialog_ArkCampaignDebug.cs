@@ -21,7 +21,7 @@ namespace TheArk.Debug
         private string bufferTier;
         private string bufferPursuit;
 
-        public override Vector2 InitialSize => new Vector2(440f, 460f);
+        public override Vector2 InitialSize => new Vector2(460f, 520f);
 
         public Dialog_ArkCampaignDebug()
         {
@@ -57,6 +57,11 @@ namespace TheArk.Debug
             listing.GapLine();
 
             listing.Label("Live: " + ArkCampaignDebugOps.FormatState(campaign));
+            listing.Label(
+                "Landing timer (M4): " +
+                (campaign.LandingSessionActive
+                    ? $"{campaign.LandingSessionTicks} ticks (~{ArkCampaignGameComponent.FormatTicksAsDays(campaign.LandingSessionTicks)}d) — running"
+                    : "inactive (runs only while landing session is active)"));
             listing.Gap(6f);
 
             listing.CheckboxLabeled("CampaignActive", ref draftActive);
@@ -92,6 +97,12 @@ namespace TheArk.Debug
             if (listing.ButtonText("End Landing Session (M3)"))
             {
                 ArkCampaignDebugOps.EndLandingSession(campaign);
+                PullFromCampaign();
+            }
+
+            if (listing.ButtonText("Advance Landing Timer +1 Day (M4)"))
+            {
+                ArkCampaignDebugOps.AdvanceLandingTimerOneDay(campaign);
                 PullFromCampaign();
             }
 

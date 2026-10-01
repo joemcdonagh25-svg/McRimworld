@@ -4,6 +4,20 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — The Ark M4 Landing Timer V0
+
+### What shipped
+- Session-only landing timer (ticks) while landing session active; Dev Advance +1 Day; DLL rebuild.
+- Branch: `cursor/ark-m4-landing-timer-5195`.
+
+### Operator notes
+- Pull → Simulate Landing → unpause or Advance Landing Timer +1 Day → confirm TimerTicks / ~days.
+
+### Next steps
+- Merge; Joe runtime verify; no M5 until asked.
+
+---
+
 ## 2026-10-01 — The Ark M3 Landing Detection RUNTIME VERIFIED
 
 ### What shipped

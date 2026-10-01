@@ -1,3 +1,4 @@
+using RimWorld;
 using TheArk.Campaign;
 using Verse;
 
@@ -46,7 +47,7 @@ namespace TheArk.Debug
 
         /// <summary>
         /// M1 persistence proof fixture: Active=true, Day=47, Landing=6, Tier=2, Pursuit=73.
-        /// Does not open a landing session.
+        /// Does not open a landing session or change the session timer.
         /// </summary>
         public static void ApplyPersistenceFixture(ArkCampaignGameComponent campaign)
         {
@@ -78,12 +79,19 @@ namespace TheArk.Debug
             return campaign.EndLandingSession("Dev.EndLandingSession");
         }
 
+        /// <summary>M4 proof helper: add one RimWorld day to the landing timer while session active.</summary>
+        public static bool AdvanceLandingTimerOneDay(ArkCampaignGameComponent campaign)
+        {
+            return campaign.AddLandingSessionTicks(GenDate.TicksPerDay, "Dev.AdvanceLandingTimerOneDay");
+        }
+
         public static string FormatState(ArkCampaignGameComponent campaign)
         {
             return
                 $"Active={campaign.CampaignActive}, Day={campaign.CampaignDay}, " +
                 $"Landing={campaign.LandingNumber}, Tier={campaign.ArkTier}, Pursuit={campaign.Pursuit}, " +
-                $"LandingSession={campaign.LandingSessionActive}, SessionMapId={campaign.LandingSessionMapId}";
+                $"LandingSession={campaign.LandingSessionActive}, SessionMapId={campaign.LandingSessionMapId}, " +
+                $"TimerTicks={campaign.LandingSessionTicks} (~{ArkCampaignGameComponent.FormatTicksAsDays(campaign.LandingSessionTicks)}d)";
         }
 
         public static void LogState(string context, ArkCampaignGameComponent campaign)

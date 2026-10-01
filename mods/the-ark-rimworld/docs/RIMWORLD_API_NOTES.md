@@ -259,6 +259,18 @@ Use this template:
 
 ---
 
+### 2026-10-01 — M4 Landing Timer (session ticks)
+
+- **Goal:** Elapsed time since landing, only while landing session active; visible in Dev Mode; no durable-field corruption.
+- **Evidence:** Extends M3 session owner; `GameComponent.GameComponentTick` + `GenDate.TicksPerDay`.
+- **API:**
+  - `Verse.GameComponent.GameComponentTick` — increment `landingSessionTicks` while session active
+  - `RimWorld.GenDate.TicksPerDay` — day formatting / +1 day debug advance
+  - Scribe: `arkLandingSessionTicks` (`int`, default 0)
+- **Decision for The Ark:** Persist accumulated session ticks (reset on begin/end). Do not write `CampaignDay`. Pursuit growth deferred to M5.
+- **Runtime status:** UNVERIFIED until Joe’s Simulate Landing + timer advance / save-load check.
+- **Related milestone:** M4
+
 ### 2026-10-01 — M3 Landing Detection (no Harmony)
 
 - **Goal:** Detect Ark landing once, open a temporary landing session, increment durable `LandingNumber`.

@@ -6,7 +6,7 @@ namespace TheArk.Campaign
 {
     /// <summary>
     /// Authoritative persistent Ark campaign state for the current game save.
-    /// M3: landing detection opens a temporary landing session and increments LandingNumber once.
+    /// M3: landing session + LandingNumber. M4: session-only landing timer (ticks).
     /// </summary>
     public class ArkCampaignGameComponent : GameComponent
     {
@@ -25,6 +25,9 @@ namespace TheArk.Campaign
         private int landingSessionMapId = -1;
         // Prevents wasSpawnedViaGravShipLanding from re-firing after End Session on the same map.
         private int lastCountedLandingMapId = -1;
+
+        // M4: elapsed ticks while landing session is active (session-scoped; reset on end).
+        private int landingSessionTicks = 0;
 
         // Runtime-only edge detect for Odyssey travel → land (not scribed).
         private bool prevGravshipTravelling;
@@ -63,6 +66,11 @@ namespace TheArk.Campaign
 
         public int LandingSessionMapId => landingSessionMapId;
 
+        public int LandingSessionTicks => landingSessionTicks;
+
+        /// <summary>Elapsed landing time in whole days (floor). Session-scoped — not CampaignDay.</summary>
+        public int LandingSessionDaysWhole => landingSessionTicks / GenDate.TicksPerDay;
+
         /// <summary>
         /// Required by <see cref="Game.FillComponents"/> — Activator passes the current <see cref="Game"/>.
         /// </summary>
@@ -80,6 +88,7 @@ namespace TheArk.Campaign
             Scribe_Values.Look(ref landingSessionActive, "arkLandingSessionActive", false);
             Scribe_Values.Look(ref landingSessionMapId, "arkLandingSessionMapId", -1);
             Scribe_Values.Look(ref lastCountedLandingMapId, "arkLastCountedLandingMapId", -1);
+            Scribe_Values.Look(ref landingSessionTicks, "arkLandingSessionTicks", 0);
         }
 
         public override void StartedNewGame()
@@ -97,8 +106,15 @@ namespace TheArk.Campaign
 
         public override void GameComponentTick()
         {
-            if (!campaignActive || landingSessionActive)
+            if (!campaignActive)
             {
+                return;
+            }
+
+            // M4: timer advances only while a landing session is active.
+            if (landingSessionActive)
+            {
+                landingSessionTicks++;
                 return;
             }
 
@@ -146,17 +162,18 @@ namespace TheArk.Campaign
             landingSessionActive = true;
             landingSessionMapId = mapId;
             lastCountedLandingMapId = mapId;
+            landingSessionTicks = 0;
             landingNumber++;
 
             Log.Message(
                 $"[The Ark] Landing session STARTED ({reason}): " +
-                $"mapId={landingSessionMapId}, LandingNumber={landingNumber}, Session=True");
+                $"mapId={landingSessionMapId}, LandingNumber={landingNumber}, Session=True, TimerTicks=0");
             return true;
         }
 
         /// <summary>
         /// End the temporary landing session without changing durable LandingNumber.
-        /// M8 will call this (or equivalent) on real departure; Dev Mode can call it for re-test.
+        /// Clears the session timer (M4). M8 will call this on real departure.
         /// </summary>
         public bool EndLandingSession(string reason)
         {
@@ -167,12 +184,41 @@ namespace TheArk.Campaign
             }
 
             int endedMapId = landingSessionMapId;
+            int endedTicks = landingSessionTicks;
             landingSessionActive = false;
             landingSessionMapId = -1;
+            landingSessionTicks = 0;
 
             Log.Message(
                 $"[The Ark] Landing session ENDED ({reason}): " +
-                $"wasMapId={endedMapId}, LandingNumber={landingNumber}, Session=False");
+                $"wasMapId={endedMapId}, LandingNumber={landingNumber}, Session=False, " +
+                $"TimerWasTicks={endedTicks} (~{FormatTicksAsDays(endedTicks)}d)");
+            return true;
+        }
+
+        /// <summary>Dev/test helper: add ticks to the landing timer while a session is active.</summary>
+        public bool AddLandingSessionTicks(int ticks, string reason)
+        {
+            if (!landingSessionActive)
+            {
+                Log.Warning($"[The Ark] Add landing timer ignored ({reason}): no active session.");
+                return false;
+            }
+
+            if (ticks == 0)
+            {
+                return true;
+            }
+
+            landingSessionTicks += ticks;
+            if (landingSessionTicks < 0)
+            {
+                landingSessionTicks = 0;
+            }
+
+            Log.Message(
+                $"[The Ark] Landing timer adjusted ({reason}): " +
+                $"delta={ticks}, TimerTicks={landingSessionTicks} (~{FormatTicksAsDays(landingSessionTicks)}d)");
             return true;
         }
 
@@ -269,7 +315,13 @@ namespace TheArk.Campaign
             Log.Message(
                 $"[The Ark] Campaign state ({context}): " +
                 $"Active={campaignActive}, Day={campaignDay}, Landing={landingNumber}, Tier={arkTier}, Pursuit={pursuit}, " +
-                $"LandingSession={landingSessionActive}, SessionMapId={landingSessionMapId}");
+                $"LandingSession={landingSessionActive}, SessionMapId={landingSessionMapId}, " +
+                $"TimerTicks={landingSessionTicks} (~{FormatTicksAsDays(landingSessionTicks)}d)");
+        }
+
+        public static string FormatTicksAsDays(int ticks)
+        {
+            return (ticks / (float)GenDate.TicksPerDay).ToString("0.00");
         }
     }
 }

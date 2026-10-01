@@ -4,6 +4,36 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — M4 Landing Timer V0
+
+### What shipped
+- Session-only `landingSessionTicks` on `ArkCampaignGameComponent` (scribe `arkLandingSessionTicks`).
+- Timer increments every game tick while landing session active; resets on session start/end.
+- Does not mutate durable `CampaignDay` / LandingNumber / Pursuit.
+- Dev Mode: **Advance Landing Timer +1 Day**; debug UI + state strings show ticks and days.
+- Rebuild `Assemblies/TheArk.dll`.
+
+### What we learned
+- Accumulated ticks (not absolute start tick) is the clearest save/load story for a session timer.
+- `GameComponentTick` must run the timer when session is active (previously early-returned and skipped all work).
+
+### Key paths
+- `Source/TheArk/Campaign/ArkCampaignGameComponent.cs`
+- `Source/TheArk/Debug/ArkCampaignDebugOps.cs`
+- `Source/TheArk/Debug/ArkCampaignDebugActions.cs`
+- `Source/TheArk/Debug/Dialog_ArkCampaignDebug.cs`
+
+### Operator notes
+1. Pull / merge → restart
+2. New Game → The Ark → Simulate Landing
+3. Unpause **or** Advance Landing Timer +1 Day → TimerTicks / ~days increase
+4. Optional: save/load mid-session; End Session clears timer
+
+### Next steps
+- Joe RUNTIME VERIFIED; no M5 until asked.
+
+---
+
 ## 2026-10-01 — M3 Landing Detection RUNTIME VERIFIED (Joe Player.log)
 
 ### What shipped

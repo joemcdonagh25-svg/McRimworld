@@ -38,6 +38,7 @@ Land. Explore. Salvage. Survive. Escape.
 M1: Persistent campaign foundation.
 M2/V1.1: Dev Mode campaign debug UI + New Game playtest scenario (The Ark).
 M3: Landing detection (session + LandingNumber); Dev Mode Simulate Landing for surface playtest.
+M4: Landing timer (ticks while session active); Dev Advance Landing Timer +1 Day.
 
 Playtest scenario uses Biotech Baseliner crew (ConfigurePawnsXenotypes). Odyssey enables real gravship land detection; Simulate Landing works without a hop.
 

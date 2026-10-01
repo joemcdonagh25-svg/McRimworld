@@ -89,5 +89,20 @@ namespace TheArk.Debug
 
             ArkCampaignDebugOps.EndLandingSession(campaign);
         }
+
+        [DebugAction(
+            category = "The Ark (DEV)",
+            name = "Advance Landing Timer +1 Day",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void AdvanceLandingTimerOneDay()
+        {
+            if (!ArkCampaignDebugOps.TryGet(out ArkCampaignGameComponent campaign))
+            {
+                Log.Error("[The Ark] [DEV] No ArkCampaignGameComponent on Current.Game.");
+                return;
+            }
+
+            ArkCampaignDebugOps.AdvanceLandingTimerOneDay(campaign);
+        }
     }
 }

@@ -200,7 +200,7 @@ Reliably determine when the Ark has landed and establish a landing session.
 
 ## M4 — Landing Timer
 
-**Status:** PLANNED
+**Status:** IMPLEMENTATION COMPLETE — **RUNTIME VERIFIED** pending Joe’s in-game proof
 
 ### Goal
 
@@ -217,11 +217,21 @@ Track elapsed time since landing.
 - Timer value is visible via debug UI (or equivalent verified readout)
 - Timer does not corrupt durable campaign fields
 
+### Implementation notes
+
+- Session field `landingSessionTicks` (scribe `arkLandingSessionTicks`) on `ArkCampaignGameComponent`
+- Increments every `GameComponentTick` while `LandingSessionActive`
+- Resets to 0 on session start and session end — does **not** write `CampaignDay` / other durable fields
+- Persistence: accumulated ticks survive save/load mid-session
+- Dev: **Advance Landing Timer +1 Day**; debug UI shows ticks + days
+
 ### Manual test
 
-1. Land; note timer start.
-2. Advance time; confirm timer increases.
-3. Save / load while landed; confirm timer behaviour matches documented persistence choice.
+1. Simulate Landing; note TimerTicks=0 / ~0.00d.
+2. Unpause briefly **or** Dev → **Advance Landing Timer +1 Day**; confirm timer increases.
+3. Save / load while session active; confirm TimerTicks matches (or continues from saved value).
+4. End Landing Session; timer clears to 0.
+5. On success: mark M4 **RUNTIME VERIFIED**.
 
 ### Likely technical risks
 
@@ -442,6 +452,7 @@ Each future slice must be broken into its own milestone with goal, non-goals, ac
 
 ## Next implementation target
 
-**M1–M3** are COMPLETE / RUNTIME VERIFIED (Joe, 2026-10-01).
+**M1–M3** are COMPLETE / RUNTIME VERIFIED.  
+**M4** is IMPLEMENTATION COMPLETE — RUNTIME VERIFIED pending Joe’s timer proof.
 
-Do **not** begin M4 (Landing Timer) until Joe asks / approves.
+Do **not** begin M5 (Pursuit V0) until Joe asks / approves after M4 runtime proof.
