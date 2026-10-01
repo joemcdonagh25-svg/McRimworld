@@ -4,6 +4,20 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — The Ark M3 Landing Detection RUNTIME VERIFIED
+
+### What shipped
+- Docs: Joe’s Player.log proves Simulate Landing → `Landing session STARTED`, LandingNumber=1, Session=True.
+- Branch: `cursor/ark-m3-runtime-verified-5195`.
+
+### Operator notes
+- No M4 until Joe asks.
+
+### Next steps
+- Stop; Joe chooses next Ark milestone when ready.
+
+---
+
 ## 2026-10-01 — Project-wide RimWorld engineering Cursor rule
 
 ### What shipped
@@ -32,7 +46,7 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 - Pull → New Game → The Ark → Dev Mode → Simulate Landing (second call ignored while session active).
 
 ### Next steps
-- Joe runtime verify; no M4 until asked.
+- Done (Joe RUNTIME VERIFIED via Simulate Landing).
 
 ---
 

@@ -274,7 +274,7 @@ Use this template:
   - Session state lives on `ArkCampaignGameComponent` (scribed): `arkLandingSessionActive`, `arkLandingSessionMapId`, `arkLastCountedLandingMapId`.
   - Dev **Simulate Landing** is the V0 runtime proof path (surface playtest has no gravship hop yet).
   - `LandingEnded` / takeoff remain candidates for M8; not required for M3 V0.
-- **Runtime status:** Real Odyssey land UNVERIFIED; Simulate Landing pending Joe.
+- **Runtime status:** Simulate Landing **RUNTIME VERIFIED** (Joe, 2026-10-01). Real Odyssey land still UNVERIFIED.
 - **Related milestone:** M3
 
 ### 2026-10-01 — ChooseIdeoPreset NRE + non-colonist cascade (playtest harden)

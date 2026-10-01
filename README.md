@@ -17,7 +17,7 @@ McRimworld/
 
 | Folder | Package | Status |
 |--------|---------|--------|
-| `mods/the-ark-rimworld/` | `joemcdonagh.theark` | RimWorld 1.6 — M1+M2 **RUNTIME VERIFIED**; M3 Landing Detection implemented (Simulate Landing proof pending) |
+| `mods/the-ark-rimworld/` | `joemcdonagh.theark` | RimWorld 1.6 — M1–M3 **RUNTIME VERIFIED**; no M4 Landing Timer until Joe asks |
 | `mods/vampire-lord/` | `joemcdonagh.vampirelord` | RimWorld 1.6 — M1 + M2 RUNTIME VERIFIED; M3 Blood Tithe implemented (runtime pending) |
 
 ### The Ark
