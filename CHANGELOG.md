@@ -9,10 +9,11 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 ### What shipped
 - Scenario uses `ConfigurePawnsXenotypes` + 3 Baseliner (1.6 has no `ConfigurePawns` ScenPartDef).
 - Docs/script warn to delete duplicate `Mods\TheArk`.
-- Branch: `cursor/ark-configure-pawns-fix-5195` → draft PR into `main`.
+- Branch: `cursor/ark-configure-pawns-fix-5195` → merged into `main`.
 
 ### What we learned
 - Player.log root cause: `No RimWorld.ScenPartDef named ConfigurePawns found` + duplicate packageId `TheArk` vs `the-ark-rimworld`.
+- Selecting The Ark with null ScenPartDef NREs in scenario info / Next (Joe’s second log).
 
 ### Key paths
 - `mods/the-ark-rimworld/Defs/Scenarios/TheArkScenario.xml`
@@ -22,7 +23,21 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 - Pull → delete `RimWorld\Mods\TheArk` → enable The Ark + Biotech → New Game → The Ark.
 
 ### Next steps
-- Merge; Joe confirm scenario visible with clean log.
+- Joe confirm scenario selectable with clean log (no ConfigurePawns / null def).
+
+---
+
+## 2026-10-01 — Vampire Lord M3 Blood Tithe V0 (implementation)
+
+### What shipped
+- Keep Blood Reserve, kill credits, per-wave tithe cost (starved = harder raid), letters, debug actions; DLL rebuild.
+- Branch: `cursor/vampire-lord-m3-blood-tithe-c5ad`.
+
+### Operator notes
+- After merge: pull, restart, New Game → Vampire Lord → Show Blood Tithe / Trigger Wave / kill hostiles.
+
+### Next steps
+- Merge; Joe runtime verify.
 
 ---
 

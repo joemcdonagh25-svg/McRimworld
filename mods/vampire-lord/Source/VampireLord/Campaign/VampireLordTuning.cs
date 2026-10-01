@@ -37,5 +37,28 @@ namespace VampireLord.Campaign
 
         /// <summary>Do not pick the same archetype more than this many times in a row.</summary>
         public const int MaxSameArchetypeInARow = 2;
+
+        // --- M3 Blood Tithe V0 ---
+
+        /// <summary>Keep Blood Reserve when a campaign starts.</summary>
+        public const int StartingBloodReserve = 40;
+
+        /// <summary>Blood credited for a fresh hostile humanlike corpse.</summary>
+        public const int BloodPerHumanlikeKill = 5;
+
+        /// <summary>Max age (ticks) of a corpse that can still be tithed (avoids re-credit after load).</summary>
+        public const int FreshCorpseMaxAgeTicks = 60000; // ~1 day
+
+        /// <summary>How often to scan maps for fresh kills to tithe.</summary>
+        public const int BloodScanIntervalTicks = 60;
+
+        /// <summary>Base blood spent when a wave launches.</summary>
+        public const int WaveBloodCostBase = 10;
+
+        /// <summary>Extra blood cost per current threat level.</summary>
+        public const int WaveBloodCostPerThreat = 2;
+
+        /// <summary>Raid points multiplier when the keep cannot pay the full wave tithe.</summary>
+        public const float StarvedRaidPointsMultiplier = 1.35f;
     }
 }

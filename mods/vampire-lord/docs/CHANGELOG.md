@@ -4,6 +4,40 @@ Newest entries first.
 
 ---
 
+## 2026-10-01 — M3 Blood Tithe V0 (implementation)
+
+### What shipped
+- Keep **Blood Reserve** on campaign component (scribed; starts at 40 on activate).
+- Fresh hostile humanlike corpses credit +5 while campaign active (corpse scan, no Harmony).
+- Wave launch pays tithe `10 + 2*threat`; unpaid → raid points ×1.35 + starved letter.
+- Harvest letter when the next wave starts if kills accrued; warning letters show reserve + cost due.
+- Debug: Show Blood Tithe, Add/Spend (+/−20), Force Low Blood.
+- Failed raid launch refunds spent tithe.
+- DLL rebuilt.
+
+### What we learned
+- Corpse scan + age gate is enough for V0 without Harmony or Biotech hemogen rewrites.
+- Tithe-at-launch is clearer prep pressure than a silent time drain.
+- Refund on failed launch avoids punishing map/edge-case raid failures.
+
+### Key paths
+- `Source/VampireLord/Campaign/VampireLordBloodTithe.cs`
+- `Source/VampireLord/Campaign/VampireLordCampaignGameComponent.cs`
+- `Source/VampireLord/Campaign/VampireLordWaveDirector.cs`
+- `Source/VampireLord/Campaign/VampireLordLetters.cs`
+- `Source/VampireLord/Debug/VampireLordDebugActions.cs`
+- `Assemblies/VampireLord.dll`
+
+### Operator notes
+1. Pull `C:\McRimworld`, restart RimWorld
+2. New Game → Vampire Lord (or Dev Mode Start Campaign)
+3. **Show Blood Tithe** → Trigger Wave / Force Low Blood → kill hostiles → save/load
+
+### Next steps
+- Joe RUNTIME VERIFIED pass on the checklist in `docs/MILESTONES.md`.
+
+---
+
 ## 2026-10-01 — M3 planning: Blood Tithe V0
 
 ### What shipped
