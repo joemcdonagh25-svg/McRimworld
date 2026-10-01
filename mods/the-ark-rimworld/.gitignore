@@ -1,0 +1,16 @@
+# Build output
+Source/**/bin/
+Source/**/obj/
+
+# IDE
+.vs/
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Never commit RimWorld/Unity assemblies
+Libs/
+*.user
