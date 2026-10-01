@@ -18,7 +18,21 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 - Rule applies to all agents in this workspace once merged/pulled; no mod DLL rebuild required.
 
 ### Next steps
-- Merge when ready; use the rule on subsequent Ark / Vampire Lord work.
+- Use the rule on subsequent Ark / Vampire Lord work.
+
+---
+
+## 2026-10-01 — The Ark M3 Landing Detection V0
+
+### What shipped
+- Landing session + LandingNumber increment; Odyssey poll detection; Dev Simulate Landing / End Session; DLL rebuild.
+- Branch: `cursor/ark-m3-landing-detection-5195`.
+
+### Operator notes
+- Pull → New Game → The Ark → Dev Mode → Simulate Landing (second call ignored while session active).
+
+### Next steps
+- Joe runtime verify; no M4 until asked.
 
 ---
 

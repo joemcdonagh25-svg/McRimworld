@@ -153,7 +153,7 @@ Expose M1 state through a minimal development / debug interface.
 
 ## M3 — Landing Detection
 
-**Status:** PLANNED
+**Status:** IMPLEMENTATION COMPLETE — **RUNTIME VERIFIED** pending Joe’s Dev Mode Simulate Landing test
 
 ### Goal
 
@@ -163,6 +163,8 @@ Reliably determine when the Ark has landed and establish a landing session.
 
 - Pursuit growth
 - Full expedition content
+- Landing timer (M4)
+- Departure teardown beyond End Session debug (M8)
 
 ### Acceptance criteria
 
@@ -170,16 +172,29 @@ Reliably determine when the Ark has landed and establish a landing session.
 - Landing session begins exactly once per confirmed landing (no spam / double-fire under normal use)
 - Landing number (or equivalent) updates according to design for this milestone
 
+### Implementation notes
+
+- Authoritative owner remains `ArkCampaignGameComponent`
+- Session fields (scribed): `LandingSessionActive`, `LandingSessionMapId`, `lastCountedLandingMapId`
+- On confirm: session on + `LandingNumber++` (ignored if session already active)
+- Detection (no Harmony): poll Odyssey `IsGravshipTravelling` edge + `Map.wasSpawnedViaGravShipLanding`; also `ScenPart.PostGravshipLanded`
+- Dev Mode: **Simulate Landing** / **End Landing Session** (surface playtest proof without a real hop)
+
 ### Manual test
 
-1. Land the gravship under Odyssey-compatible conditions.
-2. Confirm landing session starts (log and/or debug UI).
-3. Confirm no duplicate session creation without departure / re-land as designed.
+1. New Game → **The Ark** (campaign active).
+2. Dev Mode → **The Ark (DEV)** → **Simulate Landing**.
+3. Log: `Landing session STARTED` + LandingNumber up + `LandingSession=True`.
+4. Simulate Landing again → ignored (session already active).
+5. Optional: End Landing Session → Simulate again → LandingNumber up again.
+6. Save / load mid-session → session + LandingNumber persist.
+7. On success: mark M3 **RUNTIME VERIFIED**.
 
 ### Likely technical risks
 
 - Odyssey API discovery; false positives from caravan / map transitions
 - Multiplayer or multiple-map edge cases (note; may be out of scope)
+- Real gravship hop still UNVERIFIED until Joe lands with Odyssey
 
 ---
 
@@ -427,6 +442,7 @@ Each future slice must be broken into its own milestone with goal, non-goals, ac
 
 ## Next implementation target
 
-**M2** is IMPLEMENTATION COMPLETE (RUNTIME VERIFIED pending Joe’s fixture save/load test — that test also proves M1).
+**M1 + M2** are COMPLETE / RUNTIME VERIFIED.  
+**M3** is IMPLEMENTATION COMPLETE — RUNTIME VERIFIED pending Joe’s Simulate Landing proof.
 
-Do **not** begin M3 (Landing Detection) until Joe asks / approves after the M1+M2 runtime proof.
+Do **not** begin M4 (Landing Timer) until Joe asks / approves after M3 runtime proof.
