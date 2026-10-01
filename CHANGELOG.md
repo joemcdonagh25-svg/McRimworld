@@ -4,6 +4,23 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — The Ark M1 + M2 RUNTIME VERIFIED
+
+### What shipped
+- Docs: Joe’s Player.log proves M1 fixture persist across save/quit/load (`Active=True, Day=47, Landing=6, Tier=2, Pursuit=73` Applied and LoadedGame).
+- Branch: `cursor/ark-newgame-runtime-confirmed-5195`.
+
+### What we learned
+- Campaign GameComponent persistence works on Joe’s install despite Ideology settle/load noise.
+
+### Operator notes
+- No M3 Landing Detection until Joe asks.
+
+### Next steps
+- Stop; Joe chooses next Ark milestone when ready.
+
+---
+
 ## 2026-10-01 — The Ark Ideo/colonist start harden (from Joe Player.log)
 
 ### What shipped
@@ -23,7 +40,7 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 - Pull → restart → New Game → The Ark. Ideo NRE may still log; crew should be colonists and campaign active.
 
 ### Next steps
-- Joe confirm playable start + M1 fixture save/load.
+- Done for New Game start (Joe confirmed). Fixture save/load still pending.
 
 ---
 

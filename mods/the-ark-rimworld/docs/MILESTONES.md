@@ -54,7 +54,7 @@ Ship a recognised RimWorld 1.6 mod that loads and initialises.
 
 ## M1 — Persistent Campaign Foundation
 
-**Status:** IMPLEMENTATION COMPLETE — **RUNTIME VERIFIED** pending manual RimWorld save/load
+**Status:** COMPLETE — **RUNTIME VERIFIED** (Joe, 2026-10-01; fixture save/quit/load matched Day=47, Landing=6, Tier=2, Pursuit=73)
 
 ### Goal
 
@@ -87,7 +87,8 @@ Establish the smallest authoritative persistent Ark campaign state.
 - Access: `TheArk.Campaign.ArkCampaign.TryGet` / `Get`
 - Scribe labels: `arkCampaignActive`, `arkCampaignDay`, `arkLandingNumber`, `arkTier`, `arkPursuit`
 - Build: succeeds with 0 errors (IMPLEMENTATION COMPLETE)
-- In-game save/load proof: not yet claimed (RUNTIME VERIFIED pending)
+- In-game New Game start: confirmed (scenario list, ideo harden, 3 colonists reassigned, campaign Active=True)
+- In-game save/load proof: **RUNTIME VERIFIED** — fixture Applied then LoadedGame matched Active=True, Day=47, Landing=6, Tier=2, Pursuit=73
 
 ### Manual test
 
@@ -106,7 +107,7 @@ Establish the smallest authoritative persistent Ark campaign state.
 
 ## M2 — Campaign Debug UI
 
-**Status:** IMPLEMENTATION COMPLETE — **RUNTIME VERIFIED** pending Joe’s RimWorld save/load proof (also completes M1 runtime verification)
+**Status:** COMPLETE — **RUNTIME VERIFIED** (Joe, 2026-10-01; New Game start + M1 fixture save/quit/load)
 
 ### Goal
 
