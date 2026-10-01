@@ -4,6 +4,60 @@ Newest entries first.
 
 ---
 
+## 2026-10-01 — M2 full-map reveal + paved south exit (harden)
+
+### What shipped
+- **Unfog the entire map** after gen (and again at `PostGameStart`) so outside the keep is never a black void.
+- Log line to prove new DLL: `Revealed map (PostMapGenerate): unfogged N/Area cells; gate=...`
+- Courtyard memory kept in statics so reveal still runs if the ScenPart instance is re-created.
+- Gate + 8-cell south approach paved with **PackedDirt** (open 3-cell gate, no door).
+- Ideo ensure also runs at `PostGameStart`.
+
+### What we learned
+- Joe’s log from ownership build shows `gate (...)` and **no** reveal line — that DLL never unfogged after map fog, so the wilds looked empty with no usable exit.
+- Fog applies after `GenerateIntoMap`; padding-only reveal can still feel wrong if fog re-applies — full-map unfog is correct for this playtest scenario.
+
+### Key paths
+- `Source/VampireLord/Scenario/ScenPart_VampireLordPlaytestSetup.cs`
+- `Assemblies/VampireLord.dll`
+
+### Operator notes
+- After merge: pull `C:\McRimworld`, restart RimWorld, **New Game → Vampire Lord**.
+- Success = log contains `open gate` + `Revealed map (PostMapGenerate)`, and you can walk south onto visible terrain.
+
+### Next steps
+- Joe runtime check; note if Ideology settle page still NREs (separate from outside void).
+
+---
+
+## 2026-10-01 — M2 open gate + reveal outside map
+
+### What shipped
+- South **open gate** (3 cells, no door) so pathing to the wilds is never blocked.
+- After fog gen: **unfog** keep + 40-cell padding and flood-unfog the gate so outside terrain is visible.
+- Clear a short approach lane south of the gate.
+- Pre-generate player ideoligion when Ideology is active (mitigates ChooseIdeoPreset NRE).
+- Reassign humanlike map pawns to player faction at game start if needed.
+- Drop `ParentName="ScenarioBase"` (explicit PlayerFaction / PlanetLayerFixed only).
+- Rebuild DLL.
+
+### What we learned
+- Fog applies after `GenerateIntoMap`; revealing must happen in `PostMapGenerate` or the wilds look like empty void.
+- Closed doors + fog made the keep feel like a sealed void with “no path outside”.
+- Ideology `Page_ChooseIdeoPreset` NRE still appears in Joe’s stack during settle; generating an ideo early + skipping ScenarioBase may reduce broken new-game state (non-colonist / empty history).
+
+### Key paths
+- `Source/VampireLord/Scenario/ScenPart_VampireLordPlaytestSetup.cs`
+- `Defs/Scenarios/VampireLordScenario.xml`
+
+### Operator notes
+- Pull + restart + **New Game**. You should see terrain outside the open south gate and be able to walk out.
+
+### Next steps
+- Joe verify outside map + pathing; note whether Ideology page still errors.
+
+---
+
 ## 2026-10-01 — M2 keep walls owned by player + gladius stuff
 
 ### What shipped
