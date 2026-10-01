@@ -4,6 +4,21 @@ Newest entries first.
 
 ---
 
+## 2026-10-01 — Fix: fortify offer letter delivery
+
+### What shipped
+- Fortify offer is a **letter** (`Blood for the Walls` in the letter stack), not a Quests-tab quest.
+- Delay delivery ~90 ticks after prep window opens so PostGameStart settle does not swallow it.
+- Fix LetterDef sound (`LetterArrive`); always fall back to a plain letter if ChoiceLetter fails.
+- Retry/schedule tracked on the campaign component.
+
+### Operator notes
+1. Pull + restart; New Game → Vampire Lord (or **Offer Fortify** in Dev Mode).
+2. Wait a moment after the keep loads; open the **letter stack** (top-right), not Quests.
+3. Log line: `Fortify offer letter sent` / `Fortify offer scheduled`.
+
+---
+
 ## 2026-10-01 — M4 Keep Fortification V0
 
 ### What shipped

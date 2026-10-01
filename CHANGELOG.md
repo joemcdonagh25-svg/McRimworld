@@ -4,6 +4,17 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — Vampire Lord fortify offer letter fix
+
+### What shipped
+- Delayed fortify Accept letter; fix LetterDef sound; clarify letter stack vs Quests.
+- Same branch: `cursor/vampire-lord-m4-fortify-c5ad`.
+
+### Operator notes
+- Pull/restart; look for **Blood for the Walls** in the letter stack (not Quests).
+
+---
+
 ## 2026-10-01 — Vampire Lord M4 Keep Fortification V0
 
 ### What shipped

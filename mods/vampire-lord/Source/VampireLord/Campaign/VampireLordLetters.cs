@@ -58,28 +58,28 @@ namespace VampireLord.Campaign
 
         public static void SendFortifyOffer(VampireLordCampaignGameComponent campaign)
         {
+            string body = FortifyOfferBody(campaign);
             LetterDef def = DefDatabase<LetterDef>.GetNamedSilentFail("VampireLord_FortifyOffer");
-            if (def == null)
+            if (def != null && typeof(ChoiceLetter).IsAssignableFrom(def.letterClass))
+            {
+                ChoiceLetter letter = LetterMaker.MakeLetter("Blood for the Walls", body, def);
+                if (letter != null)
+                {
+                    Find.LetterStack.ReceiveLetter(letter);
+                    return;
+                }
+
+                Log.Warning("[VampireLord] Fortify ChoiceLetter failed to create — falling back to plain letter.");
+            }
+            else if (def == null)
             {
                 Log.Warning("[VampireLord] Fortify LetterDef missing — sending plain letter.");
-                Find.LetterStack.ReceiveLetter(
-                    "Blood for the Walls",
-                    FortifyOfferBody(campaign) +
-                    "\n\n(Dev Mode → Vampire Lord → Offer Fortify / Force Fortify Now)",
-                    LetterDefOf.PositiveEvent);
-                return;
             }
 
-            ChoiceLetter letter = LetterMaker.MakeLetter(
+            Find.LetterStack.ReceiveLetter(
                 "Blood for the Walls",
-                FortifyOfferBody(campaign),
-                def);
-            if (letter == null)
-            {
-                return;
-            }
-
-            Find.LetterStack.ReceiveLetter(letter);
+                body + "\n\n(Dev Mode → Vampire Lord → Offer Fortify / Force Fortify Now)",
+                LetterDefOf.PositiveEvent);
         }
 
         public static void SendFortifyComplete(VampireLordCampaignGameComponent campaign, int placed)

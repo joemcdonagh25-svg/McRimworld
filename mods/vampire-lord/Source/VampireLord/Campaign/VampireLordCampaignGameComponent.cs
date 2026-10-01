@@ -36,6 +36,8 @@ namespace VampireLord.Campaign
         private int fortifyPurchasesThisWindow;
         private int lastFortifyWaveNumber = -1;
         private int lastFortifyPlacedCount;
+        private int fortifyOfferDueTick = -1;
+        private bool fortifyOfferSentThisWindow;
 
         public bool CampaignActive
         {
@@ -152,6 +154,18 @@ namespace VampireLord.Campaign
             set => lastFortifyPlacedCount = value < 0 ? 0 : value;
         }
 
+        public int FortifyOfferDueTick
+        {
+            get => fortifyOfferDueTick;
+            set => fortifyOfferDueTick = value;
+        }
+
+        public bool FortifyOfferSentThisWindow
+        {
+            get => fortifyOfferSentThisWindow;
+            set => fortifyOfferSentThisWindow = value;
+        }
+
         /// <summary>1-based number of the currently pending / next wave.</summary>
         public int UpcomingWaveNumber => waveNumber + 1;
 
@@ -209,6 +223,8 @@ namespace VampireLord.Campaign
             Scribe_Values.Look(ref fortifyPurchasesThisWindow, "vlFortifyPurchasesThisWindow", 0);
             Scribe_Values.Look(ref lastFortifyWaveNumber, "vlLastFortifyWaveNumber", -1);
             Scribe_Values.Look(ref lastFortifyPlacedCount, "vlLastFortifyPlacedCount", 0);
+            Scribe_Values.Look(ref fortifyOfferDueTick, "vlFortifyOfferDueTick", -1);
+            Scribe_Values.Look(ref fortifyOfferSentThisWindow, "vlFortifyOfferSentThisWindow", false);
         }
 
         public override void StartedNewGame()
@@ -240,6 +256,9 @@ namespace VampireLord.Campaign
                 lastBloodScanTick = ticks;
                 VampireLordBloodTithe.ScanForFreshKills(this);
             }
+
+            // Fortify Accept letter is delayed so it is not lost during PostGameStart settle.
+            VampireLordFortify.EvaluatePendingOffer(this);
 
             if (lastScheduleCheckTick >= 0 &&
                 ticks - lastScheduleCheckTick < VampireLordTuning.ScheduleCheckIntervalTicks)

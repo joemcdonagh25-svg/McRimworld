@@ -68,5 +68,11 @@ namespace VampireLord.Campaign
 
         /// <summary>Max fortify purchases allowed in one inter-wave prep window.</summary>
         public const int FortifyMaxPerPrepWindow = 1;
+
+        /// <summary>
+        /// Delay before the fortify Accept letter after a prep window opens.
+        /// Avoids losing the letter during PostGameStart / map settle churn.
+        /// </summary>
+        public const int FortifyOfferDelayTicks = 90;
     }
 }

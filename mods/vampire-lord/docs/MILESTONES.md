@@ -263,7 +263,7 @@ Harvest blood from the host → spend it on the walls before the next warning �
 ### Manual runtime test (Joe)
 
 1. Pull + restart → New Game → Vampire Lord → campaign active; Blood Reserve ≥ 15
-2. Expect fortify offer letter **Blood for the Walls** (or Dev Mode → **Offer Fortify**)
+2. Wait ~1–2 seconds after load; open the **letter stack** (top-right) — **not** the Quests tab — for **Blood for the Walls** (or Dev Mode → **Offer Fortify**)
 3. Accept → reserve −15; sandbags south of gate; log `Fortified gate`
 4. **Show Fortify State** — purchases 1/1; second Accept disabled until next prep window
 5. **Trigger Warning Now** → fortify blocked until after next wave; **Force Fortify Now** still works for debug

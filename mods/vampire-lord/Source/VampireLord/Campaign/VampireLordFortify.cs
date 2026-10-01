@@ -81,6 +81,7 @@ namespace VampireLord.Campaign
 
         /// <summary>
         /// Called when a new prep window opens (campaign activate / after a wave schedules the next).
+        /// Schedules the Accept letter a few ticks later so PostGameStart settle does not swallow it.
         /// </summary>
         public static void NotifyPrepWindowOpened(VampireLordCampaignGameComponent campaign)
         {
@@ -90,24 +91,76 @@ namespace VampireLord.Campaign
             }
 
             campaign.FortifyPurchasesThisWindow = 0;
+            campaign.FortifyOfferSentThisWindow = false;
+            campaign.FortifyOfferDueTick =
+                Find.TickManager.TicksGame + VampireLordTuning.FortifyOfferDelayTicks;
+            Log.Message(
+                $"{LogPrefix} Fortify offer scheduled at tick {campaign.FortifyOfferDueTick} " +
+                $"(Blood={campaign.BloodReserve}). Look for letter 'Blood for the Walls' — not the Quests tab.");
+        }
+
+        /// <summary>Tick hook: deliver a scheduled fortify letter when due.</summary>
+        public static void EvaluatePendingOffer(VampireLordCampaignGameComponent campaign)
+        {
+            if (campaign == null || !campaign.CampaignActive)
+            {
+                return;
+            }
+
+            if (campaign.FortifyOfferSentThisWindow || campaign.FortifyOfferDueTick < 0)
+            {
+                return;
+            }
+
+            if (Find.TickManager.TicksGame < campaign.FortifyOfferDueTick)
+            {
+                return;
+            }
+
+            // Still in prep? If warning already fired, drop the pending offer.
+            if (!IsPrepWindow(campaign))
+            {
+                campaign.FortifyOfferDueTick = -1;
+                Log.Message($"{LogPrefix} Fortify offer cancelled — prep window closed before delivery.");
+                return;
+            }
+
             TrySendOfferLetter(campaign);
         }
 
         public static void TrySendOfferLetter(VampireLordCampaignGameComponent campaign)
         {
-            if (!CanPurchase(campaign, forced: false, out _))
+            if (campaign == null || !campaign.CampaignActive)
             {
-                Log.Message(
-                    $"{LogPrefix} Fortify offer skipped " +
-                    $"(Blood={campaign.BloodReserve}, Prep={IsPrepWindow(campaign)}, " +
-                    $"Purchases={campaign.FortifyPurchasesThisWindow}).");
                 return;
             }
 
+            if (campaign.FortifyOfferSentThisWindow)
+            {
+                Log.Message($"{LogPrefix} Fortify offer already sent this prep window.");
+                return;
+            }
+
+            if (!IsPrepWindow(campaign))
+            {
+                Log.Message($"{LogPrefix} Fortify offer skipped — not in prep window.");
+                return;
+            }
+
+            if (campaign.FortifyPurchasesThisWindow >= VampireLordTuning.FortifyMaxPerPrepWindow)
+            {
+                Log.Message($"{LogPrefix} Fortify offer skipped — already fortified this window.");
+                return;
+            }
+
+            // Send even if blood/map is briefly unready — Accept disables until purchase works.
             VampireLordLetters.SendFortifyOffer(campaign);
+            campaign.FortifyOfferSentThisWindow = true;
+            campaign.FortifyOfferDueTick = -1;
             Log.Message(
-                $"{LogPrefix} Fortify offer sent " +
-                $"(cost={VampireLordTuning.FortifyBloodCost}, Reserve={campaign.BloodReserve}).");
+                $"{LogPrefix} Fortify offer letter sent " +
+                $"(cost={VampireLordTuning.FortifyBloodCost}, Reserve={campaign.BloodReserve}). " +
+                "Check the letter stack (top-right), not Quests.");
         }
 
         public static bool TryPurchase(
@@ -162,6 +215,8 @@ namespace VampireLord.Campaign
             sb.AppendLine($"PrepWindow={IsPrepWindow(campaign)}");
             sb.AppendLine($"FortifyBloodCost={VampireLordTuning.FortifyBloodCost}");
             sb.AppendLine($"FortifyPurchasesThisWindow={campaign.FortifyPurchasesThisWindow}/{VampireLordTuning.FortifyMaxPerPrepWindow}");
+            sb.AppendLine($"FortifyOfferSentThisWindow={campaign.FortifyOfferSentThisWindow}");
+            sb.AppendLine($"FortifyOfferDueTick={campaign.FortifyOfferDueTick}");
             sb.AppendLine($"LastFortifyWaveNumber={campaign.LastFortifyWaveNumber}");
             sb.AppendLine($"LastFortifyPlacedCount={campaign.LastFortifyPlacedCount}");
             sb.AppendLine($"BloodReserve={campaign.BloodReserve}");
