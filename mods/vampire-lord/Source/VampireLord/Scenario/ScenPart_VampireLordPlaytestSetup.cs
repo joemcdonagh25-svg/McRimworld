@@ -34,7 +34,6 @@ namespace VampireLord.Scenario
 
         public override bool HasNullDefs()
         {
-            // Def is optional for scenario-embedded custom parts; only treat as null if other defs break.
             return false;
         }
 
@@ -72,22 +71,21 @@ namespace VampireLord.Scenario
                 center = map.Center;
             }
 
-            CellRect exterior = CellRect.CenteredOn(center, CourtyardHalfSize);
-            exterior = exterior.ClipInsideMap(map);
+            CellRect exterior = CellRect.CenteredOn(center, CourtyardHalfSize).ClipInsideMap(map);
             CellRect interior = exterior.ContractedBy(1);
 
             ThingDef wallDef = ThingDefOf.Wall;
             ThingDef doorDef = ThingDefOf.Door;
             ThingDef stuff = ThingDefOf.BlocksGranite;
             TerrainDef floor = TerrainDefOf.FlagstoneSandstone;
+            Faction player = Faction.OfPlayer;
 
-            // Clear footprint (plants, chunks, wreckage) so walls can spawn.
+            // Clear plants / filth / blocking buildings only (never wipe player starting items).
             foreach (IntVec3 cell in exterior.Cells)
             {
-                ClearCellForKeep(map, cell);
+                ClearCellForKeep(map, cell, clearItems: false);
             }
 
-            // Interior paving.
             foreach (IntVec3 cell in interior.Cells)
             {
                 if (cell.InBounds(map))
@@ -96,7 +94,6 @@ namespace VampireLord.Scenario
                 }
             }
 
-            // Perimeter walls with a single south-facing gate.
             IntVec3 gateCell = exterior.GetCenterCellOnEdge(Rot4.South);
             if (!gateCell.InBounds(map))
             {
@@ -110,53 +107,66 @@ namespace VampireLord.Scenario
                     continue;
                 }
 
-                if (cell == gateCell)
-                {
-                    SpawnKeepThing(ThingMaker.MakeThing(doorDef, stuff), cell, map);
-                    continue;
-                }
+                // Wall/door cells may need chunks/items cleared so the building can spawn.
+                ClearCellForKeep(map, cell, clearItems: true);
 
-                SpawnKeepThing(ThingMaker.MakeThing(wallDef, stuff), cell, map);
+                Thing building = cell == gateCell
+                    ? ThingMaker.MakeThing(doorDef, stuff)
+                    : ThingMaker.MakeThing(wallDef, stuff);
+
+                SpawnPlayerBuilding(building, cell, map, player);
             }
 
-            // Keep player start inside the courtyard.
             MapGenerator.PlayerStartSpot = center;
 
             Log.Message(
                 $"{LogPrefix} Playtest keep courtyard placed at {center} " +
-                $"(size {exterior.Width}x{exterior.Height}, gate {gateCell}).");
+                $"(size {exterior.Width}x{exterior.Height}, gate {gateCell}, faction={player?.Name}).");
         }
 
-        private static void ClearCellForKeep(Map map, IntVec3 cell)
+        private static void ClearCellForKeep(Map map, IntVec3 cell, bool clearItems)
         {
             List<Thing> things = cell.GetThingList(map).ToList();
             for (int i = 0; i < things.Count; i++)
             {
                 Thing thing = things[i];
-                if (thing == null || thing.def == null)
+                if (thing?.def == null)
                 {
                     continue;
                 }
 
-                // Keep terrain / fog etc.; remove plants, stone chunks, wreckage, buildings in footprint.
-                if (thing.def.category == ThingCategory.Plant
-                    || thing.def.category == ThingCategory.Item
+                bool remove =
+                    thing.def.category == ThingCategory.Plant
                     || thing.def.category == ThingCategory.Building
-                    || thing.def.IsFilth)
+                    || thing.def.IsFilth
+                    || (clearItems && thing.def.category == ThingCategory.Item);
+
+                if (remove)
                 {
                     thing.Destroy(DestroyMode.Vanish);
                 }
             }
         }
 
-        private static void SpawnKeepThing(Thing thing, IntVec3 cell, Map map)
+        private static void SpawnPlayerBuilding(Thing thing, IntVec3 cell, Map map, Faction player)
         {
             if (thing == null || !cell.InBounds(map))
             {
                 return;
             }
 
+            // Player ownership = claimable / deconstructable / home area works as expected.
+            if (player != null)
+            {
+                thing.SetFactionDirect(player);
+            }
+
             GenSpawn.Spawn(thing, cell, map, WipeMode.Vanish);
+
+            if (player != null && thing.Faction != player)
+            {
+                thing.SetFaction(player);
+            }
         }
     }
 }

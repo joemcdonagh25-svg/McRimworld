@@ -55,13 +55,14 @@
           </xenotypeCounts>
         </li>
 
+        <!-- Courtyard before pawn arrival so walls exist first and we don't wipe starting gear. -->
+        <li Class="VampireLord.Scenario.ScenPart_VampireLordPlaytestSetup">
+          <def>VampireLord_PlaytestSetup</def>
+        </li>
+
         <li Class="ScenPart_PlayerPawnsArriveMethod">
           <def>PlayerPawnsArriveMethod</def>
           <method>Standing</method>
-        </li>
-
-        <li Class="VampireLord.Scenario.ScenPart_VampireLordPlaytestSetup">
-          <def>VampireLord_PlaytestSetup</def>
         </li>
 
         <li Class="ScenPart_StartingThing_Defined">
@@ -102,6 +103,7 @@
         <li Class="ScenPart_StartingThing_Defined">
           <def>StartingThing_Defined</def>
           <thingDef>MeleeWeapon_Gladius</thingDef>
+          <stuff>Steel</stuff>
           <count>1</count>
         </li>
         <li Class="ScenPart_StartingThing_Defined">

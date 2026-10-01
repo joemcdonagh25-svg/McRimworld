@@ -4,6 +4,20 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — Vampire Lord M2 keep ownership fix
+
+### What shipped
+- Player-owned courtyard walls/door; courtyard before pawn spawn; gladius Steel stuff; DLL rebuild.
+- Branch: `cursor/vampire-lord-m2-keep-ownership-c5ad`.
+
+### Operator notes
+- After merge: pull `C:\McRimworld`, restart RimWorld, start a **new** Vampire Lord game to get owned walls.
+
+### Next steps
+- Merge; Joe verify deconstruct + auto campaign.
+
+---
+
 ## 2026-10-01 — The Ark M2 / V1.1 Campaign Debug UI
 
 ### What shipped
