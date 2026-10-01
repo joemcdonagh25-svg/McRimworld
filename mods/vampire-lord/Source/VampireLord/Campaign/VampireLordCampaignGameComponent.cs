@@ -22,6 +22,14 @@ namespace VampireLord.Campaign
         private VampireLordWaveType lastWaveType = VampireLordWaveType.Mob;
         private int sameArchetypeStreak;
         private int lastScheduleCheckTick = -1;
+        private int lastBloodScanTick = -1;
+
+        // M3 Blood Tithe
+        private int bloodReserve;
+        private int bloodGainedSinceWave;
+        private bool lastWaveBloodStarved;
+        private int lastWaveBloodSpent;
+        private int lastWaveBloodCost;
 
         public bool CampaignActive
         {
@@ -90,6 +98,36 @@ namespace VampireLord.Campaign
             set => sameArchetypeStreak = value;
         }
 
+        public int BloodReserve
+        {
+            get => bloodReserve;
+            set => bloodReserve = value < 0 ? 0 : value;
+        }
+
+        public int BloodGainedSinceWave
+        {
+            get => bloodGainedSinceWave;
+            set => bloodGainedSinceWave = value < 0 ? 0 : value;
+        }
+
+        public bool LastWaveBloodStarved
+        {
+            get => lastWaveBloodStarved;
+            set => lastWaveBloodStarved = value;
+        }
+
+        public int LastWaveBloodSpent
+        {
+            get => lastWaveBloodSpent;
+            set => lastWaveBloodSpent = value;
+        }
+
+        public int LastWaveBloodCost
+        {
+            get => lastWaveBloodCost;
+            set => lastWaveBloodCost = value;
+        }
+
         /// <summary>1-based number of the currently pending / next wave.</summary>
         public int UpcomingWaveNumber => waveNumber + 1;
 
@@ -139,6 +177,11 @@ namespace VampireLord.Campaign
             Scribe_Values.Look(ref wavePending, "vlWavePending", false);
             Scribe_Values.Look(ref lastWaveType, "vlLastWaveType", VampireLordWaveType.Mob);
             Scribe_Values.Look(ref sameArchetypeStreak, "vlSameArchetypeStreak", 0);
+            Scribe_Values.Look(ref bloodReserve, "vlBloodReserve", 0);
+            Scribe_Values.Look(ref bloodGainedSinceWave, "vlBloodGainedSinceWave", 0);
+            Scribe_Values.Look(ref lastWaveBloodStarved, "vlLastWaveBloodStarved", false);
+            Scribe_Values.Look(ref lastWaveBloodSpent, "vlLastWaveBloodSpent", 0);
+            Scribe_Values.Look(ref lastWaveBloodCost, "vlLastWaveBloodCost", 0);
         }
 
         public override void StartedNewGame()
@@ -148,6 +191,7 @@ namespace VampireLord.Campaign
 
         public override void LoadedGame()
         {
+            VampireLordBloodTithe.ResetSessionCredits();
             LogCampaignState("LoadedGame");
         }
 
@@ -159,6 +203,14 @@ namespace VampireLord.Campaign
             }
 
             int ticks = Find.TickManager.TicksGame;
+
+            if (lastBloodScanTick < 0 ||
+                ticks - lastBloodScanTick >= VampireLordTuning.BloodScanIntervalTicks)
+            {
+                lastBloodScanTick = ticks;
+                VampireLordBloodTithe.ScanForFreshKills(this);
+            }
+
             if (lastScheduleCheckTick >= 0 &&
                 ticks - lastScheduleCheckTick < VampireLordTuning.ScheduleCheckIntervalTicks)
             {
@@ -176,7 +228,8 @@ namespace VampireLord.Campaign
                 $"[VampireLord] Campaign state ({context}): " +
                 $"Active={campaignActive}, Day={campaignDay}, Wave={waveNumber}, Threat={threatLevel}, " +
                 $"Pending={wavePending}, WarningIssued={warningIssued}, Type={pendingWaveType}, " +
-                $"WarningTick={warningTick}, NextWaveTick={nextWaveTick}");
+                $"WarningTick={warningTick}, NextWaveTick={nextWaveTick}, " +
+                $"Blood={bloodReserve}, GainedSinceWave={bloodGainedSinceWave}, LastStarved={lastWaveBloodStarved}");
         }
     }
 }

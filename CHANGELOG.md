@@ -4,6 +4,20 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — Vampire Lord M3 Blood Tithe V0 (implementation)
+
+### What shipped
+- Keep Blood Reserve, kill credits, per-wave tithe cost (starved = harder raid), letters, debug actions; DLL rebuild.
+- Branch: `cursor/vampire-lord-m3-blood-tithe-c5ad`.
+
+### Operator notes
+- After merge: pull, restart, New Game → Vampire Lord → Show Blood Tithe / Trigger Wave / kill hostiles.
+
+### Next steps
+- Merge; Joe runtime verify.
+
+---
+
 ## 2026-10-01 — The Ark minimal scenario + install diagnostics
 
 ### What shipped

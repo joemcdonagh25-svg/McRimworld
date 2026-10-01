@@ -155,6 +155,20 @@ Target: RimWorld **1.6** via `Krafs.Rimworld.Ref` 1.6.4871 (Cloud/CI) or local S
 - **Decision for Vampire Lord:** Custom `ScenPart_VampireLordPlaytestSetup` embedded in scenario XML (no global map-gen patch). Courtyard in `GenerateIntoMap`; `ActivateCampaign` in `PostGameStart`.
 - **Related milestone:** M2
 
+### 2026-10-01 — Blood Tithe corpse scan (M3, no Harmony)
+
+- **Goal:** Credit Keep Blood Reserve from enemy deaths without adding a Harmony dependency.
+- **Evidence:** Compile against `Krafs.Rimworld.Ref` 1.6.4871 (`ThingRequestGroup.Corpse`, `Corpse.Age`, `Corpse.InnerPawn` used successfully).
+- **API:**
+  - `Verse.ThingRequestGroup.Corpse`
+  - `Verse.ListerThings.ThingsInGroup`
+  - `Verse.Corpse` — `Age`, `InnerPawn`
+  - `Verse.Pawn.RaceProps.Humanlike`, `Pawn.HostileTo`, `Faction.HostileTo`
+  - Campaign `GameComponentTick` scan interval (60 ticks)
+- **Behaviour notes:** Session `HashSet` of credited `thingIDNumber`s; corpses older than ~1 day are marked seen without credit (avoids double-pay after load). Keep meter is **separate** from Biotech pawn hemogen.
+- **Decision for Vampire Lord:** V0 uses corpse scan + wave blood cost before `TryLaunchRaid`; starved unpaid cost multiplies raid points. No Harmony for M3.
+- **Related milestone:** M3
+
 ---
 
 ## Pending / runtime verification
@@ -165,10 +179,8 @@ Target: RimWorld **1.6** via `Krafs.Rimworld.Ref` 1.6.4871 (Cloud/CI) or local S
 | M1 natural 3-day warning→raid without debug | PENDING (optional) |
 | M1 RaidEnemy strategy defNames in live session | PARTIAL (Mob wave proven) |
 | Fire archetype — no incendiary force | Documented limitation |
-| M2 New Game scenario appears + xenotype page | PENDING |
-| M2 courtyard + gate at player start | PENDING |
-| M2 campaign auto-start without Dev Mode | PENDING |
-| M2 start dialog + keep-flavoured warning letter | PENDING |
+| M2 New Game / courtyard / open gate / reveal / auto campaign | RUNTIME VERIFIED |
+| M3 Blood Reserve persist + kill credit + wave tithe / starved | PENDING |
 
 ---
 
