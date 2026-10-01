@@ -4,13 +4,28 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — Vampire Lord M2 restore ScenarioBase (ConfigErrors)
+
+### What shipped
+- Restore `ParentName="ScenarioBase"` + ASCII-clean scenario/About text after PR #8 regression.
+- Resolve leftover `CHANGELOG.md` merge conflict markers on `main` from PR #8/#9.
+- Branch: `cursor/vampire-lord-m2-scenario-parent-c5ad`.
+
+### Operator notes
+- After merge: pull, restart, New Game → Vampire Lord (no ConfigErrors), then walk south out of the keep.
+
+### Next steps
+- Merge; Joe runtime check.
+
+---
+
 ## 2026-10-01 — The Ark scenario visibility (diagnostic + vanilla parts)
 
 ### What shipped
 - The Ark playtest scenario uses vanilla ScenParts only; campaign activate stays in GameComponent.
 - Bootstrap logs whether `TheArk_Playtest` ScenarioDef loaded (Player.log checklist).
 - Cleaned accidental git conflict markers left in this CHANGELOG from an earlier merge.
-- Branch: `cursor/ark-scenario-visible-5195` → draft PR into `main`.
+- Branch: `cursor/ark-scenario-visible-5195` → merged into `main`.
 
 ### What we learned
 - If the mod is not the McRimworld `mods/the-ark-rimworld` root (or a duplicate packageId shadows it), New Game never sees the scenario.
@@ -25,7 +40,7 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 - Pull → junction `C:\McRimworld\mods\the-ark-rimworld` → enable The Ark → restart → confirm `TheArk_Playtest LOADED` in Player.log → New Game.
 
 ### Next steps
-- Merge; Joe confirm scenario appears.
+- Joe confirm scenario appears.
 
 ---
 
@@ -34,7 +49,7 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 ### What shipped
 - Soften Odyssey dependency so New Game → **The Ark** can appear without Odyssey enabled.
 - Backup campaign activate on `StartedNewGame` when scenario name is The Ark.
-- Branch: `cursor/ark-scenario-list-fix-5195` → draft PR into `main`.
+- Branch: `cursor/ark-scenario-list-fix-5195` → merged into `main`.
 
 ### What we learned
 - Hard `modDependencies` on Odyssey can leave The Ark disabled → scenario invisible.
@@ -50,7 +65,7 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 - Pull → ensure Mods junction for The Ark → enable The Ark → restart → New Game list.
 
 ### Next steps
-- Merge; Joe confirm scenario visible; then fixture save/load proof.
+- Joe confirm scenario visible; then fixture save/load proof.
 
 ---
 
@@ -59,13 +74,13 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 ### What shipped
 - Open south gate, **full-map unfog** (PostMapGenerate + PostGameStart), PackedDirt approach lane, ideo/colonist safety; DLL rebuild.
 - Branch: `cursor/vampire-lord-m2-outside-access-c5ad`.
-- Joe’s pasted log was from the ownership DLL (`gate` text, no reveal line) — that build never cleared fog outside the keep.
+- Joe's pasted log was from the ownership DLL (`gate` text, no reveal line) - that build never cleared fog outside the keep.
 
 ### Operator notes
 - After merge: pull `C:\McRimworld`, restart, New Game → Vampire Lord. Look for `open gate` + `Revealed map` in the log, then walk south.
 
 ### Next steps
-- Merge; Joe runtime check of outside terrain + pathing.
+- Follow-up: restore ScenarioBase (ConfigErrors regression).
 
 ---
 
