@@ -4,13 +4,27 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
-<<<<<<< HEAD
+## 2026-10-01 — Vampire Lord M2 restore ScenarioBase (ConfigErrors)
+
+### What shipped
+- Restore `ParentName="ScenarioBase"` + ASCII-clean scenario/About text after PR #8 regression.
+- Resolve leftover `CHANGELOG.md` merge conflict markers on `main` from PR #8/#9.
+- Branch: `cursor/vampire-lord-m2-scenario-parent-c5ad`.
+
+### Operator notes
+- After merge: pull, restart, New Game → Vampire Lord (no ConfigErrors), then walk south out of the keep.
+
+### Next steps
+- Merge; Joe runtime check.
+
+---
+
 ## 2026-10-01 — The Ark scenario list fix
 
 ### What shipped
 - Soften Odyssey dependency so New Game → **The Ark** can appear without Odyssey enabled.
 - Backup campaign activate on `StartedNewGame` when scenario name is The Ark.
-- Branch: `cursor/ark-scenario-list-fix-5195` → draft PR into `main`.
+- Branch: `cursor/ark-scenario-list-fix-5195` → merged into `main`.
 
 ### What we learned
 - Hard `modDependencies` on Odyssey can leave The Ark disabled → scenario invisible.
@@ -26,21 +40,22 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 - Pull → ensure Mods junction for The Ark → enable The Ark → restart → New Game list.
 
 ### Next steps
-- Merge; Joe confirm scenario visible; then fixture save/load proof.
-=======
+- Joe confirm scenario visible; then fixture save/load proof.
+
+---
+
 ## 2026-10-01 — Vampire Lord M2 outside access / full-map reveal
 
 ### What shipped
 - Open south gate, **full-map unfog** (PostMapGenerate + PostGameStart), PackedDirt approach lane, ideo/colonist safety; DLL rebuild.
 - Branch: `cursor/vampire-lord-m2-outside-access-c5ad`.
-- Joe’s pasted log was from the ownership DLL (`gate` text, no reveal line) — that build never cleared fog outside the keep.
+- Joe's pasted log was from the ownership DLL (`gate` text, no reveal line) - that build never cleared fog outside the keep.
 
 ### Operator notes
 - After merge: pull `C:\McRimworld`, restart, New Game → Vampire Lord. Look for `open gate` + `Revealed map` in the log, then walk south.
 
 ### Next steps
-- Merge; Joe runtime check of outside terrain + pathing.
->>>>>>> origin/main
+- Follow-up: restore ScenarioBase (ConfigErrors regression).
 
 ---
 

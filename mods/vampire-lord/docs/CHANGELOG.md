@@ -4,6 +4,30 @@ Newest entries first.
 
 ---
 
+## 2026-10-01 — Fix: scenario ConfigErrors after outside-access merge
+
+### What shipped
+- Restored `ParentName="ScenarioBase"` on `VampireLord_PlaytestKeep` (PR #8 had dropped it).
+- ASCII-only scenario description text (same lesson as The Ark list fix).
+- Kept open gate + full-map reveal DLL from PR #8.
+
+### What we learned
+- Joe’s post-merge log: `no playerFaction` / `no surfaceLayer` / `scenario has null part` + Next NRE on scenario select.
+- Explicit PlayerFaction / PlanetLayerFixed alone was **not** enough without `ScenarioBase` in this 1.6 + Ideology/Odyssey stack.
+- Em dash in scenario copy is risky; prefer ASCII `-`.
+
+### Key paths
+- `Defs/Scenarios/VampireLordScenario.xml`
+
+### Operator notes
+- Pull + restart. New Game → Vampire Lord should pass scenario Next with no ConfigErrors.
+- Then confirm log has `open gate` + `Revealed map` and walk south.
+
+### Next steps
+- Joe runtime verify scenario start + outside map.
+
+---
+
 ## 2026-10-01 — M2 full-map reveal + paved south exit (harden)
 
 ### What shipped
