@@ -259,6 +259,24 @@ Use this template:
 
 ---
 
+### 2026-10-01 — M3 Landing Detection (no Harmony)
+
+- **Goal:** Detect Ark landing once, open a temporary landing session, increment durable `LandingNumber`.
+- **Evidence:** Metadata inspection of `Krafs.Rimworld.Ref` 1.6.4871 + approved M3 V0 proposal.
+- **API (verified present):**
+  - `Verse.ModsConfig.OdysseyActive`
+  - `Verse.WorldComponent_GravshipController`: `IsGravshipTravelling`, `InitiateLanding`, `LandingEnded`, `InitiateTakeoff`
+  - `Verse.Map.wasSpawnedViaGravShipLanding`
+  - `RimWorld.ScenPart.PostGravshipLanded(Map)`
+  - `Verse.GameComponent.GameComponentTick`
+- **Decision for The Ark:**
+  - No Harmony. Poll travel edge (`IsGravshipTravelling` true→false) and map flag; also hook playtest `PostGravshipLanded`.
+  - Session state lives on `ArkCampaignGameComponent` (scribed): `arkLandingSessionActive`, `arkLandingSessionMapId`, `arkLastCountedLandingMapId`.
+  - Dev **Simulate Landing** is the V0 runtime proof path (surface playtest has no gravship hop yet).
+  - `LandingEnded` / takeoff remain candidates for M8; not required for M3 V0.
+- **Runtime status:** Real Odyssey land UNVERIFIED; Simulate Landing pending Joe.
+- **Related milestone:** M3
+
 ### 2026-10-01 — ChooseIdeoPreset NRE + non-colonist cascade (playtest harden)
 
 - **Goal:** After ConfigurePawns fix, Joe could select The Ark and activate campaign, but settle hit `Page_ChooseIdeoPreset.PostOpen` NRE and tick cascade (Anomaly/History/goodwill/non-colonist apparel).
@@ -319,7 +337,7 @@ These are **questions**, not APIs. Do not implement against assumed answers.
 |-------|-----------|----------|
 | Campaign persistence owner | M1 | **Resolved:** `ArkCampaignGameComponent` (`GameComponent`). |
 | Runtime save/load proof of Ark fields | M1/M2 | Confirm fields round-trip via M1 fixture + debug UI (manual test pending). |
-| Gravship landed state | M3 | How to detect landed state; candidates include `WorldComponent_GravshipController.InitiateLanding` / `Map.wasSpawnedViaGravShipLanding` — behaviour UNVERIFIED. |
+| Gravship landed state | M3 | **Implemented (poll):** travel edge + `wasSpawnedViaGravShipLanding` + `PostGravshipLanded`; real hop UNVERIFIED; Simulate Landing is V0 proof. |
 | Gravship departure | M8 | Confirm `InitiateTakeoff` (or other) as reliable session teardown signal. |
 | Gravship object lifetime | M3/M8 | Does `Game.Gravship` / `Planet.Gravship` persist, null out, or get replaced across travel? |
 | Incident hooks for Pursuit | M7 | Best supported path for one Pursuit-driven consequence without fighting vanilla raid logic? |

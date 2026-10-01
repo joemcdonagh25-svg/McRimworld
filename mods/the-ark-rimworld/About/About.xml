@@ -37,8 +37,9 @@ Land. Explore. Salvage. Survive. Escape.
 
 M1: Persistent campaign foundation.
 M2/V1.1: Dev Mode campaign debug UI + New Game playtest scenario (The Ark).
+M3: Landing detection (session + LandingNumber); Dev Mode Simulate Landing for surface playtest.
 
-Playtest scenario uses Biotech Baseliner crew (ConfigurePawnsXenotypes). Odyssey will be required later for real gravship land/depart hooks.
+Playtest scenario uses Biotech Baseliner crew (ConfigurePawnsXenotypes). Odyssey enables real gravship land detection; Simulate Landing works without a hop.
 
 Install note: only one folder may use packageId joemcdonagh.theark. Prefer Mods\the-ark-rimworld (McRimworld junction). Remove Mods\TheArk if present.
   </description>

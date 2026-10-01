@@ -4,6 +4,20 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — The Ark M3 Landing Detection V0
+
+### What shipped
+- Landing session + LandingNumber increment; Odyssey poll detection; Dev Simulate Landing / End Session; DLL rebuild.
+- Branch: `cursor/ark-m3-landing-detection-5195`.
+
+### Operator notes
+- Pull → New Game → The Ark → Dev Mode → Simulate Landing (second call ignored while session active).
+
+### Next steps
+- Merge; Joe runtime verify; no M4 until asked.
+
+---
+
 ## 2026-10-01 — The Ark M1 + M2 RUNTIME VERIFIED
 
 ### What shipped
