@@ -212,21 +212,101 @@ Survive the wave → harvest blood → stock the keep → face the next host hun
 
 ---
 
-## M4+ — FUTURE (not planned yet)
+## M4 — Keep Fortification V0 (recommended)
 
-Each needs its own milestone card before coding.
+**PLANNING:** yes (2026-10-01)  
+**IMPLEMENTATION COMPLETE:** no  
+**RUNTIME VERIFIED:** no
+
+### Goal
+
+After M3 gives the keep a blood stockpile, give that blood a **prep spend** between waves: reinforce the Black Keep so the tower-defence fantasy is build → stock → spend → survive.
+
+### Player fantasy (one sentence)
+
+Harvest blood from the host → spend it on the walls before the next warning → hold the gate.
+
+### Why this over the other parking-lot cards
+
+| Candidate | Why not M4 |
+|-----------|------------|
+| Approach Lanes V0 | Nice raid staging; does not spend Blood Tithe or deepen vampire identity |
+| Campaign UI panel | QoL readout; no new fantasy loop |
+| Prisoners & Tithe jobs | Bigger systems (jobs, buildings, balance); better after a simple blood sink exists |
+| Dark Boons | Permanent power purchases; stronger once fortification proves “spend blood between waves” |
+
+### Decisions locked for V0 (proposed — Joe confirm)
+
+- **Currency:** Keep Blood Reserve (M3). Optional small steel cost if stock exists; blood is the headline cost.
+- **When:** Between waves only (after raid resolves, before next warning fires). Blocked during warning→raid window.
+- **What you buy (V0):** **Gate sandbags** — spawn a short sandbag arc just south of the open gate (player-owned), capped per prep window.
+- **How you buy (no custom UI panel):** Dev Mode actions + one **offer letter** with Accept that spends blood and places the fortification.
+- **Cost (starting numbers):** 15 blood per sandbag package; max **1 package per inter-wave** (tunable constants).
+- **No Harmony:** place things with existing spawn helpers; gate from courtyard memory / map scan.
+
+### In scope
+
+- Tuning constants for fortify cost / cap
+- Fortify helper: spend blood + place sandbags at gate approach
+- Letter offer after wave clears (debug fallback if letter timing is fiddly)
+- Debug: **Offer Fortify**, **Force Fortify Now**, show last fortify state
+- Scribe only if needed for “already fortified this window”
+
+### Non-goals (deferred)
+
+- Full castle rebuild / multi-tile wall upgrades
+- Turrets, traps tech tree, mortar pits
+- Approach-lane raid pathing bias
+- Dark Boons / prisoner extraction
+- Custom architect tab
+- Harmony patches
+
+### Acceptance (implementation — after Joe confirms)
+
+- [ ] Blood can be spent between waves on a keep fortification
+- [ ] Fortification appears at/near the south gate as player-owned cover
+- [ ] Cannot spam unlimited free walls (cap / window rule)
+- [ ] Letters or debug make the offer obvious
+- [ ] Compiles; changelogs updated
+- [ ] Manual runtime checklist for Joe
+
+### Manual runtime test (Joe — after impl)
+
+1. Vampire Lord game, campaign active, Blood Reserve ≥ 15
+2. Survive or debug-clear a wave (or use **Offer Fortify** in prep window)
+3. Accept fortify → reserve drops; sandbags at gate; log line
+4. Next wave: cover matters (eyeball); cannot buy twice in same window
+5. Save/load mid-prep → cap/state still sane
+
+### Key paths (planned)
+
+- `Source/VampireLord/Campaign/VampireLordFortify.cs` (new)
+- `Source/VampireLord/Campaign/VampireLordTuning.cs`
+- `Source/VampireLord/Campaign/VampireLordLetters.cs`
+- `Source/VampireLord/Campaign/VampireLordWaveDirector.cs` / GameComponent
+- `Source/VampireLord/Debug/VampireLordDebugActions.cs`
+- `docs/CHANGELOG.md`
+
+### Confirm phrase
+
+Say **confirm Keep Fortification** to start M4 impl, or name another parking-lot card instead.
+
+---
+
+## M4+ — still parked
 
 | Candidate | Fantasy |
 |-----------|---------|
-| Keep Fortification V0 | Between waves, spend blood/materials to reinforce walls / add sandbags |
 | Approach Lanes V0 | Raids prefer a cleared south road into the gate |
 | Campaign UI panel | Always-on Blood / Wave / Threat readout |
 | Prisoners & Tithe jobs | Capture → extract → stock the keep |
 | Dark Boons | Permanent powers bought with blood |
-| Ideology polish | Skip/fix ChooseIdeoPreset NRE on settle |
+
+Ideology settle polish is separate (open PR `#21`, not an M4 feature slice).
 
 ---
 
 ## Planning note
 
-**No M3 code until Joe confirms this card** (or names a different M3 from the M4+ table). Planning ships as docs only.
+M3 Blood Tithe **RUNTIME VERIFIED** still awaits Joe’s checklist.  
+**No M4 code until Joe confirms Keep Fortification** (or redirects).

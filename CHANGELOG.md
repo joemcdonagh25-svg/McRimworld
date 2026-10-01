@@ -4,6 +4,23 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — Vampire Lord M4 planning: Keep Fortification V0
+
+### What shipped
+- Docs only: recommend **Keep Fortification V0** as M4 (spend Blood Tithe on gate sandbags between waves).
+- Branch: `cursor/vampire-lord-m4-planning-c5ad`.
+
+### What we learned
+- Blood needs a prep sink that changes the keep; UI / lanes / prisoners / boons stay parked.
+
+### Operator notes
+- Say **confirm Keep Fortification** to start M4 code, or name another candidate.
+
+### Next steps
+- Joe confirm or redirect.
+
+---
+
 ## 2026-10-01 — The Ark M1 + M2 RUNTIME VERIFIED
 
 ### What shipped

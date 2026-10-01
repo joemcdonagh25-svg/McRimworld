@@ -4,6 +4,29 @@ Newest entries first.
 
 ---
 
+## 2026-10-01 — M4 planning: Keep Fortification V0
+
+### What shipped
+- Docs only: M4 milestone card — **Keep Fortification V0** (spend Blood Tithe between waves on gate sandbags).
+- Parking lot updated: approach lanes, UI panel, prisoners, Dark Boons remain deferred.
+- No M4 code until Joe confirms this card (or picks a different M4).
+
+### What we learned
+- After threat + stage + blood stockpile, the missing loop piece is a **blood sink that changes the keep** before the next host.
+- V0 stays tiny: one purchase type, letter + debug, no Harmony, no architect tab.
+
+### Key paths
+- `docs/MILESTONES.md` (M4 card)
+- `README.md`
+
+### Operator notes
+- Read the M4 card; say **confirm Keep Fortification** to start impl, or name another parking-lot candidate.
+
+### Next steps
+- Joe confirm or redirect; then implementation branch.
+
+---
+
 ## 2026-10-01 — Fix: keep is a real player home (not caravan)
 
 ### What shipped
