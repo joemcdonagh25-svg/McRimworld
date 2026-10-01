@@ -1,5 +1,6 @@
 using LudeonTK;
 using VampireLord.Campaign;
+using VampireLord.Scenario;
 using Verse;
 
 namespace VampireLord.Debug
@@ -78,6 +79,15 @@ namespace VampireLord.Debug
             }
 
             Log.Message("[VampireLord] Campaign state:\n" + VampireLordWaveDirector.FormatState(campaign));
+        }
+
+        [DebugAction(
+            category = "Vampire Lord",
+            name = "Ensure Player Home",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void EnsurePlayerHome()
+        {
+            VampireLordPlayerHome.TryEnsure("DebugAction");
         }
 
         [DebugAction(
