@@ -77,6 +77,68 @@ Custom factions, pawns, weapons, armour, progression, Dark Boons, blood economy,
 
 ---
 
-## M2+ — FUTURE
+## M2 — Playtest Keep (identity + courtyard + scenario)
 
-Not started. Candidates (order TBD): keep identity content, blood economy, castle progression, custom UI, map/castle generation. Each needs its own milestone card before coding.
+**IMPLEMENTATION COMPLETE:** yes  
+**RUNTIME VERIFIED:** no
+
+### Goal
+
+Start **New Game → Vampire Lord** and already be in the fantasy: keep identity, 1 Vampire Lord + 2 thralls, a simple walled courtyard, Wave Director running — no Dev Mode required for the happy path.
+
+### Player choices locked
+
+- Starting cast: **1 Vampire Lord (Sanguophage) + 2 thralls (Baseliner)**
+- Keep footprint: **simple walled courtyard** (not full procedural castle / approach lanes)
+
+### In scope
+
+- Keep identity: scenario name/description, start dialog, warning-letter polish (Black Keep / torchlight fantasy; product name stays Vampire Lord)
+- Default `ScenarioDef` with cast, starter gear/materials, standing arrival
+- Courtyard placed around player start (stone walls, one gate/door, simple paved interior)
+- Wave Director **auto-starts** on this scenario (`PostGameStart`)
+- Biotech required for Sanguophage lord (declared in About)
+- Debug actions retained for force-testing
+
+### Non-goals
+
+Blood economy, castle progression between waves, custom UI panel, custom factions/weapons, bosses/victory, full approach-lane castle gen, ideology deep dive.
+
+### Acceptance (implementation)
+
+- [x] Scenario appears in New Game as **Vampire Lord**
+- [x] Configure-pawns page requests 1 Sanguophage + 2 Baseliner (labels Vampire Lord / Thrall)
+- [x] Starter items/materials present in scenario parts
+- [x] Courtyard walls + door + interior pave spawn at player start
+- [x] Campaign activates without Dev Mode on scenario start
+- [x] Warning letters still use keep flavour
+- [x] Project compiles (`VampireLord.dll`)
+- [x] Docs/changelogs updated
+
+### Manual runtime test (Joe)
+
+1. `git pull` → junction already points at `C:\McRimworld\mods\vampire-lord`
+2. Enable **Vampire Lord** (+ Biotech)
+3. New Game → pick **Vampire Lord** scenario → finish setup (temperate recommended)
+4. Confirm: courtyard keep, 1 lord + 2 thralls, start dialog, log campaign activated
+5. Trigger Warning / Wave (or wait) → keep-flavoured letter + raid
+6. Optional: save/load once
+
+### Key paths
+
+- `Defs/Scenarios/`
+- `Source/VampireLord/Scenario/`
+- `About/About.xml`
+- `docs/CHANGELOG.md`
+
+### Known V0 limitations
+
+- Courtyard is a rectangle footprint, not a authored castle map
+- Map size/biome still chosen on the world/new-game pages (scenario does not force a custom planet)
+- Biotech DLC required for the default scenario cast
+
+---
+
+## M3+ — FUTURE
+
+Candidates (order TBD): blood economy, castle progression, custom UI, richer map/castle generation. Each needs its own milestone card before coding.

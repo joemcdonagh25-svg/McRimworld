@@ -2,23 +2,38 @@
 
 Gothic keep tower-defence campaign for RimWorld 1.6.
 
-**M1 status:** IMPLEMENTATION COMPLETE — RUNTIME VERIFIED (Joe live session, 2026-10-01).
+**M1 status:** IMPLEMENTATION COMPLETE — RUNTIME VERIFIED (Joe live session, 2026-10-01).  
+**M2 status:** IMPLEMENTATION COMPLETE — RUNTIME VERIFIED pending (Playtest Keep scenario).
 
-## What it does (M1)
+Requires **Biotech** (Sanguophage Vampire Lord).
 
-After you start the campaign from Dev Mode, the Wave Director:
+## What it does
+
+### M1 — Wave Director
+After the campaign starts, the Wave Director:
 
 1. Schedules the next assault (default **3 days** out)
 2. Sends an advance warning letter (**1 day** before)
 3. Fires a vanilla enemy raid with an archetype (Mob / Hunters / Breachers / Fire / Siege)
 4. Raises threat level and schedules the next wave
 
+### M2 — Playtest Keep
+**New Game → Vampire Lord** scenario:
+
+- 1 Vampire Lord (Sanguophage) + 2 thralls (Baseliner)
+- Simple granite walled courtyard + south gate at player start
+- Starter food, medicine, materials, rifles, hemogen packs
+- Wave Director **auto-starts** (no Dev Mode required)
+- Black Keep flavour letters / start dialog
+
 ## Enable
 
-1. Put this folder (`mods/vampire-lord`) in your RimWorld `Mods` directory (or junction it).
-2. Enable **Vampire Lord** in the mods menu.
-3. Load/start a game with Dev Mode on.
-4. Open debug actions → category **Vampire Lord** → **Start Vampire Lord Campaign**.
+1. Junction/copy this folder (`mods/vampire-lord`) into your RimWorld `Mods` directory.
+2. Enable **Biotech** and **Vampire Lord**.
+3. **New Game → Vampire Lord** (preferred playtest path).
+
+### Debug (optional)
+Dev Mode → category **Vampire Lord** → Start / Stop / Trigger Warning / Trigger Wave / Show Campaign State.
 
 ## Build
 
@@ -30,7 +45,7 @@ On Windows with Steam RimWorld installed, the project uses the Managed `Assembly
 
 ## Docs
 
-- `docs/MILESTONES.md` — M1 acceptance + status labels
+- `docs/MILESTONES.md` — M1/M2 acceptance + status labels
 - `docs/RIMWORLD_API_NOTES.md` — inspected APIs and limitations
 - `docs/CHANGELOG.md` — newest-first shipping notes
 
