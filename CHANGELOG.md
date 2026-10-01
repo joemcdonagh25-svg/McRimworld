@@ -19,6 +19,31 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — The Ark scenario visibility (diagnostic + vanilla parts)
+
+### What shipped
+- The Ark playtest scenario uses vanilla ScenParts only; campaign activate stays in GameComponent.
+- Bootstrap logs whether `TheArk_Playtest` ScenarioDef loaded (Player.log checklist).
+- Cleaned accidental git conflict markers left in this CHANGELOG from an earlier merge.
+- Branch: `cursor/ark-scenario-visible-5195` → merged into `main`.
+
+### What we learned
+- If the mod is not the McRimworld `mods/the-ark-rimworld` root (or a duplicate packageId shadows it), New Game never sees the scenario.
+- Player.log line `ScenarioDef TheArk_Playtest LOADED` proves defs loaded; MISSING means install/enable problem.
+
+### Key paths
+- `mods/the-ark-rimworld/Defs/Scenarios/TheArkScenario.xml`
+- `mods/the-ark-rimworld/Source/TheArk/TheArkBootstrap.cs`
+- `README.md`
+
+### Operator notes
+- Pull → junction `C:\McRimworld\mods\the-ark-rimworld` → enable The Ark → restart → confirm `TheArk_Playtest LOADED` in Player.log → New Game.
+
+### Next steps
+- Joe confirm scenario appears.
+
+---
+
 ## 2026-10-01 — The Ark scenario list fix
 
 ### What shipped
