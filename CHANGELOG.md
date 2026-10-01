@@ -4,6 +4,27 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — Vampire Lord M2 scenario config fix
+
+### What shipped
+- Fix New Game → Vampire Lord crash/config errors: add 1.6 required `PlayerFaction` + `PlanetLayerFixed`, ScenPartDefs for dialog/setup.
+- Branch: `cursor/vampire-lord-m2-scenario-fix-c5ad` → draft PR into `main`.
+
+### What we learned
+- Selecting a scenario with null/missing required parts NREs in `Page_SelectScenario` / `Scenario.PreConfigure`.
+
+### Key paths
+- `mods/vampire-lord/Defs/Scenarios/VampireLordScenario.xml`
+- `mods/vampire-lord/Defs/ScenParts/VampireLordScenParts.xml`
+
+### Operator notes
+- After merge: `git pull` in `C:\McRimworld`, restart RimWorld, retry New Game → Vampire Lord.
+
+### Next steps
+- Merge; Joe runtime verify.
+
+---
+
 ## 2026-10-01 — Vampire Lord M2 Playtest Keep
 
 ### What shipped

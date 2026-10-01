@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ScenPartDef>
+    <defName>VampireLord_GameStartDialog</defName>
+    <label>Vampire Lord start dialog</label>
+    <description>Opening letter when the Vampire Lord playtest scenario begins.</description>
+    <category>Misc</category>
+    <scenPartClass>ScenPart_GameStartDialog</scenPartClass>
+    <maxUses>1</maxUses>
+    <canBePlayerAddedRemoved>false</canBePlayerAddedRemoved>
+    <canBeRandomlyAdded>false</canBeRandomlyAdded>
+  </ScenPartDef>
+
+  <ScenPartDef>
+    <defName>VampireLord_PlaytestSetup</defName>
+    <label>Vampire Lord playtest keep setup</label>
+    <description>Places a simple courtyard keep and auto-starts the Wave Director.</description>
+    <category>Fixed</category>
+    <scenPartClass>VampireLord.Scenario.ScenPart_VampireLordPlaytestSetup</scenPartClass>
+    <maxUses>1</maxUses>
+    <canBePlayerAddedRemoved>false</canBePlayerAddedRemoved>
+    <canBeRandomlyAdded>false</canBeRandomlyAdded>
+  </ScenPartDef>
+
+</Defs>
