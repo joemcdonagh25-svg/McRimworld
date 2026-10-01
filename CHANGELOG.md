@@ -4,20 +4,20 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
-## 2026-10-01 — The Ark New Game start RUNTIME CONFIRMED
+## 2026-10-01 — The Ark M1 + M2 RUNTIME VERIFIED
 
 ### What shipped
-- Docs: Joe’s Player.log confirms New Game → The Ark is playable after PR #19 (ideo generate, 3 colonists reassigned, campaign Active=True).
+- Docs: Joe’s Player.log proves M1 fixture persist across save/quit/load (`Active=True, Day=47, Landing=6, Tier=2, Pursuit=73` Applied and LoadedGame).
 - Branch: `cursor/ark-newgame-runtime-confirmed-5195`.
 
 ### What we learned
-- ChooseIdeoPreset / Anomaly / History NREs still log and are acceptable noise for this playtest surface start.
+- Campaign GameComponent persistence works on Joe’s install despite Ideology settle/load noise.
 
 ### Operator notes
-- Next proof for M1/M2: Dev Mode → The Ark (DEV) → Apply M1 Persistence Fixture → save → quit → load.
+- No M3 Landing Detection until Joe asks.
 
 ### Next steps
-- Joe run fixture save/load; then mark M1 + M2 RUNTIME VERIFIED.
+- Stop; Joe chooses next Ark milestone when ready.
 
 ---
 

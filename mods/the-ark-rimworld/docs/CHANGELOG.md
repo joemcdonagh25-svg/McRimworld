@@ -4,6 +4,26 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — M1 + M2 RUNTIME VERIFIED (Joe Player.log)
+
+### What shipped
+- Docs only: mark M1 Persistent Campaign + M2 Campaign Debug UI **RUNTIME VERIFIED** from Joe’s live RimWorld session.
+
+### What we learned
+- Fixture apply: `[The Ark] [DEV] Applied M1 persistence fixture: Active=True, Day=47, Landing=6, Tier=2, Pursuit=73`
+- After full quit + load save `New Arrivals6`: `[The Ark] Campaign state (LoadedGame): Active=True, Day=47, Landing=6, Tier=2, Pursuit=73` — exact match.
+- New Game path also confirmed earlier: ScenarioDef listed, ideo generate, 3 colonists reassigned, campaign Active=True.
+- Known noise (not blocking M1 proof): ChooseIdeoPreset NRE, Anomaly StartedNewGame NRE, History empty-sequence, Ideo_12 missing on load (Ideology settle skip residue). Campaign fields still persist correctly.
+
+### Operator notes
+- M1 + M2 playtest loop is proven on Joe’s machine.
+- No M3 Landing Detection until Joe asks.
+
+### Next steps
+- Stop for approval; Joe chooses next Ark milestone when ready.
+
+---
+
 ## 2026-10-01 — New Game → The Ark RUNTIME CONFIRMED (Joe Player.log)
 
 ### What shipped
@@ -15,10 +35,10 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ### Operator notes
 - New Game start path is good enough for playtest.
-- Full M1/M2 **RUNTIME VERIFIED** still needs: Dev Mode → Apply M1 Persistence Fixture → save → quit → load → confirm LoadedGame values.
+- Superseded: full M1/M2 RUNTIME VERIFIED claimed in newer entry after fixture save/load.
 
 ### Next steps
-- Joe run the M1 fixture save/load proof; then mark M1 + M2 RUNTIME VERIFIED.
+- Done (see M1 + M2 RUNTIME VERIFIED entry).
 
 ---
 
