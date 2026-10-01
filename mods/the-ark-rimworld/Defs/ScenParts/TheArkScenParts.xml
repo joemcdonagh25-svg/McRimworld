@@ -1,15 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-
-  <ScenPartDef>
-    <defName>TheArk_GameStartDialog</defName>
-    <label>The Ark start dialog</label>
-    <description>Opening letter when The Ark playtest scenario begins.</description>
-    <category>Misc</category>
-    <scenPartClass>ScenPart_GameStartDialog</scenPartClass>
-    <maxUses>1</maxUses>
-    <canBePlayerAddedRemoved>false</canBePlayerAddedRemoved>
-    <canBeRandomlyAdded>false</canBeRandomlyAdded>
-  </ScenPartDef>
-
+  <!-- Intentionally empty: playtest scenario uses only vanilla ScenPart defs. -->
 </Defs>
