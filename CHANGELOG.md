@@ -4,6 +4,35 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — The Ark M2 / V1.1 Campaign Debug UI
+
+### What shipped
+- The Ark Dev Mode debug UI for the five M1 campaign fields (view + explicit Apply / M1 fixture).
+- Rebuilt `mods/the-ark-rimworld/Assemblies/TheArk.dll` (0 errors).
+- Branch: `cursor/ark-v1-1-campaign-debug-ui-5195` → draft PR into `main`.
+
+### What we learned
+- Cloud builds need the Vampire-Lord-style `Krafs.Rimworld.Ref` fallback on `TheArk.csproj` when Steam Managed is absent.
+- Debug window draft buffers must stay non-authoritative until Apply — same read/command split as design docs.
+
+### Key paths
+- `mods/the-ark-rimworld/Source/TheArk/Debug/`
+- `mods/the-ark-rimworld/Source/TheArk/TheArk.csproj`
+- `mods/the-ark-rimworld/Assemblies/TheArk.dll`
+- `mods/the-ark-rimworld/docs/MILESTONES.md`
+- `mods/the-ark-rimworld/docs/CHANGELOG.md`
+
+### Operator notes
+- Repo: `joemcdonagh25-svg/McRimworld` — branch `cursor/ark-v1-1-campaign-debug-ui-5195` — base `main`.
+- No force-push.
+- After merge/pull on `C:\McRimworld`: Dev Mode → **The Ark (DEV)** → Apply M1 Persistence Fixture → save → full quit → load.
+
+### Next steps
+- Joe RUNTIME VERIFIED pass (proves M1 + M2).
+- No M3 Landing Detection until Joe asks.
+
+---
+
 ## 2026-10-01 — Vampire Lord M2 Playtest Keep
 
 ### What shipped

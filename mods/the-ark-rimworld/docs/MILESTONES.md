@@ -106,7 +106,7 @@ Establish the smallest authoritative persistent Ark campaign state.
 
 ## M2 — Campaign Debug UI
 
-**Status:** NEXT (do not start until explicitly requested)
+**Status:** IMPLEMENTATION COMPLETE — **RUNTIME VERIFIED** pending Joe’s RimWorld save/load proof (also completes M1 runtime verification)
 
 ### Goal
 
@@ -123,11 +123,23 @@ Expose M1 state through a minimal development / debug interface.
 - Developer can adjust key fields safely for testing (at least Pursuit and tier, or document why not)
 - UI reads state and uses explicit commands; no authoritative logic living only in UI widgets
 
+### Implementation notes
+
+- Dev Mode menu category: **The Ark (DEV)**
+- Actions: Open Campaign Debug · Log Campaign State · Apply M1 Persistence Fixture
+- Window: `[DEV] The Ark — Campaign Debug` — draft fields + Apply / Refresh / Fixture
+- Writes via `TheArk.Debug.ArkCampaignDebugOps` into `ArkCampaignGameComponent` only
+- Gate: Dev Mode debug actions + `Prefs.DevMode` / `onlyDrawInDevMode`
+
 ### Manual test
 
-1. Open debug UI in a running game.
-2. Confirm displayed values match campaign state.
-3. Change a value; save / load; confirm consistency.
+1. Enable The Ark; turn **Dev Mode** on; start or load a game on a map.
+2. Debug Actions → **The Ark (DEV)** → **Open Campaign Debug** (or **Apply M1 Persistence Fixture**).
+3. Set / confirm: Active=true, Day=47, Landing=6, Tier=2, Pursuit=73 → **Apply**.
+4. Confirm log / window show those values.
+5. Save → quit RimWorld completely → relaunch → load the save.
+6. Confirm `[The Ark] Campaign state (LoadedGame): ...` matches exactly; re-open debug UI and confirm.
+7. On success: mark M1 and M2 **RUNTIME VERIFIED**.
 
 ### Likely technical risks
 
@@ -412,7 +424,6 @@ Each future slice must be broken into its own milestone with goal, non-goals, ac
 
 ## Next implementation target
 
-**M1** is IMPLEMENTATION COMPLETE (RUNTIME VERIFIED pending manual RimWorld test).
+**M2** is IMPLEMENTATION COMPLETE (RUNTIME VERIFIED pending Joe’s fixture save/load test — that test also proves M1).
 
-When coding resumes after runtime confirmation (or by explicit request): **M2 — Campaign Debug UI** only.
-Do not begin M2 until asked.
+Do **not** begin M3 (Landing Detection) until Joe asks / approves after the M1+M2 runtime proof.
