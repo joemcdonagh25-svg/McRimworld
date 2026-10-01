@@ -76,8 +76,8 @@ namespace TheArk.Campaign
         }
 
         /// <summary>
-        /// Belt-and-suspenders with <c>ScenPart_ArkPlaytestSetup</c>: if New Game used the
-        /// The Ark scenario, ensure campaign is active even if the ScenPart did not run.
+        /// Playtest scenario uses vanilla ScenParts only; campaign activate happens here when
+        /// New Game selected The Ark (scenario name match).
         /// </summary>
         private void TryActivateFromPlaytestScenario(string context)
         {
