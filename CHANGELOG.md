@@ -4,6 +4,20 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — Vampire Lord M2 outside access / fog reveal
+
+### What shipped
+- Open south gate, unfog surroundings, ideo pre-gen, colonist faction safety; DLL rebuild.
+- Branch: `cursor/vampire-lord-m2-outside-access-c5ad`.
+
+### Operator notes
+- After merge: pull, restart, New Game → Vampire Lord. Walk out the south gate onto visible terrain.
+
+### Next steps
+- Merge; Joe runtime check.
+
+---
+
 ## 2026-10-01 — Vampire Lord M2 keep ownership fix
 
 ### What shipped
