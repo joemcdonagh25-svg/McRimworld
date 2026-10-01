@@ -4,6 +4,20 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — Vampire Lord M2 RUNTIME VERIFIED
+
+### What shipped
+- Docs: Vampire Lord M2 Playtest Keep marked **RUNTIME VERIFIED** after Joe's live confirm (open gate + map revealed + campaign auto-start).
+- Branch: `cursor/vampire-lord-m2-runtime-verified-c5ad`.
+
+### Operator notes
+- Docs-only; gameplay already proven on Joe's machine after PR #11.
+
+### Next steps
+- Merge docs PR. No M3 until Joe asks.
+
+---
+
 ## 2026-10-01 — Vampire Lord M2 restore ScenarioBase (ConfigErrors)
 
 ### What shipped
