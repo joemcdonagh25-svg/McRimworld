@@ -84,6 +84,12 @@ namespace VampireLord.Scenario
                 return;
             }
 
+            // Harden cultures even when an ideo already exists (helps odd mid-game reloads).
+            if (player.def != null)
+            {
+                VampireLordIdeoSettle.EnsureAllowedCultures(player.def, "PlaytestSetup");
+            }
+
             if (player.ideos.PrimaryIdeo != null)
             {
                 return;

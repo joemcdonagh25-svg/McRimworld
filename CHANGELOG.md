@@ -4,6 +4,24 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — Vampire Lord Ideology settle polish
+
+### What shipped
+- Vampire Lord scenario subclasses `Scenario` to replace `Page_ChooseIdeoPreset` with an auto-classic ideo page (harden `allowedCultures`, skip broken UI). No Harmony.
+- Branch: `cursor/vampire-lord-ideo-settle-c5ad`.
+
+### What we learned
+- Early ideo generate was not enough — vanilla ChooseIdeoPreset still opens after site select and NREs on null `allowedCultures`.
+- `GetFirstConfigPage` is virtual; scenario XML `Class=` is the clean skip path.
+
+### Operator notes
+- Pull, restart, New Game → Vampire Lord with Ideology on; confirm no ChooseIdeoPreset NRE and AutoIdeoPage log line.
+
+### Next steps
+- Joe settle retest; Blood Tithe / player-home RUNTIME VERIFIED when ready.
+
+---
+
 ## 2026-10-01 — The Ark Ideo/colonist start harden (from Joe Player.log)
 
 ### What shipped

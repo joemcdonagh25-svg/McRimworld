@@ -174,6 +174,21 @@ Target: RimWorld **1.6** via `Krafs.Rimworld.Ref` 1.6.4871 (Cloud/CI) or local S
 
 ---
 
+### 2026-10-01 — Ideology ChooseIdeoPreset skip (no Harmony)
+
+- **Goal:** Stop settle NRE in `Page_ChooseIdeoPreset.PostOpen` without adding Harmony.
+- **Evidence:** RimWorld 1.6 decompile (`Scenario.GetFirstConfigPage`, `Page_ChooseIdeoPreset.PostOpen`); Krafs.Rimworld.Ref 1.6.4871 metadata (`GetFirstConfigPage` is virtual; `FactionDef.allowedCultures`).
+- **API:**
+  - `RimWorld.Scenario.GetFirstConfigPage()` — virtual; builds storyteller → world → starting site → (Ideology) ChooseIdeoPreset → ScenPart `GetConfigPages()` → `PageUtility.InitGameStart`
+  - `ScenarioDef.scenario` — XML `Class=` can instantiate a `Scenario` subclass
+  - `Page_ChooseIdeoPreset.PostOpen` filters `DefDatabase<CultureDef>` with `OfPlayer.def.allowedCultures.Contains` (null `allowedCultures` → NRE)
+  - `IdeoGenerator.GenerateClassicIdeo`, `FactionIdeosTracker.SetPrimary`, `IdeoManager.classicMode`, `Scenario.PostIdeoChosen`
+  - `Page.DoNext` / tutorialMode auto-next pattern
+- **Decision for Vampire Lord:** `VampireLordScenario` swaps in `Page_VampireLordAutoIdeo` (harden cultures → classic ideo → `PostIdeoChosen` → immediate `DoNext`). No Harmony.
+- **Related milestone:** Ideology settle polish
+
+---
+
 ## Pending / runtime verification
 
 | Topic | Status |
@@ -184,6 +199,7 @@ Target: RimWorld **1.6** via `Krafs.Rimworld.Ref` 1.6.4871 (Cloud/CI) or local S
 | Fire archetype — no incendiary force | Documented limitation |
 | M2 New Game / courtyard / open gate / reveal / auto campaign | RUNTIME VERIFIED |
 | M3 Blood Reserve persist + kill credit + wave tithe / starved | PENDING |
+| Ideology ChooseIdeoPreset skip / AutoIdeoPage | PENDING (Joe settle retest) |
 
 ---
 

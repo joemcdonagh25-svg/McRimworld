@@ -4,6 +4,37 @@ Newest entries first.
 
 ---
 
+## 2026-10-01 — Ideology settle polish (skip ChooseIdeoPreset NRE)
+
+### What shipped
+- Vampire Lord scenario uses a custom `VampireLordScenario` class that replaces Ideology's `Page_ChooseIdeoPreset` with `Page_VampireLordAutoIdeo`.
+- Auto page hardens null/empty `FactionDef.allowedCultures`, assigns a classic player ideoligion, runs `PostIdeoChosen`, and advances immediately (no Ideo UI).
+- Playtest setup still ensures cultures + ideo as a safety net.
+- DLL rebuild.
+
+### What we learned
+- Vanilla `Page_ChooseIdeoPreset.PostOpen` does `OfPlayer.def.allowedCultures.Contains(...)` with no null check — NRE when `allowedCultures` is null (Joe's settle stack).
+- Generating an ideo early was not enough; the broken page still opens after Select Starting Site.
+- No Harmony: `Scenario.GetFirstConfigPage` is virtual; XML `Class=` on the scenario node is enough.
+
+### Key paths
+- `Defs/Scenarios/VampireLordScenario.xml`
+- `Source/VampireLord/Scenario/VampireLordScenario.cs`
+- `Source/VampireLord/Scenario/Page_VampireLordAutoIdeo.cs`
+- `Source/VampireLord/Scenario/VampireLordIdeoSettle.cs`
+- `Assemblies/VampireLord.dll`
+
+### Operator notes
+1. Pull + restart RimWorld (Ideology can stay enabled).
+2. New Game → **Vampire Lord** → finish storyteller/world/site.
+3. Expect log: `Ideo settle (AutoIdeoPage): classic ideo ... skipped ChooseIdeoPreset UI` — no ChooseIdeoPreset NRE.
+4. Pawn config / keep start should continue as before; player home + Blood Tithe unchanged.
+
+### Next steps
+- Joe retest settle with Ideology on; then Blood Tithe / player-home checklist if not already done.
+
+---
+
 ## 2026-10-01 — Fix: keep is a real player home (not caravan)
 
 ### What shipped
