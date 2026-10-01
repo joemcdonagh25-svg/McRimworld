@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using RimWorld;
 using Verse;
 
@@ -13,7 +14,7 @@ namespace VampireLord.Campaign
             Map map = ResolveTargetMap();
             if (map == null)
             {
-                failReason = "no player home map";
+                failReason = DescribeNoMapFailure();
                 return false;
             }
 
@@ -65,6 +66,10 @@ namespace VampireLord.Campaign
             return true;
         }
 
+        /// <summary>
+        /// Prefer a true player-home map, then any map with free colonists (playtest / early settle
+        /// can leave IsPlayerHome false even though the keep map is playable).
+        /// </summary>
         public static Map ResolveTargetMap()
         {
             Map current = Find.CurrentMap;
@@ -73,7 +78,54 @@ namespace VampireLord.Campaign
                 return current;
             }
 
-            return Find.AnyPlayerHomeMap;
+            Map anyHome = Find.AnyPlayerHomeMap;
+            if (anyHome != null)
+            {
+                return anyHome;
+            }
+
+            if (HasFreeColonists(current))
+            {
+                return current;
+            }
+
+            List<Map> maps = Find.Maps;
+            if (maps == null)
+            {
+                return null;
+            }
+
+            for (int i = 0; i < maps.Count; i++)
+            {
+                Map map = maps[i];
+                if (HasFreeColonists(map))
+                {
+                    return map;
+                }
+            }
+
+            // Last resort: whatever map the camera is on (debug Trigger Wave during odd settle states).
+            return current;
+        }
+
+        private static bool HasFreeColonists(Map map)
+        {
+            return map?.mapPawns != null && map.mapPawns.FreeColonistsSpawnedCount > 0;
+        }
+
+        private static string DescribeNoMapFailure()
+        {
+            Map current = Find.CurrentMap;
+            if (current == null)
+            {
+                return "no player home map (Find.CurrentMap null, AnyPlayerHomeMap null)";
+            }
+
+            return
+                "no player home map " +
+                $"(current={current}, IsPlayerHome={current.IsPlayerHome}, " +
+                $"colonists={current.mapPawns?.FreeColonistsSpawnedCount ?? -1}, " +
+                $"AnyPlayerHomeMap={Find.AnyPlayerHomeMap != null})";
         }
 
         public static RaidStrategyDef ResolveStrategy(VampireLordWaveType waveType)
