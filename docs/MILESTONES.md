@@ -12,6 +12,7 @@ Design intent lives in `GAME_DESIGN.md`. Architecture constraints live in `ARCHI
 | Status | Meaning |
 |--------|---------|
 | COMPLETE | Verified and must remain working |
+| IMPLEMENTATION COMPLETE | Code + build done; runtime verification may still be pending |
 | NEXT | Immediate implementation target when coding resumes |
 | PLANNED | Specified; not started |
 | FUTURE | Directional; details may change |
@@ -53,7 +54,7 @@ Ship a recognised RimWorld 1.6 mod that loads and initialises.
 
 ## M1 — Persistent Campaign Foundation
 
-**Status:** NEXT (do not start until explicitly requested)
+**Status:** IMPLEMENTATION COMPLETE — **RUNTIME VERIFIED** pending manual RimWorld save/load
 
 ### Goal
 
@@ -80,16 +81,24 @@ Establish the smallest authoritative persistent Ark campaign state.
 - Bootstrap and M0 behaviour remain intact
 - No gameplay consequences yet
 
+### Implementation notes
+
+- Owner: `TheArk.Campaign.ArkCampaignGameComponent` (`Verse.GameComponent`)
+- Access: `TheArk.Campaign.ArkCampaign.TryGet` / `Get`
+- Scribe labels: `arkCampaignActive`, `arkCampaignDay`, `arkLandingNumber`, `arkTier`, `arkPursuit`
+- Build: succeeds with 0 errors (IMPLEMENTATION COMPLETE)
+- In-game save/load proof: not yet claimed (RUNTIME VERIFIED pending)
+
 ### Manual test
 
-1. Enable mod; start or load a game that activates campaign state as designed for M1.
-2. Change or observe initial field values (via temporary debug hooks if needed — full debug UI is M2).
-3. Save, quit to menu, reload.
-4. Confirm values persist.
+1. Enable mod; start a new game; confirm log `[The Ark] Campaign state (StartedNewGame): ...` with defaults.
+2. Set non-default values for a persistence proof (see report: debugger or M2 — no throwaway mutators shipped in M1).
+3. Save, quit RimWorld fully, relaunch, load the save.
+4. Confirm log `[The Ark] Campaign state (LoadedGame): ...` matches the values from step 2 (or defaults if step 2 was skipped).
 
 ### Likely technical risks
 
-- Choosing the wrong component scope (game vs world vs map)
+- Choosing the wrong component scope (game vs world vs map) — mitigated by investigation; runtime still pending
 - Save / load edge cases on new game vs load
 - Accidental coupling to map-local objects
 
@@ -97,7 +106,7 @@ Establish the smallest authoritative persistent Ark campaign state.
 
 ## M2 — Campaign Debug UI
 
-**Status:** PLANNED
+**Status:** NEXT (do not start until explicitly requested)
 
 ### Goal
 
@@ -401,8 +410,9 @@ Each future slice must be broken into its own milestone with goal, non-goals, ac
 
 ---
 
-## First implementation target
+## Next implementation target
 
-When coding resumes: **M1 — Persistent Campaign Foundation** only.
+**M1** is IMPLEMENTATION COMPLETE (RUNTIME VERIFIED pending manual RimWorld test).
 
-Documentation creation does **not** start M1.
+When coding resumes after runtime confirmation (or by explicit request): **M2 — Campaign Debug UI** only.
+Do not begin M2 until asked.
