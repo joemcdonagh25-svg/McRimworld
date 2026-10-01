@@ -4,6 +4,29 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — The Ark Ideo/colonist start harden (from Joe Player.log)
+
+### What shipped
+- Re-enabled Ark playtest ScenPart: generate missing player ideo, reassign non-colonist crew, start dialog + starter supplies; DLL rebuild.
+- Branch: `cursor/ark-ideo-colonist-harden-5195`.
+
+### What we learned
+- ConfigurePawns path is clean (scenario loads, campaign activates).
+- Next blocker in Joe’s log: `Page_ChooseIdeoPreset.PostOpen` NRE → broken settle cascade (Anomaly/History/goodwill/non-colonist). Same class as Vampire Lord; same harden pattern.
+
+### Key paths
+- `mods/the-ark-rimworld/Source/TheArk/Scenario/ScenPart_ArkPlaytestSetup.cs`
+- `mods/the-ark-rimworld/Defs/Scenarios/TheArkScenario.xml`
+- `mods/the-ark-rimworld/Defs/ScenParts/TheArkScenParts.xml`
+
+### Operator notes
+- Pull → restart → New Game → The Ark. Ideo NRE may still log; crew should be colonists and campaign active.
+
+### Next steps
+- Merge; Joe confirm playable start + M1 fixture save/load.
+
+---
+
 ## 2026-10-01 — Vampire Lord fix: raid home-map fallback
 
 ### What shipped
