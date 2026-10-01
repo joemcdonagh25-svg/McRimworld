@@ -143,89 +143,72 @@ Blood economy, castle progression between waves, custom UI panel, custom faction
 
 ---
 
-## M3 — Blood Tithe V0 (recommended)
+## M3 — Blood Tithe V0
 
-**PLANNING:** yes (2026-10-01)  
-**IMPLEMENTATION COMPLETE:** no  
+**PLANNING:** yes (Joe confirmed Blood Tithe, 2026-10-01)  
+**IMPLEMENTATION COMPLETE:** yes  
 **RUNTIME VERIFIED:** no
 
 ### Goal
 
 After M1 (threat) and M2 (stage), give the player the **vampire fantasy between waves**: the keep feeds on blood. Killing the host fills a Keep Blood Reserve; running dry hurts; stocking up is the prep loop.
 
-### Why this M3 (product)
-
-| Slice | What it proves |
-|-------|----------------|
-| M1 Wave Director | Threats arrive on a schedule |
-| M2 Playtest Keep | You start *in* the Black Keep |
-| **M3 Blood Tithe** | You are a **Vampire Lord** — blood is the keep’s fuel |
-
-Castle upgrades, approach lanes, and a custom UI panel all matter later; none of them are as unique to this fantasy as blood.
-
 ### Player fantasy (one sentence)
 
 Survive the wave → harvest blood → stock the keep → face the next host hungrier or better fed.
 
-### In scope (V0 — small vertical slice)
+### Decisions locked in V0
 
-- Keep Blood Reserve on `VampireLordCampaignGameComponent` (scribed; save/load)
-- Gain blood when enemies die during an active Vampire Lord campaign (wave window or always-while-active — decide in impl notes)
-- Simple spend/drain rules V0 (pick one primary pressure in impl):
-  - **A)** slow drain over time while campaign active, or
-  - **B)** each new wave consumes a blood cost (failing cost = harder raid / mood / hemogen packs spawn penalty)
-- After-wave letter: blood gained / current reserve / warning if low
-- Debug: Show Blood Tithe, Add/Spend Blood, Force Low Blood
-- Scenario path still auto-starts campaign (no Dev Mode required for happy path)
-- Docs: API notes for Biotech hemogen hooks actually inspected
+- Gain: fresh hostile **humanlike** corpses while campaign active (+5 each; corpse age under ~1 day)
+- Pressure: **per-wave blood cost** before raid (`10 + 2*threat`); unpaid → raid points ×1.35
+- Presentation: letters + debug (no custom UI); keep meter separate from Biotech pawn hemogen
+- No Harmony: corpse scan on campaign tick
 
-### Non-goals (explicitly deferred)
+### In scope (shipped)
+
+- Keep Blood Reserve on `VampireLordCampaignGameComponent` (scribed)
+- `VampireLordBloodTithe` credit / spend / wave cost / harvest
+- Warning letters include reserve + tithe due
+- Tithe paid / starved letters at wave launch; harvest letter when next wave starts if kills accrued
+- Debug: Show Blood Tithe, Add/Spend (+/−20), Force Low Blood (0)
+- Failed raid launch refunds spent tithe
+
+### Non-goals (deferred)
 
 - Prisoner blood farm / extraction buildings
 - Dark Boons / permanent upgrades purchased with blood
-- Custom UI panel (letters + debug + optional log for V0)
-- Castle wall upgrades / build points between waves
-- Approach-lane castle gen
+- Custom UI panel
+- Castle wall upgrades / approach-lane castle gen
 - Custom factions / weapons / armour
-- Full Ideology redesign (separate optional hotfix for ChooseIdeoPreset NRE)
+- Ideology ChooseIdeoPreset polish
 - Bosses / victory condition
 
-### Acceptance (implementation — not started)
+### Acceptance (implementation)
 
-- [ ] Blood Reserve field persists (ExposeData)
-- [ ] Enemy deaths under active campaign credit the reserve (logged)
-- [ ] At least one spend/drain pressure rule live
-- [ ] After-wave (or threshold) letter communicates blood state
-- [ ] Debug actions for inspect / add / spend
-- [ ] Compiles; changelogs updated
-- [ ] Manual runtime checklist written for Joe
+- [x] Blood Reserve field persists (ExposeData)
+- [x] Enemy deaths under active campaign credit the reserve (logged)
+- [x] Wave blood cost pressure live (starved raid multiplier)
+- [x] Letters communicate blood state (warning / tithe / harvest)
+- [x] Debug actions for inspect / add / spend / force low
+- [x] Compiles; changelogs updated
+- [x] Manual runtime checklist written for Joe
 
-### Manual runtime test (draft — fill when implementing)
+### Manual runtime test (Joe)
 
-1. New Game → Vampire Lord → confirm campaign active
-2. Force or wait a wave; kill enemies → reserve increases (log/letter)
-3. Save/load → reserve unchanged
-4. Drive reserve low → pressure rule fires (letter or raid modifier)
-5. Debug Add Blood → pressure clears / letter reflects stock
+1. Pull + restart → New Game → Vampire Lord → campaign active; log `Blood Reserve=40`
+2. Dev Mode → **Show Blood Tithe** / **Show Campaign State** — note reserve + next cost
+3. **Trigger Wave Now** — tithe letter; reserve drops; if **Force Low Blood** first, starved letter + harder raid
+4. Kill hostile humanlikes → log `Blood Tithe +5`; next wave start may show harvest letter
+5. Save/load → reserve unchanged; **Show Blood Tithe** again
 
-### Key paths (expected)
+### Key paths
 
-- `Source/VampireLord/Campaign/` (state + tithe logic)
-- `Source/VampireLord/Debug/`
-- `docs/RIMWORLD_API_NOTES.md` (hemogen / corpse / pawn-kill hooks)
+- `Source/VampireLord/Campaign/VampireLordBloodTithe.cs`
+- `Source/VampireLord/Campaign/VampireLordCampaignGameComponent.cs`
+- `Source/VampireLord/Campaign/VampireLordWaveDirector.cs`
+- `Source/VampireLord/Campaign/VampireLordLetters.cs`
+- `Source/VampireLord/Debug/VampireLordDebugActions.cs`
 - `Assemblies/VampireLord.dll`
-
-### Risks / open decisions (resolve at impl start)
-
-1. **Gain trigger:** `Pawn.Kill` Harmony vs incident/wave bookkeeping vs corpse loot — prefer least invasive; record in API notes.
-2. **Pressure rule:** time drain vs per-wave cost (recommend **B per-wave cost** for clearer tower-defence prep).
-3. **Vanilla hemogen:** V0 may track a **keep meter** separate from pawn hemogen, and optionally drop/consume `HemogenPack` as flavour — do not rewrite Biotech gene need unless needed.
-
-### Recommended default for open decisions
-
-- Gain: credit on humanlike (or any) enemy death while `CampaignActive`
-- Pressure: **wave blood cost** before raid fires (insufficient blood → higher raid points or warning + thrall mood hit)
-- Presentation: letters only (no custom window)
 
 ---
 

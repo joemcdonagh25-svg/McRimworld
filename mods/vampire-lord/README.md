@@ -4,7 +4,7 @@ Gothic keep tower-defence campaign for RimWorld 1.6.
 
 **M1 status:** IMPLEMENTATION COMPLETE — RUNTIME VERIFIED (Joe live session, 2026-10-01).  
 **M2 status:** IMPLEMENTATION COMPLETE — RUNTIME VERIFIED (Joe live session, 2026-10-01).  
-**M3 status:** PLANNING — Blood Tithe V0 (see `docs/MILESTONES.md`); no code until Joe confirms.
+**M3 status:** IMPLEMENTATION COMPLETE — RUNTIME VERIFIED pending (Blood Tithe V0).
 
 Requires **Biotech** (Sanguophage Vampire Lord).
 
@@ -28,8 +28,11 @@ After the campaign starts, the Wave Director:
 - Wave Director **auto-starts** (no Dev Mode required)
 - Black Keep flavour letters / start dialog
 
-### M3 — Blood Tithe (planned)
-Keep Blood Reserve fed by wave kills; spend/drain pressure between assaults. Docs only until confirmed — details in `docs/MILESTONES.md`.
+### M3 — Blood Tithe V0
+- Keep Blood Reserve (starts at 40 when campaign activates)
+- Fresh hostile humanlike kills feed the reserve (+5)
+- Each wave costs blood (`10 + 2×threat`); unpaid → harder raid (×1.35)
+- Letters + Dev Mode **Show / Add / Spend / Force Low Blood**
 
 ## Enable
 

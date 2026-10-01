@@ -18,8 +18,11 @@ namespace VampireLord.Campaign
             campaign.WarningIssued = false;
             campaign.WavePending = false;
             campaign.SameArchetypeStreak = 0;
+            VampireLordBloodTithe.ResetSessionCredits();
+            VampireLordBloodTithe.EnsureStartingReserve(campaign);
             ScheduleNextWave(campaign);
-            Log.Message("[VampireLord] Campaign activated.");
+            Log.Message(
+                $"[VampireLord] Campaign activated. Blood Reserve={campaign.BloodReserve}.");
         }
 
         public static void StopCampaign(VampireLordCampaignGameComponent campaign)
@@ -128,15 +131,31 @@ namespace VampireLord.Campaign
                 EnsurePendingWave(campaign);
             }
 
-            float points = RaidPointsFor(campaign.ThreatLevel);
+            // Harvest letter for kills since previous wave, then pay the tithe for this assault.
+            VampireLordBloodTithe.NotifyWaveHarvest(campaign);
+            float starvedMult = VampireLordBloodTithe.ApplyWaveCost(campaign);
+
+            float points = RaidPointsFor(campaign.ThreatLevel) * starvedMult;
             Log.Message(
-                $"[VampireLord] Triggering Wave {campaign.UpcomingWaveNumber} at {points:0} raid points.");
+                $"[VampireLord] Triggering Wave {campaign.UpcomingWaveNumber} at {points:0} raid points " +
+                $"(blood x{starvedMult:0.00}).");
 
             bool ok = VampireLordRaidLauncher.TryLaunchRaid(campaign.PendingWaveType, points, out string failReason);
             if (!ok)
             {
                 Log.Warning(
                     $"[VampireLord] Wave {campaign.UpcomingWaveNumber} failed to launch ({failReason}). Retrying later.");
+                // Refund spent tithe so a failed launch does not drain the keep.
+                if (campaign.LastWaveBloodSpent > 0)
+                {
+                    VampireLordBloodTithe.AddBlood(
+                        campaign,
+                        campaign.LastWaveBloodSpent,
+                        "refund failed wave launch");
+                    campaign.LastWaveBloodSpent = 0;
+                    campaign.LastWaveBloodStarved = false;
+                }
+
                 campaign.NextWaveTick = Find.TickManager.TicksGame + VampireLordTuning.RaidRetryDelayTicks;
                 if (!campaign.WarningIssued)
                 {
@@ -167,9 +186,11 @@ namespace VampireLord.Campaign
             campaign.WarningIssued = false;
             campaign.WaveNumber++;
             campaign.ThreatLevel++;
+            campaign.BloodGainedSinceWave = 0;
 
             Log.Message(
-                $"[VampireLord] Wave {campaign.WaveNumber} dispatched. Threat level is now {campaign.ThreatLevel}.");
+                $"[VampireLord] Wave {campaign.WaveNumber} dispatched. Threat level is now {campaign.ThreatLevel}. " +
+                $"Blood Reserve={campaign.BloodReserve}.");
 
             ScheduleNextWave(campaign);
         }
@@ -242,6 +263,11 @@ namespace VampireLord.Campaign
             sb.AppendLine($"LastWaveType={campaign.LastWaveType}");
             sb.AppendLine($"SameArchetypeStreak={campaign.SameArchetypeStreak}");
             sb.AppendLine($"RaidPointsNext={RaidPointsFor(campaign.ThreatLevel):0}");
+            sb.AppendLine($"BloodReserve={campaign.BloodReserve}");
+            sb.AppendLine($"BloodGainedSinceWave={campaign.BloodGainedSinceWave}");
+            sb.AppendLine($"WaveBloodCostNext={VampireLordBloodTithe.WaveBloodCost(campaign)}");
+            sb.AppendLine($"LastWaveBloodStarved={campaign.LastWaveBloodStarved}");
+            sb.AppendLine($"LastWaveBloodSpent={campaign.LastWaveBloodSpent}/{campaign.LastWaveBloodCost}");
             return sb.ToString().TrimEnd();
         }
 
