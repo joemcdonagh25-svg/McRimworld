@@ -18,7 +18,7 @@ McRimworld/
 | Folder | Package | Status |
 |--------|---------|--------|
 | `mods/the-ark-rimworld/` | `joemcdonagh.theark` | RimWorld 1.6 — M1 campaign foundation implemented; runtime verify pending |
-| `mods/vampire-lord/` | `joemcdonagh.vampirelord` | RimWorld 1.6 — M1 Wave Director implemented; runtime verify pending |
+| `mods/vampire-lord/` | `joemcdonagh.vampirelord` | RimWorld 1.6 — M1 Wave Director RUNTIME VERIFIED (2026-10-01) |
 
 ### The Ark
 

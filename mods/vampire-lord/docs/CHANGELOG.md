@@ -4,6 +4,31 @@ Newest entries first.
 
 ---
 
+## 2026-10-01 — M1 RUNTIME VERIFIED (live RimWorld)
+
+### What shipped
+- Docs only: M1 marked **RUNTIME VERIFIED** after Joe’s live session on Windows (junction `C:\McRimworld\mods\vampire-lord` → RimWorld `Mods`).
+- No code/DLL change.
+
+### What we learned
+- **Show Campaign State** prints to the Dev Mode log (`[VampireLord] Campaign state:`), not a map popup.
+- Junction install works: edits under `C:\McRimworld\mods\vampire-lord` are what RimWorld loads.
+- Debug path is enough to flip M1: Start Campaign → Trigger Warning → Trigger Wave → Show Campaign State with threat/wave up.
+
+### Key paths
+- `docs/MILESTONES.md`
+- `docs/CHANGELOG.md`
+- `README.md`
+
+### Operator notes
+- Proven sample: `CampaignActive=True`, `WaveNumber=1`, `ThreatLevel=2`, `LastWaveType=Mob`, `PendingWaveType=Hunters`.
+- Optional follow-ups (not blocking M1): save/load schedule integrity; natural 3-day warning→raid without debug force.
+
+### Next steps
+- Do not start M2 until Joe asks.
+
+---
+
 ## 2026-10-01 — M1 Wave Director V0 (IMPLEMENTATION COMPLETE)
 
 ### What shipped

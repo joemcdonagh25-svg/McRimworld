@@ -4,6 +4,34 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — Vampire Lord M1 RUNTIME VERIFIED
+
+### What shipped
+- Parent + mod docs updated: Vampire Lord M1 Wave Director marked **RUNTIME VERIFIED** after Joe’s live RimWorld session.
+- Branch: `cursor/vampire-lord-m1-runtime-verified-c5ad` → draft PR into `main`.
+
+### What we learned
+- Install path that worked: junction `C:\McRimworld\mods\vampire-lord` → Steam RimWorld `Mods\vampire-lord`.
+- Campaign state results appear in the Dev Mode log under `[VampireLord] Campaign state:`.
+- Core M1 proof: Start Campaign → warning → raid → threat/wave up (`ThreatLevel=2` after Mob wave).
+
+### Key paths
+- `mods/vampire-lord/docs/MILESTONES.md`
+- `mods/vampire-lord/docs/CHANGELOG.md`
+- `mods/vampire-lord/README.md`
+- `README.md`, `CHANGELOG.md`
+
+### Operator notes
+- Repo: `joemcdonagh25-svg/McRimworld` — remote `origin` — branch `cursor/vampire-lord-m1-runtime-verified-c5ad` — target `main`.
+- Docs-only; no force-push.
+- Optional later: save/load + natural timer checks (listed unchecked in milestones).
+
+### Next steps
+- Merge draft PR when ready.
+- Do not start Vampire Lord M2 until Joe asks.
+
+---
+
 ## 2026-10-01 — Vampire Lord M1 Wave Director import
 
 ### What shipped
