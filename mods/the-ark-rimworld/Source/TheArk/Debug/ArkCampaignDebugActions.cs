@@ -5,7 +5,7 @@ using Verse;
 namespace TheArk.Debug
 {
     /// <summary>
-    /// Dev Mode debug-action menu entries for Ark campaign instrumentation (V1.1 / M2).
+    /// Dev Mode debug-action menu entries for Ark campaign instrumentation.
     /// </summary>
     public static class ArkCampaignDebugActions
     {
@@ -58,6 +58,36 @@ namespace TheArk.Debug
             }
 
             ArkCampaignDebugOps.ApplyPersistenceFixture(campaign);
+        }
+
+        [DebugAction(
+            category = "The Ark (DEV)",
+            name = "Simulate Landing",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void SimulateLanding()
+        {
+            if (!ArkCampaignDebugOps.TryGet(out ArkCampaignGameComponent campaign))
+            {
+                Log.Error("[The Ark] [DEV] No ArkCampaignGameComponent on Current.Game.");
+                return;
+            }
+
+            ArkCampaignDebugOps.SimulateLanding(campaign);
+        }
+
+        [DebugAction(
+            category = "The Ark (DEV)",
+            name = "End Landing Session",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void EndLandingSession()
+        {
+            if (!ArkCampaignDebugOps.TryGet(out ArkCampaignGameComponent campaign))
+            {
+                Log.Error("[The Ark] [DEV] No ArkCampaignGameComponent on Current.Game.");
+                return;
+            }
+
+            ArkCampaignDebugOps.EndLandingSession(campaign);
         }
     }
 }
