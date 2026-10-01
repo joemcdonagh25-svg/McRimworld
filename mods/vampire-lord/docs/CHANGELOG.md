@@ -4,6 +4,29 @@ Newest entries first.
 
 ---
 
+## 2026-10-01 — M3 planning: Blood Tithe V0
+
+### What shipped
+- Docs only: M3 milestone card — **Blood Tithe V0** (keep blood reserve fed by wave kills; wave-cost pressure recommended).
+- M4+ parking lot: fortification, approach lanes, UI panel, prisoners, Dark Boons, Ideology polish.
+- No M3 code until Joe confirms this card (or picks a different M3).
+
+### What we learned
+- After threat (M1) + stage (M2), blood is the next unique Vampire Lord fantasy; castle upgrades/UI are amplifiers, not the identity.
+- Keep V0 tiny: scribed reserve + death credits + one pressure rule + letters/debug.
+
+### Key paths
+- `docs/MILESTONES.md` (M3 card)
+- `README.md`
+
+### Operator notes
+- Read the M3 card; say **confirm Blood Tithe** to start impl, or name another candidate from M4+.
+
+### Next steps
+- Joe confirm or redirect; then implementation branch.
+
+---
+
 ## 2026-10-01 — M2 RUNTIME VERIFIED (live RimWorld)
 
 ### What shipped
