@@ -133,10 +133,10 @@ Expose M1 state through a minimal development / debug interface.
 
 ### Manual test
 
-1. Enable The Ark; turn **Dev Mode** on; start or load a game on a map.
-2. Debug Actions → **The Ark (DEV)** → **Open Campaign Debug** (or **Apply M1 Persistence Fixture**).
-3. Set / confirm: Active=true, Day=47, Landing=6, Tier=2, Pursuit=73 → **Apply**.
-4. Confirm log / window show those values.
+1. Enable The Ark (+ Odyssey); **New Game → The Ark** (or any map start with the mod on).
+2. Confirm start dialog + log show campaign active (`Scenario.PostGameStart`).
+3. Turn **Dev Mode** on → Debug Actions → **The Ark (DEV)** → **Apply M1 Persistence Fixture** (or Open Campaign Debug → Apply).
+4. Confirm log / window: Active=true, Day=47, Landing=6, Tier=2, Pursuit=73.
 5. Save → quit RimWorld completely → relaunch → load the save.
 6. Confirm `[The Ark] Campaign state (LoadedGame): ...` matches exactly; re-open debug UI and confirm.
 7. On success: mark M1 and M2 **RUNTIME VERIFIED**.

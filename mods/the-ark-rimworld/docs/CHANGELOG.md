@@ -7,6 +7,7 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 ## 2026-10-01 — M2 / V1.1 Campaign Debug UI (implementation)
 
 ### What shipped
+- New Game scenario **The Ark** (`TheArk_Playtest`) + `ScenPart_ArkPlaytestSetup` (sets `CampaignActive` on start; Odyssey dependency in About).
 - Dev Mode category **The Ark (DEV)** with Open Campaign Debug, Log Campaign State, Apply M1 Persistence Fixture.
 - Crude `[DEV] The Ark — Campaign Debug` window: view/edit all five M1 fields; Apply / Refresh / Fixture.
 - Explicit writes via `ArkCampaignDebugOps` into `ArkCampaignGameComponent` only (no duplicate state).
@@ -17,8 +18,12 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 ### What we learned
 - `Listing_Standard.TextFieldNumericLabeled` is enough for integer draft buffers without owning campaign state.
 - `onlyDrawInDevMode` + `Prefs.DevMode` keep this out of normal player UI; debug-actions menu is the entry point (same family as Vampire Lord).
+- Scenario-scoped `ScenPart` keeps campaign auto-activate off sandbox/other starts; gravship wreckage start is still deferred (no inventing Odyssey start XML).
 
 ### Key paths
+- `Defs/Scenarios/TheArkScenario.xml`
+- `Source/TheArk/Scenario/ScenPart_ArkPlaytestSetup.cs`
+- `About/About.xml`
 - `Source/TheArk/Debug/ArkCampaignDebugOps.cs`
 - `Source/TheArk/Debug/Dialog_ArkCampaignDebug.cs`
 - `Source/TheArk/Debug/ArkCampaignDebugActions.cs`
@@ -30,11 +35,12 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 ### Operator notes
 - Build: `dotnet build .\Source\TheArk\TheArk.csproj` (from `mods/the-ark-rimworld`)
 - Junction/copy `mods/the-ark-rimworld/` into RimWorld `Mods`.
+- New Game → **The Ark** (Odyssey on) → Dev Mode → **Apply M1 Persistence Fixture** → save → full quit → load.
 - Fixture values: Active=true, Day=47, Landing=6, Tier=2, Pursuit=73.
 - Do not mark M1/M2 RUNTIME VERIFIED until save → full quit → load matches.
 
 ### Next steps
-- Joe: run the M1 persistence fixture test in RimWorld.
+- Joe: run the M1 persistence fixture test via New Game → The Ark.
 - On approval only: V1.2 / M3 Landing Detection (inspect Odyssey APIs first).
 
 ---

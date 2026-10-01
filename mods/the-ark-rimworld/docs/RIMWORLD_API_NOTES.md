@@ -259,6 +259,19 @@ Use this template:
 
 ---
 
+### 2026-10-01 — Scenario + ScenPart playtest setup (M2 companion)
+
+- **Goal:** New Game entry that activates Ark campaign state without a global map-gen patch.
+- **Evidence:** Same `ScenPart` surface as Vampire Lord M2; metadata confirms `RimWorld.ScenPart` hooks including `PostGameStart()`, `GenerateIntoMap(Map)`, and also `PostGravshipLanded` (unused here; candidate for later landing work).
+- **API:**
+  - `RimWorld.ScenarioDef` / scenario `parts` list
+  - `RimWorld.ScenPart` → custom `TheArk.Scenario.ScenPart_ArkPlaytestSetup`
+  - `ScenPart_ConfigPage_ConfigureStartingPawns` field `pawnCount`
+  - `ScenPart_GameStartDialog`, `ScenPart_PlayerPawnsArriveMethod`, `ScenPart_StartingThing_Defined`, `ScenPart_StartingResearch`
+  - Odyssey packageId string present in assembly: `Ludeon.RimWorld.Odyssey`
+- **Decision for The Ark:** Scenario-scoped activation of `CampaignActive` in `PostGameStart`. No gravship spawn in this scenario (Odyssey wreckage/start deferred). M1 fixture remains a Dev action.
+- **Related milestone:** M2 / V1.1 playtest convenience
+
 ### 2026-10-01 — M2 / V1.1 Campaign Debug UI (Dev Mode)
 
 - **Goal:** Inspect and deliberately edit the five M1 campaign fields in-game without a second state owner; enable M1 save/load proof.

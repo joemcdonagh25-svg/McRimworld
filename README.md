@@ -17,7 +17,7 @@ McRimworld/
 
 | Folder | Package | Status |
 |--------|---------|--------|
-| `mods/the-ark-rimworld/` | `joemcdonagh.theark` | RimWorld 1.6 — M1 + M2 debug UI implemented; runtime verify pending (fixture save/load) |
+| `mods/the-ark-rimworld/` | `joemcdonagh.theark` | RimWorld 1.6 — M1 + M2 debug UI + New Game scenario; runtime verify pending (fixture save/load) |
 | `mods/vampire-lord/` | `joemcdonagh.vampirelord` | RimWorld 1.6 — M1 RUNTIME VERIFIED; M2 Playtest Keep implemented (runtime pending) |
 
 ### The Ark

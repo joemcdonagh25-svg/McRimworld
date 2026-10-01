@@ -8,11 +8,28 @@
     <li>1.6</li>
   </supportedVersions>
 
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld.Odyssey</packageId>
+      <displayName>Odyssey</displayName>
+      <steamWorkshopUrl>https://store.steampowered.com/app/3022790/RimWorld__Odyssey/</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+
+  <loadAfter>
+    <li>Ludeon.RimWorld.Odyssey</li>
+  </loadAfter>
+
   <description>
 The Ark is a nomadic gravship total conversion for RimWorld.
 
 The ship is the colony.
 
 Land. Explore. Salvage. Survive. Escape.
+
+M1: Persistent campaign foundation.
+M2/V1.1: Dev Mode campaign debug UI + New Game playtest scenario (The Ark).
+
+Requires Odyssey. Gravship wreckage start is not in the playtest scenario yet — campaign tooling first.
   </description>
 </ModMetaData>

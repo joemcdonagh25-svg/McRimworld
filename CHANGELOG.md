@@ -8,14 +8,18 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ### What shipped
 - The Ark Dev Mode debug UI for the five M1 campaign fields (view + explicit Apply / M1 fixture).
+- New Game scenario **The Ark** (campaign auto-activates; Odyssey dependency).
 - Rebuilt `mods/the-ark-rimworld/Assemblies/TheArk.dll` (0 errors).
 - Branch: `cursor/ark-v1-1-campaign-debug-ui-5195` → draft PR into `main`.
 
 ### What we learned
 - Cloud builds need the Vampire-Lord-style `Krafs.Rimworld.Ref` fallback on `TheArk.csproj` when Steam Managed is absent.
 - Debug window draft buffers must stay non-authoritative until Apply — same read/command split as design docs.
+- Gravship wreckage New Game start deferred; scenario is the door into campaign tooling first.
 
 ### Key paths
+- `mods/the-ark-rimworld/Defs/Scenarios/TheArkScenario.xml`
+- `mods/the-ark-rimworld/Source/TheArk/Scenario/`
 - `mods/the-ark-rimworld/Source/TheArk/Debug/`
 - `mods/the-ark-rimworld/Source/TheArk/TheArk.csproj`
 - `mods/the-ark-rimworld/Assemblies/TheArk.dll`
@@ -25,7 +29,7 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 ### Operator notes
 - Repo: `joemcdonagh25-svg/McRimworld` — branch `cursor/ark-v1-1-campaign-debug-ui-5195` — base `main`.
 - No force-push.
-- After merge/pull on `C:\McRimworld`: Dev Mode → **The Ark (DEV)** → Apply M1 Persistence Fixture → save → full quit → load.
+- After merge/pull on `C:\McRimworld`: New Game → **The Ark** → Dev Mode → **The Ark (DEV)** → Apply M1 Persistence Fixture → save → full quit → load.
 
 ### Next steps
 - Joe RUNTIME VERIFIED pass (proves M1 + M2).
