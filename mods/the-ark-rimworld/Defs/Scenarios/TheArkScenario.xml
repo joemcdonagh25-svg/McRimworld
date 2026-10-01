@@ -2,17 +2,17 @@
 <Defs>
 
   <!--
-    Minimal RimWorld 1.6 scenario (same required scaffolding as Vampire Lord).
-    No custom ScenPart classes, no custom ScenPartDefs, no start dialog, no gear.
+    RimWorld 1.6: there is no ScenPartDef named ConfigurePawns.
+    Use ConfigurePawnsXenotypes (same as Vampire Lord). Baseliner needs Biotech defs present.
     Campaign activate: ArkCampaignGameComponent when Find.Scenario.name == "The Ark".
   -->
   <ScenarioDef ParentName="ScenarioBase">
     <defName>TheArk_Playtest</defName>
     <label>The Ark</label>
-    <description>The ship is the colony. Land. Take what you need. Do not stay too long. Leave. Do it again.\n\nMinimal playtest start for The Ark campaign tooling.</description>
+    <description>The ship is the colony. Land. Take what you need. Do not stay too long. Leave. Do it again.\n\nPlaytest start for The Ark campaign tooling. Requires Biotech for the Baseliner starting cast (same xenotype page as Vampire Lord).</description>
     <scenario>
       <name>The Ark</name>
-      <summary>Three crew. Ark campaign activates on start.</summary>
+      <summary>Three Baseliner crew. Ark campaign activates on start.</summary>
       <description>Surface playtest start for The Ark. Use Dev Mode - The Ark (DEV) - Apply M1 Persistence Fixture to prove save/load.</description>
       <parts>
 
@@ -28,9 +28,18 @@
           <tag>Surface</tag>
         </li>
 
-        <li Class="ScenPart_ConfigPage_ConfigureStartingPawns">
-          <def>ConfigurePawns</def>
-          <pawnCount>3</pawnCount>
+        <li Class="ScenPart_ConfigPage_ConfigureStartingPawns_Xenotypes">
+          <def>ConfigurePawnsXenotypes</def>
+          <pawnChoiceCount>3</pawnChoiceCount>
+          <xenotypeCounts>
+            <li>
+              <xenotype>Baseliner</xenotype>
+              <count>3</count>
+              <requiredAtStart>true</requiredAtStart>
+              <description>Ark crew</description>
+              <allowedDevelopmentalStages>Adult</allowedDevelopmentalStages>
+            </li>
+          </xenotypeCounts>
         </li>
 
         <li Class="ScenPart_PlayerPawnsArriveMethod">

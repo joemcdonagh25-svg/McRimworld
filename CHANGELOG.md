@@ -4,6 +4,28 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — The Ark ConfigurePawns fix (from Joe Player.log)
+
+### What shipped
+- Scenario uses `ConfigurePawnsXenotypes` + 3 Baseliner (1.6 has no `ConfigurePawns` ScenPartDef).
+- Docs/script warn to delete duplicate `Mods\TheArk`.
+- Branch: `cursor/ark-configure-pawns-fix-5195` → draft PR into `main`.
+
+### What we learned
+- Player.log root cause: `No RimWorld.ScenPartDef named ConfigurePawns found` + duplicate packageId `TheArk` vs `the-ark-rimworld`.
+
+### Key paths
+- `mods/the-ark-rimworld/Defs/Scenarios/TheArkScenario.xml`
+- `mods/the-ark-rimworld/About/About.xml`
+
+### Operator notes
+- Pull → delete `RimWorld\Mods\TheArk` → enable The Ark + Biotech → New Game → The Ark.
+
+### Next steps
+- Merge; Joe confirm scenario visible with clean log.
+
+---
+
 ## 2026-10-01 — The Ark minimal scenario + install diagnostics
 
 ### What shipped

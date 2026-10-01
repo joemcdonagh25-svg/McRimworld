@@ -41,14 +41,24 @@ if ($LASTEXITCODE -ne 0) {
     Write-Error "mklink failed with exit $LASTEXITCODE"
 }
 
+$oldDuplicate = Join-Path $RimWorldMods "TheArk"
+if (Test-Path $oldDuplicate) {
+    Write-Host ""
+    Write-Host "WARNING: Old duplicate mod folder still exists:"
+    Write-Host "  $oldDuplicate"
+    Write-Host "RimWorld logs: Tried loading mod with the same packageId multiple times: joemcdonagh.theark"
+    Write-Host "Rename or delete that OLD folder. Keep only: $link"
+}
+
 Write-Host ""
 Write-Host "OK. Junction created:"
 Write-Host "  $link"
 Write-Host "  -> $target"
 Write-Host ""
 Write-Host "Next:"
-Write-Host "  1) Open RimWorld -> Mods"
-Write-Host "  2) Enable 'The Ark' (joemcdonagh.theark)"
-Write-Host "  3) Restart RimWorld"
-Write-Host "  4) Player.log should contain: ScenarioDef TheArk_Playtest LOADED"
-Write-Host "  5) New Game -> The Ark"
+Write-Host "  1) DELETE or rename Mods\TheArk if it exists (old duplicate)"
+Write-Host "  2) Open RimWorld -> Mods"
+Write-Host "  3) Enable 'The Ark' (joemcdonagh.theark) + Biotech"
+Write-Host "  4) Restart RimWorld"
+Write-Host "  5) Player.log should contain LOADED and NO ConfigurePawns ConfigError"
+Write-Host "  6) New Game -> The Ark"

@@ -4,6 +4,34 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — Fix ConfigurePawns null def (scenario ConfigError)
+
+### What shipped
+- Replace invalid `<def>ConfigurePawns</def>` with **`ConfigurePawnsXenotypes`** + 3x Baseliner (proven on Joe's machine via Vampire Lord).
+- About.xml: Biotech dependency for Baseliner cast; install note about duplicate `Mods\TheArk`.
+- Junction script warns if old `Mods\TheArk` still exists.
+
+### What we learned
+- Joe's Player.log: `No RimWorld.ScenPartDef named ConfigurePawns found` → ConfigError → scenario broken in New Game UI.
+- Also: duplicate packageId folders `Mods\TheArk` and `Mods\the-ark-rimworld` (RimWorld ignores duplicates).
+- ScenarioLister still contained The Ark, but ConfigError prevented usable listing/selection.
+
+### Key paths
+- `Defs/Scenarios/TheArkScenario.xml`
+- `About/About.xml`
+- `tools/junction-the-ark.ps1`
+
+### Operator notes
+1. Pull/merge
+2. Delete `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\TheArk`
+3. Keep junction `Mods\the-ark-rimworld` → `C:\McRimworld\mods\the-ark-rimworld`
+4. Enable The Ark + Biotech → restart → New Game → **The Ark**
+
+### Next steps
+- Joe confirm scenario appears with no ConfigurePawns error.
+
+---
+
 ## 2026-10-01 — Minimal scenario + install diagnostics
 
 ### What shipped
