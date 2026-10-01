@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>The Ark</name>
+  <author>Joe McDonagh</author>
+  <packageId>joemcdonagh.theark</packageId>
+
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+
+  <description>
+The Ark is a nomadic gravship total conversion for RimWorld.
+
+The ship is the colony.
+
+Land. Explore. Salvage. Survive. Escape.
+  </description>
+</ModMetaData>
