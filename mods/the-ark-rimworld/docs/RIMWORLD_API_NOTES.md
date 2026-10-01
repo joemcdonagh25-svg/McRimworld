@@ -259,6 +259,18 @@ Use this template:
 
 ---
 
+### 2026-10-01 — ChooseIdeoPreset NRE + non-colonist cascade (playtest harden)
+
+- **Goal:** After ConfigurePawns fix, Joe could select The Ark and activate campaign, but settle hit `Page_ChooseIdeoPreset.PostOpen` NRE and tick cascade (Anomaly/History/goodwill/non-colonist apparel).
+- **Evidence:** Joe Player.log 2026-10-01; same stack class already documented on Vampire Lord M2.
+- **API:**
+  - `RimWorld.Page_ChooseIdeoPreset.PostOpen` (Ideology DLC page after site select)
+  - `Faction.ideos.ChooseOrGenerateIdeo(IdeoGenerationParms)` when `PrimaryIdeo` is null
+  - `Pawn.SetFaction(Faction.OfPlayer)` for humanlikes on the start map
+  - Hooks: `ScenPart.PostWorldGenerate`, `ScenPart.PostGameStart`
+- **Decision for The Ark:** Re-enable `ScenPart_ArkPlaytestSetup` with VL-style ideo generate + colonist reassignment. Do not Harmony-patch ChooseIdeoPreset in V1.1; accept possible NRE log line if game continues playable.
+- **Related milestone:** M2 / V1.1 playtest harden
+
 ### 2026-10-01 — Scenario listing / Odyssey dependency (playtest)
 
 - **Goal:** Why New Game did not show **The Ark**.

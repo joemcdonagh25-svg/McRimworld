@@ -4,6 +4,37 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — Harden Ideo/colonist start after settle (Joe Player.log)
+
+### What shipped
+- Re-wire `ScenPart_ArkPlaytestSetup` into The Ark scenario (was stripped during minimal-scenario diagnostics).
+- On `PostWorldGenerate` / `PostGameStart`: generate player ideoligion if Ideology is on and missing; reassign humanlike map pawns to player faction.
+- Start dialog + minimal starting supplies (meals, medicine, steel, components).
+- Rebuild `Assemblies/TheArk.dll`.
+
+### What we learned
+- After ConfigurePawns fix, Joe’s log shows clean scenario load + campaign activate, then `Page_ChooseIdeoPreset.PostOpen` NRE on settle (same class as Vampire Lord).
+- Cascading tick noise followed: Anomaly `StartedNewGame` NRE, empty History, goodwill, **non-colonist** apparel — VL’s colonist reassignment is the practical harden.
+- ChooseIdeoPreset NRE may still appear in the log; game should continue with a generated ideo.
+
+### Key paths
+- `Source/TheArk/Scenario/ScenPart_ArkPlaytestSetup.cs`
+- `Defs/ScenParts/TheArkScenParts.xml`
+- `Defs/Scenarios/TheArkScenario.xml`
+- `Assemblies/TheArk.dll`
+
+### Operator notes
+1. Pull `main` after merge
+2. Restart RimWorld (The Ark + Biotech)
+3. New Game → **The Ark** → pick site → Next
+4. Expect possible Ideology NRE in log; colony crew should be player colonists; campaign active
+5. Dev Mode → The Ark (DEV) → Apply M1 Persistence Fixture for save/load proof
+
+### Next steps
+- Joe runtime confirm: playable colonists + campaign active; note if Ideo NRE still fires.
+
+---
+
 ## 2026-10-01 — Fix ConfigurePawns null def (scenario ConfigError)
 
 ### What shipped

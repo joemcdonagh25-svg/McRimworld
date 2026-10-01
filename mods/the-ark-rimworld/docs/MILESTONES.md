@@ -133,18 +133,20 @@ Expose M1 state through a minimal development / debug interface.
 
 ### Manual test
 
-1. Enable The Ark (+ Odyssey); **New Game → The Ark** (or any map start with the mod on).
-2. Confirm start dialog + log show campaign active (`Scenario.PostGameStart`).
-3. Turn **Dev Mode** on → Debug Actions → **The Ark (DEV)** → **Apply M1 Persistence Fixture** (or Open Campaign Debug → Apply).
-4. Confirm log / window: Active=true, Day=47, Landing=6, Tier=2, Pursuit=73.
-5. Save → quit RimWorld completely → relaunch → load the save.
-6. Confirm `[The Ark] Campaign state (LoadedGame): ...` matches exactly; re-open debug UI and confirm.
-7. On success: mark M1 and M2 **RUNTIME VERIFIED**.
+1. Enable The Ark + Biotech; **New Game → The Ark** (or any map start with the mod on).
+2. Confirm start dialog + log show campaign active (`Scenario.PostGameStart` / `StartedNewGame`).
+3. If Ideology is on: settle may still log `Page_ChooseIdeoPreset` NRE — confirm crew are **player colonists** and the map is playable.
+4. Turn **Dev Mode** on → Debug Actions → **The Ark (DEV)** → **Apply M1 Persistence Fixture** (or Open Campaign Debug → Apply).
+5. Confirm log / window: Active=true, Day=47, Landing=6, Tier=2, Pursuit=73.
+6. Save → quit RimWorld completely → relaunch → load the save.
+7. Confirm `[The Ark] Campaign state (LoadedGame): ...` matches exactly; re-open debug UI and confirm.
+8. On success: mark M1 and M2 **RUNTIME VERIFIED**.
 
 ### Likely technical risks
 
 - RimWorld UI lifecycle and windowing pitfalls
 - Debug tools left enabled for players without a clear gate (document intent)
+- Ideology `ChooseIdeoPreset` NRE on settle (known; hardened via ideo generate + colonist reassignment)
 
 ---
 

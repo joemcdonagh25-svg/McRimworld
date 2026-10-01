@@ -2,9 +2,9 @@
 <Defs>
 
   <!--
-    RimWorld 1.6: there is no ScenPartDef named ConfigurePawns.
-    Use ConfigurePawnsXenotypes (same as Vampire Lord). Baseliner needs Biotech defs present.
-    Campaign activate: ArkCampaignGameComponent when Find.Scenario.name == "The Ark".
+    RimWorld 1.6: ConfigurePawnsXenotypes (not ConfigurePawns). Baseliner needs Biotech.
+    Playtest setup ScenPart: ideo/colonist harden + campaign activate (same class of fix as Vampire Lord).
+    Campaign also activates from ArkCampaignGameComponent when Find.Scenario.name == "The Ark".
   -->
   <ScenarioDef ParentName="ScenarioBase">
     <defName>TheArk_Playtest</defName>
@@ -28,6 +28,12 @@
           <tag>Surface</tag>
         </li>
 
+        <li Class="ScenPart_GameStartDialog">
+          <def>TheArk_GameStartDialog</def>
+          <text>The ship is the colony.\n\nThree crew. Surface playtest. Campaign tools are active.\n\nDev Mode - The Ark (DEV) - Apply M1 Persistence Fixture to prove save/load.\n\n(Ideology settle page may still log a known NRE; the game should continue with a generated ideoligion.)</text>
+          <closeSound>GameStartSting</closeSound>
+        </li>
+
         <li Class="ScenPart_ConfigPage_ConfigureStartingPawns_Xenotypes">
           <def>ConfigurePawnsXenotypes</def>
           <pawnChoiceCount>3</pawnChoiceCount>
@@ -42,9 +48,34 @@
           </xenotypeCounts>
         </li>
 
+        <li Class="TheArk.Scenario.ScenPart_ArkPlaytestSetup">
+          <def>TheArk_PlaytestSetup</def>
+        </li>
+
         <li Class="ScenPart_PlayerPawnsArriveMethod">
           <def>PlayerPawnsArriveMethod</def>
           <method>Standing</method>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MealSurvivalPack</thingDef>
+          <count>36</count>
+        </li>
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MedicineIndustrial</thingDef>
+          <count>8</count>
+        </li>
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>Steel</thingDef>
+          <count>200</count>
+        </li>
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>ComponentIndustrial</thingDef>
+          <count>30</count>
         </li>
 
       </parts>
