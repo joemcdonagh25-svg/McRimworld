@@ -4,6 +4,23 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — Vampire Lord M4 Keep Fortification V0
+
+### What shipped
+- Spend Blood Tithe between waves on gate sandbags (Accept letter + debug). No Harmony.
+- Branch: `cursor/vampire-lord-m4-fortify-c5ad`.
+
+### What we learned
+- Prep-window gate (`!WarningIssued`) is enough to time the offer without a custom UI.
+
+### Operator notes
+- Pull, restart, New Game → Vampire Lord; accept **Blood for the Walls** or use **Force Fortify Now**.
+
+### Next steps
+- Joe RUNTIME VERIFIED; then pick next parked card when ready.
+
+---
+
 ## 2026-10-01 — The Ark M1 + M2 RUNTIME VERIFIED
 
 ### What shipped

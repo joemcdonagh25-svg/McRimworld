@@ -60,5 +60,13 @@ namespace VampireLord.Campaign
 
         /// <summary>Raid points multiplier when the keep cannot pay the full wave tithe.</summary>
         public const float StarvedRaidPointsMultiplier = 1.35f;
+
+        // --- M4 Keep Fortification V0 ---
+
+        /// <summary>Blood spent to place one gate sandbag package.</summary>
+        public const int FortifyBloodCost = 15;
+
+        /// <summary>Max fortify purchases allowed in one inter-wave prep window.</summary>
+        public const int FortifyMaxPerPrepWindow = 1;
     }
 }

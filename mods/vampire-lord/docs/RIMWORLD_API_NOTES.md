@@ -174,6 +174,20 @@ Target: RimWorld **1.6** via `Krafs.Rimworld.Ref` 1.6.4871 (Cloud/CI) or local S
 
 ---
 
+### 2026-10-01 — Keep Fortification ChoiceLetter + sandbags
+
+- **Goal:** Spend blood between waves on gate cover without Harmony or a custom UI panel.
+- **Evidence:** Metadata inspection of `Verse.LetterMaker`, `Verse.ChoiceLetter`, `Verse.LetterStack.ReceiveLetter(Letter)`; `RimWorld.GenStuff.DefaultStuffFor`; vanilla `Sandbags` ThingDef by name.
+- **API:**
+  - Custom `LetterDef` with `letterClass` → `ChoiceLetter` subclass; `LetterMaker.MakeLetter(label, text, def)` then `ReceiveLetter(letter)`
+  - `ChoiceLetter.Choices` yields `DiaOption` Accept/Reject (`action`, `resolveTree`, `Disable`)
+  - `ThingMaker.MakeThing` + `GenSpawn.Spawn(..., WipeMode.VanishOrMoveAside)` + `SetFactionDirect` / `SetFaction`
+  - `GenStuff.DefaultStuffFor(ThingDef)` for stuffed sandbags (Cloth fallback)
+- **Decision for Vampire Lord:** Prep window = `WavePending && !WarningIssued`. Offer on activate + after `OnWaveDispatched` schedules next wave.
+- **Related milestone:** M4
+
+---
+
 ## Pending / runtime verification
 
 | Topic | Status |
@@ -184,6 +198,7 @@ Target: RimWorld **1.6** via `Krafs.Rimworld.Ref` 1.6.4871 (Cloud/CI) or local S
 | Fire archetype — no incendiary force | Documented limitation |
 | M2 New Game / courtyard / open gate / reveal / auto campaign | RUNTIME VERIFIED |
 | M3 Blood Reserve persist + kill credit + wave tithe / starved | PENDING |
+| M4 Fortify offer letter + sandbags at gate | PENDING |
 
 ---
 

@@ -4,7 +4,8 @@ Gothic keep tower-defence campaign for RimWorld 1.6.
 
 **M1 status:** IMPLEMENTATION COMPLETE — RUNTIME VERIFIED (Joe live session, 2026-10-01).  
 **M2 status:** IMPLEMENTATION COMPLETE — RUNTIME VERIFIED (Joe live session, 2026-10-01).  
-**M3 status:** IMPLEMENTATION COMPLETE — RUNTIME VERIFIED pending (Blood Tithe V0).
+**M3 status:** IMPLEMENTATION COMPLETE — RUNTIME VERIFIED pending (Blood Tithe V0).  
+**M4 status:** IMPLEMENTATION COMPLETE — RUNTIME VERIFIED pending (Keep Fortification V0).
 
 Requires **Biotech** (Sanguophage Vampire Lord).
 
@@ -34,6 +35,11 @@ After the campaign starts, the Wave Director:
 - Each wave costs blood (`10 + 2×threat`); unpaid → harder raid (×1.35)
 - Letters + Dev Mode **Show / Add / Spend / Force Low Blood**
 
+### M4 — Keep Fortification V0
+- Spend **15 blood** between waves on sandbags at the south gate (Accept letter)
+- 1 package per prep window; blocked after the advance warning
+- Dev Mode: **Offer Fortify**, **Force Fortify Now**, **Show Fortify State**
+
 ## Enable
 
 1. Junction/copy this folder (`mods/vampire-lord`) into your RimWorld `Mods` directory.
@@ -41,7 +47,7 @@ After the campaign starts, the Wave Director:
 3. **New Game → Vampire Lord** (preferred playtest path).
 
 ### Debug (optional)
-Dev Mode → category **Vampire Lord** → Start / Stop / Trigger Warning / Trigger Wave / Show Campaign State.
+Dev Mode → category **Vampire Lord** → Start / Stop / Trigger Warning / Trigger Wave / Show Campaign State / Blood Tithe / Fortify tools.
 
 ## Build
 

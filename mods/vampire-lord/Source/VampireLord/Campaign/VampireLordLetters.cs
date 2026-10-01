@@ -56,6 +56,53 @@ namespace VampireLord.Campaign
                 LetterDefOf.PositiveEvent);
         }
 
+        public static void SendFortifyOffer(VampireLordCampaignGameComponent campaign)
+        {
+            LetterDef def = DefDatabase<LetterDef>.GetNamedSilentFail("VampireLord_FortifyOffer");
+            if (def == null)
+            {
+                Log.Warning("[VampireLord] Fortify LetterDef missing — sending plain letter.");
+                Find.LetterStack.ReceiveLetter(
+                    "Blood for the Walls",
+                    FortifyOfferBody(campaign) +
+                    "\n\n(Dev Mode → Vampire Lord → Offer Fortify / Force Fortify Now)",
+                    LetterDefOf.PositiveEvent);
+                return;
+            }
+
+            ChoiceLetter letter = LetterMaker.MakeLetter(
+                "Blood for the Walls",
+                FortifyOfferBody(campaign),
+                def);
+            if (letter == null)
+            {
+                return;
+            }
+
+            Find.LetterStack.ReceiveLetter(letter);
+        }
+
+        public static void SendFortifyComplete(VampireLordCampaignGameComponent campaign, int placed)
+        {
+            Find.LetterStack.ReceiveLetter(
+                "The Gate Is Reinforced",
+                "Blood buys stone patience.\n\n" +
+                $"Sandbags placed: {placed}\n" +
+                $"Keep Blood Reserve: {campaign.BloodReserve}\n\n" +
+                "Hold the approach. The next host will find cover waiting.",
+                LetterDefOf.PositiveEvent);
+        }
+
+        private static string FortifyOfferBody(VampireLordCampaignGameComponent campaign)
+        {
+            return
+                "Between hosts, the Black Keep can drink deep and raise the gate works.\n\n" +
+                $"Cost: {VampireLordTuning.FortifyBloodCost} blood\n" +
+                $"Reserve: {campaign.BloodReserve}\n" +
+                $"Limit: {VampireLordTuning.FortifyMaxPerPrepWindow} package this prep window\n\n" +
+                "Accept to place sandbags south of the open gate.";
+        }
+
         public static string TitleFor(VampireLordWaveType waveType)
         {
             switch (waveType)

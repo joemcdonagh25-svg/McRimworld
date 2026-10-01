@@ -32,6 +32,11 @@ namespace VampireLord.Campaign
         private int lastWaveBloodSpent;
         private int lastWaveBloodCost;
 
+        // M4 Keep Fortification
+        private int fortifyPurchasesThisWindow;
+        private int lastFortifyWaveNumber = -1;
+        private int lastFortifyPlacedCount;
+
         public bool CampaignActive
         {
             get => campaignActive;
@@ -129,6 +134,24 @@ namespace VampireLord.Campaign
             set => lastWaveBloodCost = value;
         }
 
+        public int FortifyPurchasesThisWindow
+        {
+            get => fortifyPurchasesThisWindow;
+            set => fortifyPurchasesThisWindow = value < 0 ? 0 : value;
+        }
+
+        public int LastFortifyWaveNumber
+        {
+            get => lastFortifyWaveNumber;
+            set => lastFortifyWaveNumber = value;
+        }
+
+        public int LastFortifyPlacedCount
+        {
+            get => lastFortifyPlacedCount;
+            set => lastFortifyPlacedCount = value < 0 ? 0 : value;
+        }
+
         /// <summary>1-based number of the currently pending / next wave.</summary>
         public int UpcomingWaveNumber => waveNumber + 1;
 
@@ -183,6 +206,9 @@ namespace VampireLord.Campaign
             Scribe_Values.Look(ref lastWaveBloodStarved, "vlLastWaveBloodStarved", false);
             Scribe_Values.Look(ref lastWaveBloodSpent, "vlLastWaveBloodSpent", 0);
             Scribe_Values.Look(ref lastWaveBloodCost, "vlLastWaveBloodCost", 0);
+            Scribe_Values.Look(ref fortifyPurchasesThisWindow, "vlFortifyPurchasesThisWindow", 0);
+            Scribe_Values.Look(ref lastFortifyWaveNumber, "vlLastFortifyWaveNumber", -1);
+            Scribe_Values.Look(ref lastFortifyPlacedCount, "vlLastFortifyPlacedCount", 0);
         }
 
         public override void StartedNewGame()
@@ -233,7 +259,8 @@ namespace VampireLord.Campaign
                 $"Active={campaignActive}, Day={campaignDay}, Wave={waveNumber}, Threat={threatLevel}, " +
                 $"Pending={wavePending}, WarningIssued={warningIssued}, Type={pendingWaveType}, " +
                 $"WarningTick={warningTick}, NextWaveTick={nextWaveTick}, " +
-                $"Blood={bloodReserve}, GainedSinceWave={bloodGainedSinceWave}, LastStarved={lastWaveBloodStarved}");
+                $"Blood={bloodReserve}, GainedSinceWave={bloodGainedSinceWave}, LastStarved={lastWaveBloodStarved}, " +
+                $"FortifyPurchases={fortifyPurchasesThisWindow}, LastFortifyWave={lastFortifyWaveNumber}");
         }
     }
 }

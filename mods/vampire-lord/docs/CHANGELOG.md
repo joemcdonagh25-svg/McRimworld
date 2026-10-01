@@ -4,6 +4,36 @@ Newest entries first.
 
 ---
 
+## 2026-10-01 — M4 Keep Fortification V0
+
+### What shipped
+- Between-wave blood spend (15) places player-owned sandbags south of the keep gate.
+- Prep window = wave pending and warning not yet issued; 1 package per window.
+- Accept letter `VampireLord_FortifyOffer` on campaign activate + after each wave; debug Offer / Force / Show.
+- Gate position remembered from playtest courtyard (`VampireLordKeepLayout`).
+- DLL rebuild.
+
+### What we learned
+- Blood Tithe needed a keep-changing sink; sandbag flanks are the smallest cover that sells tower-defence prep.
+- ChoiceLetter + LetterDef avoids Harmony and custom UI panels.
+
+### Key paths
+- `Source/VampireLord/Campaign/VampireLordFortify.cs`
+- `Source/VampireLord/Campaign/ChoiceLetter_VampireLordFortify.cs`
+- `Source/VampireLord/Scenario/VampireLordKeepLayout.cs`
+- `Defs/Letters/VampireLordLetters.xml`
+- `Assemblies/VampireLord.dll`
+
+### Operator notes
+1. Pull + restart → New Game → Vampire Lord.
+2. Accept **Blood for the Walls** (or Dev Mode → **Force Fortify Now**).
+3. Confirm sandbags at gate + Blood Reserve drop; second buy blocked until after next wave schedules.
+
+### Next steps
+- Joe RUNTIME VERIFIED checklist on the M4 card.
+
+---
+
 ## 2026-10-01 — Fix: keep is a real player home (not caravan)
 
 ### What shipped
