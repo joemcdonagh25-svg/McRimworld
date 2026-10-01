@@ -83,7 +83,9 @@ Target: RimWorld **1.6** via `Krafs.Rimworld.Ref` 1.6.4871 (Cloud/CI) or local S
   - `Verse.Find.AnyPlayerHomeMap`
 - **Decision for Vampire Lord:** Prefer current map if `IsPlayerHome`, else `AnyPlayerHomeMap`, else any map with `FreeColonistsSpawnedCount > 0`, else `CurrentMap`. If none → log warning with diagnostics, delay retry (`RaidRetryDelayTicks`), do not crash.
 - **Runtime note (2026-10-01):** Joe hit `no player home map` on Trigger Wave Now after M3 — playtest settle can leave the keep map without `IsPlayerHome`. Colonist fallback added.
-- **Related milestone:** M1
+- **Follow-up (2026-10-01):** After raid fallback worked, Joe still felt like a caravan + `GetSituations(PlayerColony)` spam. Root: keep MapParent not a player `Settlement` (`IsPlayerHome` false). Fix: `VampireLordPlayerHome.TryEnsure` via `SettleInExistingMapUtility.Settle` / Settlement `SetFaction(OfPlayer)` on PostGameStart + LoadedGame.
+- **Related APIs:** `RimWorld.Planet.SettleInExistingMapUtility.Settle`, `SettleUtility.AddNewHome`, `Map.Parent`, `WorldObject.SetFaction`
+- **Related milestone:** M1 / M2 playtest
 
 ### 2026-10-01 — RaidEnemy incident + IncidentParms
 

@@ -4,6 +4,23 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — Vampire Lord fix: keep as player home Settlement
+
+### What shipped
+- Vampire Lord playtest ensure `IsPlayerHome` via Settlement settle / faction assign (not caravan/camp).
+- Branch: `cursor/vampire-lord-m3-player-home-c5ad`.
+
+### What we learned
+- Raid fallback fixed wave launch; caravan feel + `GetSituations(PlayerColony)` came from missing player Settlement parent.
+
+### Operator notes
+- After merge: pull, restart; new Vampire Lord game or Dev Mode **Ensure Player Home**.
+
+### Next steps
+- Merge; Joe retest colony feel + wave + Blood Tithe.
+
+---
+
 ## 2026-10-01 — Vampire Lord fix: raid home-map fallback
 
 ### What shipped

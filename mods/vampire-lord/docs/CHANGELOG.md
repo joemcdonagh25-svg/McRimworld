@@ -4,6 +4,38 @@ Newest entries first.
 
 ---
 
+## 2026-10-01 — Fix: keep is a real player home (not caravan)
+
+### What shipped
+- Playtest start / save load ensures the keep map is a player `Settlement` with `IsPlayerHome` true.
+- If the MapParent is already a Settlement with the wrong faction → `SetFaction(OfPlayer)`.
+- If it is a Camp or other non-Settlement parent → `SettleInExistingMapUtility.Settle` (same as caravan "Settle here").
+- Debug: **Ensure Player Home**.
+- DLL rebuild.
+
+### What we learned
+- Raid colonist-map fallback let waves fire, but RimWorld still treated the keep like a caravan/camp when `IsPlayerHome` stayed false.
+- That matches Joe's `GetSituations(PlayerColony)` / faction-dialog NRE spam and "thinks I'm a caravan" feel — world/faction UI expects a player Settlement.
+- Fix the settle state; keep the raid fallback as a safety net.
+
+### Key paths
+- `Source/VampireLord/Scenario/VampireLordPlayerHome.cs`
+- `Source/VampireLord/Scenario/ScenPart_VampireLordPlaytestSetup.cs`
+- `Source/VampireLord/Campaign/VampireLordCampaignGameComponent.cs`
+- `Source/VampireLord/Debug/VampireLordDebugActions.cs`
+- `Assemblies/VampireLord.dll`
+
+### Operator notes
+1. Pull + restart RimWorld.
+2. Prefer a **new** Vampire Lord game (cleanest). Or load the current keep and use Dev Mode → Vampire Lord → **Ensure Player Home**.
+3. Success log: `Ensured player home ... after=IsPlayerHome=True, Parent=Settlement:.../faction=PlayerColony`.
+4. Colony UI should feel like a normal colony (not caravan); Trigger Wave still works.
+
+### Next steps
+- Joe retest: new game or Ensure Player Home on the save; confirm no caravan feel and quieter faction UI errors.
+
+---
+
 ## 2026-10-01 — Fix: wave raid "no player home map"
 
 ### What shipped

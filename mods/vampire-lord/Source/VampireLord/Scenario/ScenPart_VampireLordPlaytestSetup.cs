@@ -48,6 +48,8 @@ namespace VampireLord.Scenario
             base.PostGameStart();
             TryEnsurePlayerIdeo();
             TryEnsureStartingPawnsAreColonists();
+            // Keep must be a real player Settlement — Camp/non-home parents feel like a caravan.
+            VampireLordPlayerHome.TryEnsure("PostGameStart");
             // Belt-and-suspenders: if fog was reapplied after PostMapGenerate, clear it once pawns exist.
             Map map = Find.CurrentMap ?? Find.AnyPlayerHomeMap;
             if (map != null)
