@@ -7,15 +7,19 @@ using Verse;
 namespace VampireLord.Scenario
 {
     /// <summary>
-    /// M2 playtest setup: place a simple walled courtyard at player start, reveal surroundings, auto-start Wave Director.
+    /// M2 playtest setup: place a simple walled courtyard at player start, reveal the map, auto-start Wave Director.
     /// Used only by the Vampire Lord scenario (not global).
     /// </summary>
     public class ScenPart_VampireLordPlaytestSetup : ScenPart
     {
         private const int CourtyardHalfSize = 7; // exterior ~15x15
         private const int GateHalfWidth = 1; // 3-cell open gate
-        private const int UnfogPadding = 40;
         private const string LogPrefix = "[VampireLord]";
+
+        // Static fallback: PostMapGenerate must still reveal even if the ScenPart instance was re-created.
+        private static CellRect s_lastCourtyard = CellRect.Empty;
+        private static IntVec3 s_lastGateCenter = IntVec3.Invalid;
+        private static int s_lastMapId = -1;
 
         private CellRect lastCourtyard = CellRect.Empty;
         private IntVec3 lastGateCenter = IntVec3.Invalid;
@@ -30,7 +34,7 @@ namespace VampireLord.Scenario
         {
             base.PostMapGenerate(map);
             // Fog is applied during map gen after ScenParts.GenerateIntoMap — unfog here so the wilds are visible/pathable.
-            TryRevealAroundKeep(map);
+            TryRevealMap(map, "PostMapGenerate");
         }
 
         public override void PostWorldGenerate()
@@ -42,13 +46,21 @@ namespace VampireLord.Scenario
         public override void PostGameStart()
         {
             base.PostGameStart();
+            TryEnsurePlayerIdeo();
             TryEnsureStartingPawnsAreColonists();
+            // Belt-and-suspenders: if fog was reapplied after PostMapGenerate, clear it once pawns exist.
+            Map map = Find.CurrentMap ?? Find.AnyPlayerHomeMap;
+            if (map != null)
+            {
+                TryRevealMap(map, "PostGameStart");
+            }
+
             TryAutoStartCampaign();
         }
 
         public override string Summary(RimWorld.Scenario scen)
         {
-            return "Starts in a simple walled courtyard keep with an open gate; surroundings revealed; Wave Director auto-starts.";
+            return "Starts in a simple walled courtyard keep with an open gate; full map revealed; Wave Director auto-starts.";
         }
 
         public override bool HasNullDefs()
@@ -79,7 +91,14 @@ namespace VampireLord.Scenario
             {
                 var parms = new IdeoGenerationParms(player.def);
                 player.ideos.ChooseOrGenerateIdeo(parms);
-                Log.Message($"{LogPrefix} Generated starting ideoligion for player faction (avoids broken ChooseIdeoPreset).");
+                if (player.ideos.PrimaryIdeo != null)
+                {
+                    Log.Message($"{LogPrefix} Generated starting ideoligion '{player.ideos.PrimaryIdeo.name}' for player faction.");
+                }
+                else
+                {
+                    Log.Warning($"{LogPrefix} ChooseOrGenerateIdeo returned without a PrimaryIdeo.");
+                }
             }
             catch (System.Exception e)
             {
@@ -153,10 +172,13 @@ namespace VampireLord.Scenario
             CellRect exterior = CellRect.CenteredOn(center, CourtyardHalfSize).ClipInsideMap(map);
             CellRect interior = exterior.ContractedBy(1);
             lastCourtyard = exterior;
+            s_lastCourtyard = exterior;
+            s_lastMapId = map.uniqueID;
 
             ThingDef wallDef = ThingDefOf.Wall;
             ThingDef stuff = ThingDefOf.BlocksGranite;
             TerrainDef floor = TerrainDefOf.FlagstoneSandstone;
+            TerrainDef pathTerrain = TerrainDefOf.PackedDirt;
             Faction player = Faction.OfPlayer;
 
             foreach (IntVec3 cell in exterior.Cells)
@@ -179,6 +201,7 @@ namespace VampireLord.Scenario
             }
 
             lastGateCenter = gateCenter;
+            s_lastGateCenter = gateCenter;
 
             foreach (IntVec3 cell in exterior.EdgeCells)
             {
@@ -191,6 +214,7 @@ namespace VampireLord.Scenario
                 if (IsGateCell(cell, gateCenter))
                 {
                     ClearCellForKeep(map, cell, clearItems: true);
+                    map.terrainGrid.SetTerrain(cell, pathTerrain);
                     continue;
                 }
 
@@ -198,8 +222,8 @@ namespace VampireLord.Scenario
                 SpawnPlayerBuilding(ThingMaker.MakeThing(wallDef, stuff), cell, map, player);
             }
 
-            // Clear a short approach path south of the gate (plants/rocks) so the exit isn't visually "dead".
-            ClearApproachLane(map, gateCenter);
+            // Clear + pave a short approach path south of the gate so the exit is walkable and obvious.
+            ClearApproachLane(map, gateCenter, pathTerrain);
 
             MapGenerator.PlayerStartSpot = center;
 
@@ -208,22 +232,20 @@ namespace VampireLord.Scenario
                 $"(size {exterior.Width}x{exterior.Height}, open gate {gateCenter}, faction={player?.Name}).");
         }
 
-        private void TryRevealAroundKeep(Map map)
+        private void TryRevealMap(Map map, string phase)
         {
-            if (map?.fogGrid == null || lastCourtyard.IsEmpty)
+            if (map?.fogGrid == null)
             {
+                Log.Warning($"{LogPrefix} Reveal skipped ({phase}): map or fogGrid null.");
                 return;
             }
 
-            CellRect reveal = lastCourtyard.ExpandedBy(UnfogPadding).ClipInsideMap(map);
-            int unfogged = 0;
-            foreach (IntVec3 cell in reveal.Cells)
-            {
-                if (!cell.InBounds(map))
-                {
-                    continue;
-                }
+            RestoreCourtyardMemory(map);
 
+            // Playtest: unfog the whole map so "outside the keep" is never an empty black void.
+            int unfogged = 0;
+            foreach (IntVec3 cell in map.AllCells)
+            {
                 if (map.fogGrid.IsFogged(cell))
                 {
                     map.fogGrid.Unfog(cell);
@@ -231,12 +253,36 @@ namespace VampireLord.Scenario
                 }
             }
 
-            if (lastGateCenter.IsValid)
+            IntVec3 gate = lastGateCenter.IsValid ? lastGateCenter : s_lastGateCenter;
+            if (gate.IsValid && gate.InBounds(map))
             {
-                map.fogGrid.FloodUnfogAdjacent(lastGateCenter, false);
+                map.fogGrid.FloodUnfogAdjacent(gate, false);
             }
 
-            Log.Message($"{LogPrefix} Revealed {unfogged} cells around keep (padding {UnfogPadding}) so the outside map is playable.");
+            IntVec3 start = MapGenerator.PlayerStartSpotValid ? MapGenerator.PlayerStartSpot : map.Center;
+            if (start.InBounds(map))
+            {
+                map.fogGrid.FloodUnfogAdjacent(start, false);
+            }
+
+            Log.Message($"{LogPrefix} Revealed map ({phase}): unfogged {unfogged}/{map.Area} cells; gate={gate}.");
+        }
+
+        private void RestoreCourtyardMemory(Map map)
+        {
+            if (!lastCourtyard.IsEmpty)
+            {
+                s_lastCourtyard = lastCourtyard;
+                s_lastGateCenter = lastGateCenter;
+                s_lastMapId = map.uniqueID;
+                return;
+            }
+
+            if (s_lastMapId == map.uniqueID && !s_lastCourtyard.IsEmpty)
+            {
+                lastCourtyard = s_lastCourtyard;
+                lastGateCenter = s_lastGateCenter;
+            }
         }
 
         private static bool IsGateCell(IntVec3 cell, IntVec3 gateCenter)
@@ -246,16 +292,28 @@ namespace VampireLord.Scenario
                 && cell.x <= gateCenter.x + GateHalfWidth;
         }
 
-        private static void ClearApproachLane(Map map, IntVec3 gateCenter)
+        private static void ClearApproachLane(Map map, IntVec3 gateCenter, TerrainDef pathTerrain)
         {
-            for (int dz = 1; dz <= 6; dz++)
+            for (int dz = 1; dz <= 8; dz++)
             {
                 for (int dx = -GateHalfWidth; dx <= GateHalfWidth; dx++)
                 {
                     IntVec3 cell = new IntVec3(gateCenter.x + dx, 0, gateCenter.z - dz);
-                    if (cell.InBounds(map))
+                    if (!cell.InBounds(map))
                     {
-                        ClearCellForKeep(map, cell, clearItems: false);
+                        continue;
+                    }
+
+                    ClearCellForKeep(map, cell, clearItems: false);
+                    // Don't pave water / impassable under-terrain; only replace if currently walkable or rock-like.
+                    if (cell.GetTerrain(map) != null && cell.Walkable(map))
+                    {
+                        map.terrainGrid.SetTerrain(cell, pathTerrain);
+                    }
+                    else if (cell.GetEdifice(map) == null)
+                    {
+                        // If plants/rocks were cleared but cell was non-walkable rubble, force a path.
+                        map.terrainGrid.SetTerrain(cell, pathTerrain);
                     }
                 }
             }

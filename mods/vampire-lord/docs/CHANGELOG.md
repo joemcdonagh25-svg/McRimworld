@@ -4,6 +4,32 @@ Newest entries first.
 
 ---
 
+## 2026-10-01 — M2 full-map reveal + paved south exit (harden)
+
+### What shipped
+- **Unfog the entire map** after gen (and again at `PostGameStart`) so outside the keep is never a black void.
+- Log line to prove new DLL: `Revealed map (PostMapGenerate): unfogged N/Area cells; gate=...`
+- Courtyard memory kept in statics so reveal still runs if the ScenPart instance is re-created.
+- Gate + 8-cell south approach paved with **PackedDirt** (open 3-cell gate, no door).
+- Ideo ensure also runs at `PostGameStart`.
+
+### What we learned
+- Joe’s log from ownership build shows `gate (...)` and **no** reveal line — that DLL never unfogged after map fog, so the wilds looked empty with no usable exit.
+- Fog applies after `GenerateIntoMap`; padding-only reveal can still feel wrong if fog re-applies — full-map unfog is correct for this playtest scenario.
+
+### Key paths
+- `Source/VampireLord/Scenario/ScenPart_VampireLordPlaytestSetup.cs`
+- `Assemblies/VampireLord.dll`
+
+### Operator notes
+- After merge: pull `C:\McRimworld`, restart RimWorld, **New Game → Vampire Lord**.
+- Success = log contains `open gate` + `Revealed map (PostMapGenerate)`, and you can walk south onto visible terrain.
+
+### Next steps
+- Joe runtime check; note if Ideology settle page still NREs (separate from outside void).
+
+---
+
 ## 2026-10-01 — M2 open gate + reveal outside map
 
 ### What shipped

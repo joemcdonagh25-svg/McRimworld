@@ -4,17 +4,18 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
-## 2026-10-01 — Vampire Lord M2 outside access / fog reveal
+## 2026-10-01 — Vampire Lord M2 outside access / full-map reveal
 
 ### What shipped
-- Open south gate, unfog surroundings, ideo pre-gen, colonist faction safety; DLL rebuild.
+- Open south gate, **full-map unfog** (PostMapGenerate + PostGameStart), PackedDirt approach lane, ideo/colonist safety; DLL rebuild.
 - Branch: `cursor/vampire-lord-m2-outside-access-c5ad`.
+- Joe’s pasted log was from the ownership DLL (`gate` text, no reveal line) — that build never cleared fog outside the keep.
 
 ### Operator notes
-- After merge: pull, restart, New Game → Vampire Lord. Walk out the south gate onto visible terrain.
+- After merge: pull `C:\McRimworld`, restart, New Game → Vampire Lord. Look for `open gate` + `Revealed map` in the log, then walk south.
 
 ### Next steps
-- Merge; Joe runtime check.
+- Merge; Joe runtime check of outside terrain + pathing.
 
 ---
 
