@@ -14,7 +14,17 @@
     Hard modDependencies on Odyssey were hiding/disabling this mod in the Mods list
     when Odyssey was off — which also hid New Game -> The Ark.
   -->
+  <!-- Playtest cast uses Baseliner via ConfigurePawnsXenotypes (same as Vampire Lord). -->
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld.Biotech</packageId>
+      <displayName>Biotech</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/workshop/filedetails/?id=2937501857</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+
   <loadAfter>
+    <li>Ludeon.RimWorld.Biotech</li>
     <li>Ludeon.RimWorld.Odyssey</li>
   </loadAfter>
 
@@ -28,6 +38,8 @@ Land. Explore. Salvage. Survive. Escape.
 M1: Persistent campaign foundation.
 M2/V1.1: Dev Mode campaign debug UI + New Game playtest scenario (The Ark).
 
-Playtest scenario works on a normal surface start. Odyssey will be required later for real gravship land/depart hooks.
+Playtest scenario uses Biotech Baseliner crew (ConfigurePawnsXenotypes). Odyssey will be required later for real gravship land/depart hooks.
+
+Install note: only one folder may use packageId joemcdonagh.theark. Prefer Mods\the-ark-rimworld (McRimworld junction). Remove Mods\TheArk if present.
   </description>
 </ModMetaData>

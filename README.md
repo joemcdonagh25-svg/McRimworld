@@ -28,12 +28,11 @@ Nomadic gravship total conversion: the ship is the colony. Land. Explore. Salvag
 - Imported via **git subtree** (full Ark history preserved under this prefix)
 - Design / milestones: `mods/the-ark-rimworld/docs/`
 - Junction/copy **`mods/the-ark-rimworld/`** (the folder with `About/` **and** `Defs/`) into RimWorld `Mods` — same pattern as Vampire Lord
-- Windows helper: run `mods/the-ark-rimworld/tools/junction-the-ark.ps1` in PowerShell
-- Enable **The Ark** in the Mods list (packageId `joemcdonagh.theark`). Disable any older standalone The Ark copy.
-- Restart RimWorld. Player.log must contain: `ScenarioDef TheArk_Playtest LOADED` and `ScenarioLister CONTAINS The Ark`
-- If you see `MISSING` / no `[The Ark] Initialised`: the mod is not the McRimworld folder (or not enabled)
+- Windows helper: `mods/the-ark-rimworld/tools/junction-the-ark.ps1`
+- **Delete** old duplicate `RimWorld\Mods\TheArk` if it exists (same packageId; RimWorld ignores duplicates)
+- Enable **The Ark** + **Biotech** (Baseliner starting cast)
+- Player.log must show `TheArk_Playtest LOADED` and **no** `ConfigurePawns` ConfigError
 - Then **New Game → The Ark**
-- V1.1 playtest is a surface start (Odyssey not required to see the scenario)
 
 ### Vampire Lord
 
