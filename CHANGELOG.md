@@ -4,6 +4,38 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — Vampire Lord M1 Wave Director import
+
+### What shipped
+- `mods/vampire-lord/` imported from `vampire-lord-m1.zip` (About, Source, Assemblies/VampireLord.dll, docs).
+- Parent README updated with Vampire Lord in the mods table and layout tree.
+- Branch: `cursor/vampire-lord-m1-wave-director-038e` → draft PR into `main`.
+
+### What we learned
+- Zip was not in this Cloud Agent’s artifact store until attached in-chat; Windows AgentStores path (`bc-f75fb6b8-…`) is local-only and not readable by McRimworld Cloud Agents.
+- Zip already used the `mods/vampire-lord/` prefix — extract at repo root.
+- Mod root for RimWorld is the folder containing `About/` (junction that folder into `Mods`).
+
+### Key paths
+- `mods/vampire-lord/`
+- `mods/vampire-lord/About/About.xml` — `joemcdonagh.vampirelord`
+- `mods/vampire-lord/Assemblies/VampireLord.dll`
+- `mods/vampire-lord/Source/VampireLord/Campaign/VampireLordWaveDirector.cs`
+- `mods/vampire-lord/docs/MILESTONES.md`
+- `README.md`, `CHANGELOG.md`
+
+### Operator notes
+- Repo: `joemcdonagh25-svg/McRimworld` — remote `origin` — branch `cursor/vampire-lord-m1-wave-director-038e` — target PR base `main`.
+- No force-push. Additive history only.
+- Campaign does **not** auto-start. After merge: enable mod → Dev Mode → **Start Vampire Lord Campaign** → confirm warning → raid → threat up → flips RUNTIME VERIFIED.
+
+### Next steps
+- Merge draft PR when ready.
+- Joe runtime verify in RimWorld (see `mods/vampire-lord/docs/MILESTONES.md`).
+- Do not start Vampire Lord M2 until Joe asks.
+
+---
+
 ## 2026-10-01 — Multi-mod parent layout (The Ark subtree)
 
 ### What shipped

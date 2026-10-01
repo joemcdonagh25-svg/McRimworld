@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Vampire Lord</name>
+  <author>Joe McDonagh</author>
+  <packageId>joemcdonagh.vampirelord</packageId>
+
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+
+  <description>
+Vampire Lord is a gothic keep tower-defence campaign for RimWorld.
+
+Defend the keep. Read the warning. Prepare the walls. Survive the wave.
+
+M1 ships the Wave Director only: scheduled warnings, escalating raids, and debug controls.
+  </description>
+</ModMetaData>
