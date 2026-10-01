@@ -4,6 +4,30 @@ Newest entries first.
 
 ---
 
+## 2026-10-01 — M2 RUNTIME VERIFIED (live RimWorld)
+
+### What shipped
+- Docs only: M2 Playtest Keep marked **RUNTIME VERIFIED** after Joe's live session.
+- Proven: open south gate, map reveal, courtyard, campaign auto-start, thralls reassigned to player; The Ark stayed inactive with both mods enabled.
+
+### What we learned
+- Log proof lines that matter: `open gate`, `Revealed map (PostMapGenerate)`, `Campaign activated`, `Reassigned 3 humanlike`.
+- Ideology `ChooseIdeoPreset` NRE still fires on settle but does not block the playable keep; Anomaly/History errors are separate noise.
+- Enabling The Ark alongside Vampire Lord is fine for this playtest.
+
+### Key paths
+- `docs/MILESTONES.md`
+- `README.md`
+- parent `README.md` / `CHANGELOG.md`
+
+### Operator notes
+- No pull required for gameplay (docs-only). M2 happy path is proven.
+
+### Next steps
+- No M3 until Joe asks. Optional later: Ideo settle page polish; natural warning/raid on the scenario path.
+
+---
+
 ## 2026-10-01 — Fix: scenario ConfigErrors after outside-access merge
 
 ### What shipped

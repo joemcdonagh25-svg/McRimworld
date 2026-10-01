@@ -80,7 +80,7 @@ Custom factions, pawns, weapons, armour, progression, Dark Boons, blood economy,
 ## M2 — Playtest Keep (identity + courtyard + scenario)
 
 **IMPLEMENTATION COMPLETE:** yes  
-**RUNTIME VERIFIED:** no
+**RUNTIME VERIFIED:** yes (2026-10-01 — Joe live session)
 
 ### Goal
 
@@ -95,7 +95,8 @@ Start **New Game → Vampire Lord** and already be in the fantasy: keep identity
 
 - Keep identity: scenario name/description, start dialog, warning-letter polish (Black Keep / torchlight fantasy; product name stays Vampire Lord)
 - Default `ScenarioDef` with cast, starter gear/materials, standing arrival
-- Courtyard placed around player start (stone walls, one gate/door, simple paved interior)
+- Courtyard placed around player start (stone walls, open south gate, simple paved interior)
+- Outside map revealed after fog gen (full-map unfog)
 - Wave Director **auto-starts** on this scenario (`PostGameStart`)
 - Biotech required for Sanguophage lord (declared in About)
 - Debug actions retained for force-testing
@@ -109,7 +110,7 @@ Blood economy, castle progression between waves, custom UI panel, custom faction
 - [x] Scenario appears in New Game as **Vampire Lord**
 - [x] Configure-pawns page requests 1 Sanguophage + 2 Baseliner (labels Vampire Lord / Thrall)
 - [x] Starter items/materials present in scenario parts
-- [x] Courtyard walls + door + interior pave spawn at player start
+- [x] Courtyard walls + open gate + interior pave spawn at player start
 - [x] Campaign activates without Dev Mode on scenario start
 - [x] Warning letters still use keep flavour
 - [x] Project compiles (`VampireLord.dll`)
@@ -117,12 +118,13 @@ Blood economy, castle progression between waves, custom UI panel, custom faction
 
 ### Manual runtime test (Joe)
 
-1. `git pull` → junction already points at `C:\McRimworld\mods\vampire-lord`
-2. Enable **Vampire Lord** (+ Biotech)
-3. New Game → pick **Vampire Lord** scenario → finish setup (temperate recommended)
-4. Confirm: courtyard keep, 1 lord + 2 thralls, start dialog, log campaign activated
-5. Trigger Warning / Wave (or wait) → keep-flavoured letter + raid
-6. Optional: save/load once
+1. [x] `git pull` → junction already points at `C:\McRimworld\mods\vampire-lord`
+2. [x] Enable **Vampire Lord** (+ Biotech); The Ark can stay enabled (stays inactive)
+3. [x] New Game → pick **Vampire Lord** scenario → finish setup
+4. [x] Confirm: courtyard keep, open south gate, outside map visible/pathable, campaign auto-started  
+   Log sample: `open gate`, `Revealed map (PostMapGenerate): unfogged 7807/62500`, `Campaign activated`, `Reassigned 3 humanlike`, Ark `Active=False`
+5. [ ] Trigger Warning / Wave (or wait) → keep-flavoured letter + raid *(optional; M1 raid path already RUNTIME VERIFIED)*
+6. [ ] Optional: save/load once
 
 ### Key paths
 
@@ -133,9 +135,11 @@ Blood economy, castle progression between waves, custom UI panel, custom faction
 
 ### Known V0 limitations
 
-- Courtyard is a rectangle footprint, not a authored castle map
+- Courtyard is a rectangle footprint, not an authored castle map
 - Map size/biome still chosen on the world/new-game pages (scenario does not force a custom planet)
 - Biotech DLC required for the default scenario cast
+- Ideology `Page_ChooseIdeoPreset` can still NRE on settle (game continues; ideo is pre-generated)
+- Unrelated noise in Joe's stack: Anomaly `StartedNewGame` NRE, History `Sequence contains no elements`
 
 ---
 

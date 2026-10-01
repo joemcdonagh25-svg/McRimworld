@@ -3,7 +3,7 @@
 Gothic keep tower-defence campaign for RimWorld 1.6.
 
 **M1 status:** IMPLEMENTATION COMPLETE — RUNTIME VERIFIED (Joe live session, 2026-10-01).  
-**M2 status:** IMPLEMENTATION COMPLETE — RUNTIME VERIFIED pending (Playtest Keep scenario).
+**M2 status:** IMPLEMENTATION COMPLETE — RUNTIME VERIFIED (Joe live session, 2026-10-01).
 
 Requires **Biotech** (Sanguophage Vampire Lord).
 
@@ -21,7 +21,8 @@ After the campaign starts, the Wave Director:
 **New Game → Vampire Lord** scenario:
 
 - 1 Vampire Lord (Sanguophage) + 2 thralls (Baseliner)
-- Simple granite walled courtyard + south gate at player start
+- Simple granite walled courtyard + open south gate at player start
+- Outside map revealed (not a fog void)
 - Starter food, medicine, materials, rifles, hemogen packs
 - Wave Director **auto-starts** (no Dev Mode required)
 - Black Keep flavour letters / start dialog
