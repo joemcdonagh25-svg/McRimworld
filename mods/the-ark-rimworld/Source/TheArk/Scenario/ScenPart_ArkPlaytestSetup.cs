@@ -22,6 +22,12 @@ namespace TheArk.Scenario
             return "Activates Ark campaign state for playtest; use Dev Mode → The Ark (DEV) for the M1 fixture.";
         }
 
+        public override bool HasNullDefs()
+        {
+            // Def is optional for scenario-embedded custom parts; only treat as null if other defs break.
+            return false;
+        }
+
         private static void TryActivateCampaign()
         {
             if (!ArkCampaignDebugOps.TryGet(out ArkCampaignGameComponent campaign))

@@ -32,6 +32,12 @@ namespace VampireLord.Scenario
             return "Starts in a simple walled courtyard keep; Wave Director activates automatically.";
         }
 
+        public override bool HasNullDefs()
+        {
+            // Def is optional for scenario-embedded custom parts; only treat as null if other defs break.
+            return false;
+        }
+
         private static void TryAutoStartCampaign()
         {
             if (!VampireLordCampaign.TryGet(out VampireLordCampaignGameComponent campaign))

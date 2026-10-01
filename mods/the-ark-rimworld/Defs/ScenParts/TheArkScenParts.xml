@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ScenPartDef>
+    <defName>TheArk_GameStartDialog</defName>
+    <label>The Ark start dialog</label>
+    <description>Opening letter when The Ark playtest scenario begins.</description>
+    <category>Misc</category>
+    <scenPartClass>ScenPart_GameStartDialog</scenPartClass>
+    <maxUses>1</maxUses>
+    <canBePlayerAddedRemoved>false</canBePlayerAddedRemoved>
+    <canBeRandomlyAdded>false</canBeRandomlyAdded>
+  </ScenPartDef>
+
+  <ScenPartDef>
+    <defName>TheArk_PlaytestSetup</defName>
+    <label>The Ark playtest campaign setup</label>
+    <description>Activates Ark campaign state for the playtest scenario.</description>
+    <category>Fixed</category>
+    <scenPartClass>TheArk.Scenario.ScenPart_ArkPlaytestSetup</scenPartClass>
+    <maxUses>1</maxUses>
+    <canBePlayerAddedRemoved>false</canBePlayerAddedRemoved>
+    <canBeRandomlyAdded>false</canBeRandomlyAdded>
+  </ScenPartDef>
+
+</Defs>

@@ -4,6 +4,30 @@ Newest entries first.
 
 ---
 
+## 2026-10-01 — M2 scenario config fix (1.6 required parts)
+
+### What shipped
+- Fix `VampireLord_PlaytestKeep` ConfigErrors: add `ScenPart_PlayerFaction`, `ScenPart_PlanetLayerFixed` (Surface), `ParentName="ScenarioBase"`.
+- Add `ScenPartDef`s for start dialog + playtest setup; wire `<def>` on those parts (was causing null def / NRE on Next).
+- Rebuild DLL (`HasNullDefs` safety on custom ScenPart).
+
+### What we learned
+- RimWorld 1.6 scenario validation requires playerFaction + surfaceLayer; missing them blocks scenario Next with NullReferenceException.
+- Scenario-embedded custom ScenParts still need a `ScenPartDef` (or null-def handling) for ErrorCheckAllDefs.
+
+### Key paths
+- `Defs/Scenarios/VampireLordScenario.xml`
+- `Defs/ScenParts/VampireLordScenParts.xml`
+- `Source/VampireLord/Scenario/ScenPart_VampireLordPlaytestSetup.cs`
+
+### Operator notes
+- Pull / restart RimWorld after merge. New Game → Vampire Lord should proceed past scenario select.
+
+### Next steps
+- Joe RUNTIME VERIFIED on New Game path.
+
+---
+
 ## 2026-10-01 — M2 Playtest Keep (IMPLEMENTATION COMPLETE)
 
 ### What shipped
