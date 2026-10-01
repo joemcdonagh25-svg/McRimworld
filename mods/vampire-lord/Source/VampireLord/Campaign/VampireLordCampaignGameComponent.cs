@@ -1,4 +1,5 @@
 using RimWorld;
+using VampireLord.Scenario;
 using Verse;
 
 namespace VampireLord.Campaign
@@ -186,12 +187,15 @@ namespace VampireLord.Campaign
 
         public override void StartedNewGame()
         {
+            VampireLordPlayerHome.TryEnsure("StartedNewGame");
             LogCampaignState("StartedNewGame");
         }
 
         public override void LoadedGame()
         {
             VampireLordBloodTithe.ResetSessionCredits();
+            // Existing playtest saves may still be Camp/non-home — repair on load.
+            VampireLordPlayerHome.TryEnsure("LoadedGame");
             LogCampaignState("LoadedGame");
         }
 
