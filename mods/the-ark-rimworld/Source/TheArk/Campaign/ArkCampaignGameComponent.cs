@@ -1,3 +1,4 @@
+using RimWorld;
 using Verse;
 
 namespace TheArk.Campaign
@@ -8,6 +9,8 @@ namespace TheArk.Campaign
     /// </summary>
     public class ArkCampaignGameComponent : GameComponent
     {
+        public const string PlaytestScenarioName = "The Ark";
+
         // Backing fields with explicit defaults. Scribe labels are stable save-format IDs — do not rename lightly.
         private bool campaignActive = false;
         private int campaignDay = 0;
@@ -63,12 +66,32 @@ namespace TheArk.Campaign
 
         public override void StartedNewGame()
         {
+            TryActivateFromPlaytestScenario("StartedNewGame");
             LogCampaignState("StartedNewGame");
         }
 
         public override void LoadedGame()
         {
             LogCampaignState("LoadedGame");
+        }
+
+        /// <summary>
+        /// Belt-and-suspenders with <c>ScenPart_ArkPlaytestSetup</c>: if New Game used the
+        /// The Ark scenario, ensure campaign is active even if the ScenPart did not run.
+        /// </summary>
+        private void TryActivateFromPlaytestScenario(string context)
+        {
+            RimWorld.Scenario scen = Find.Scenario;
+            if (scen == null || scen.name != PlaytestScenarioName)
+            {
+                return;
+            }
+
+            if (!campaignActive)
+            {
+                campaignActive = true;
+                Log.Message($"[The Ark] Campaign activated from playtest scenario ({context}).");
+            }
         }
 
         private void LogCampaignState(string context)

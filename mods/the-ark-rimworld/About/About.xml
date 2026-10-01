@@ -8,14 +8,12 @@
     <li>1.6</li>
   </supportedVersions>
 
-  <modDependencies>
-    <li>
-      <packageId>Ludeon.RimWorld.Odyssey</packageId>
-      <displayName>Odyssey</displayName>
-      <steamWorkshopUrl>https://store.steampowered.com/app/3022790/RimWorld__Odyssey/</steamWorkshopUrl>
-    </li>
-  </modDependencies>
-
+  <!--
+    V1.1 playtest scenario is a surface start and does not require Odyssey to load.
+    Keep loadAfter so when Odyssey is present we still order correctly.
+    Hard modDependencies on Odyssey were hiding/disabling this mod in the Mods list
+    when Odyssey was off — which also hid New Game -> The Ark.
+  -->
   <loadAfter>
     <li>Ludeon.RimWorld.Odyssey</li>
   </loadAfter>
@@ -30,6 +28,6 @@ Land. Explore. Salvage. Survive. Escape.
 M1: Persistent campaign foundation.
 M2/V1.1: Dev Mode campaign debug UI + New Game playtest scenario (The Ark).
 
-Requires Odyssey. Gravship wreckage start is not in the playtest scenario yet — campaign tooling first.
+Playtest scenario works on a normal surface start. Odyssey will be required later for real gravship land/depart hooks.
   </description>
 </ModMetaData>

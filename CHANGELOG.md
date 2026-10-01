@@ -4,6 +4,31 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — The Ark scenario list fix
+
+### What shipped
+- Soften Odyssey dependency so New Game → **The Ark** can appear without Odyssey enabled.
+- Backup campaign activate on `StartedNewGame` when scenario name is The Ark.
+- Branch: `cursor/ark-scenario-list-fix-5195` → draft PR into `main`.
+
+### What we learned
+- Hard `modDependencies` on Odyssey can leave The Ark disabled → scenario invisible.
+- Mod root must be junctioned at `mods/the-ark-rimworld/` (About folder), like Vampire Lord.
+
+### Key paths
+- `mods/the-ark-rimworld/About/About.xml`
+- `mods/the-ark-rimworld/Defs/Scenarios/TheArkScenario.xml`
+- `mods/the-ark-rimworld/Source/TheArk/Campaign/ArkCampaignGameComponent.cs`
+- `README.md`
+
+### Operator notes
+- Pull → ensure Mods junction for The Ark → enable The Ark → restart → New Game list.
+
+### Next steps
+- Merge; Joe confirm scenario visible; then fixture save/load proof.
+
+---
+
 ## 2026-10-01 — Vampire Lord M2 keep ownership fix
 
 ### What shipped

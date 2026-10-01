@@ -4,6 +4,34 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — Fix: New Game scenario not listing
+
+### What shipped
+- Removed hard `modDependencies` on Odyssey so The Ark can enable and list its scenario without Odyssey active (V1.1 is a surface playtest).
+- Kept `loadAfter` Odyssey when present.
+- `ArkCampaignGameComponent.StartedNewGame` also activates campaign when `Find.Scenario.name == "The Ark"` (backup to ScenPart).
+- ASCII-only scenario copy (avoid special punctuation in XML text).
+
+### What we learned
+- Unmet hard DLC dependencies often leave a mod unchecked/disabled → its ScenarioDefs never appear in New Game.
+- Scenario listing also requires the mod root junction (`…/mods/the-ark-rimworld` containing `About/`), not the McRimworld parent folder.
+
+### Key paths
+- `About/About.xml`
+- `Defs/Scenarios/TheArkScenario.xml`
+- `Source/TheArk/Campaign/ArkCampaignGameComponent.cs`
+
+### Operator notes
+1. `git pull` on `C:\McRimworld`
+2. Junction `C:\McRimworld\mods\the-ark-rimworld` → RimWorld `Mods\the-ark-rimworld` (create if missing)
+3. Mods list: enable **The Ark** (Odyssey optional for this playtest)
+4. Restart RimWorld → New Game → **The Ark**
+
+### Next steps
+- Joe confirm scenario appears; then M1 fixture save/load proof.
+
+---
+
 ## 2026-10-01 — M2 / V1.1 Campaign Debug UI (implementation)
 
 ### What shipped

@@ -27,6 +27,9 @@ Nomadic gravship total conversion: the ship is the colony. Land. Explore. Salvag
 - Upstream: https://github.com/joemcdonagh25-svg/the-ark-rimworld
 - Imported via **git subtree** (full Ark history preserved under this prefix)
 - Design / milestones: `mods/the-ark-rimworld/docs/`
+- Junction/copy **`mods/the-ark-rimworld/`** (the folder with `About/`) into RimWorld `Mods` — same pattern as Vampire Lord
+- Enable **The Ark** in the Mods list, then **New Game → The Ark**
+- V1.1 playtest is a surface start (Odyssey not required to see the scenario)
 
 ### Vampire Lord
 

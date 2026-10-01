@@ -8,11 +8,11 @@
   <ScenarioDef ParentName="ScenarioBase">
     <defName>TheArk_Playtest</defName>
     <label>The Ark</label>
-    <description>The ship is the colony. Land. Take what you need. Don't stay too long. Leave. Do it again.\n\nPlaytest scenario for The Ark (V1.1). Starts a small expedition crew with Ark campaign state active. Use Dev Mode → The Ark (DEV) to set the M1 persistence fixture and prove save/load.\n\nRequires Odyssey. Gravship wreckage start is not in this scenario yet.</description>
+    <description>The ship is the colony. Land. Take what you need. Don't stay too long. Leave. Do it again.\n\nPlaytest scenario for The Ark (V1.1). Starts a small expedition crew with Ark campaign state active. Use Dev Mode - The Ark (DEV) to set the M1 persistence fixture and prove save/load.\n\nSurface playtest start (no gravship spawn yet).</description>
     <scenario>
       <name>The Ark</name>
       <summary>Three crew, Ark campaign active, Dev tools for persistence proof. Surface playtest start (no gravship spawn yet).</summary>
-      <description>Your expedition wakes on the surface with the Ark campaign already tracking you. Time will become pressure. For now: confirm the campaign state survives a save — then we teach the mod to feel landings and Pursuit.</description>
+      <description>Your expedition wakes on the surface with the Ark campaign already tracking you. Time will become pressure. For now: confirm the campaign state survives a save - then we teach the mod to feel landings and Pursuit.</description>
       <parts>
 
         <li Class="ScenPart_PlayerFaction">
@@ -29,7 +29,7 @@
 
         <li Class="ScenPart_GameStartDialog">
           <def>TheArk_GameStartDialog</def>
-          <text>THE ARK — playtest start.\n\nCampaign state is ACTIVE.\n\nTo prove M1 persistence:\n1) Enable Dev Mode\n2) Debug Actions → The Ark (DEV) → Apply M1 Persistence Fixture\n3) Save → quit RimWorld completely → load\n4) Confirm the LoadedGame log shows Day=47, Landing=6, Tier=2, Pursuit=73\n\nGravship landing/departure detection comes in later V1 milestones. This scenario is the New Game door into campaign tooling.</text>
+          <text>THE ARK - playtest start.\n\nCampaign state is ACTIVE.\n\nTo prove M1 persistence:\n1) Enable Dev Mode\n2) Debug Actions - The Ark (DEV) - Apply M1 Persistence Fixture\n3) Save - quit RimWorld completely - load\n4) Confirm the LoadedGame log shows Day=47, Landing=6, Tier=2, Pursuit=73\n\nGravship landing/departure detection comes in later V1 milestones. This scenario is the New Game door into campaign tooling.</text>
           <closeSound>GameStartSting</closeSound>
         </li>
 
