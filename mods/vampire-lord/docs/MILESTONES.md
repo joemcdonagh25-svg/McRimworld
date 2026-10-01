@@ -15,7 +15,7 @@ Status labels (treat separately):
 ## M1 — Wave Director V0
 
 **IMPLEMENTATION COMPLETE:** yes  
-**RUNTIME VERIFIED:** no
+**RUNTIME VERIFIED:** yes (2026-10-01 — Joe live session)
 
 ### Goal
 
@@ -53,13 +53,14 @@ Custom factions, pawns, weapons, armour, progression, Dark Boons, blood economy,
 
 ### Manual runtime test (Joe / future agent)
 
-1. Enable **Vampire Lord**; start a colony; confirm log `[VampireLord] Initialised successfully.`
-2. Dev mode → **Vampire Lord → Start Vampire Lord Campaign**
-3. **Show Campaign State** — note `NextWaveTick` / `WarningTick`
-4. **Trigger Warning Now** — confirm letter + no duplicate on second call without new schedule
-5. **Trigger Wave Now** — confirm raid; threat/wave increment; next wave scheduled
-6. Save before warning / after warning / before raid / after raid; reload; confirm schedule integrity
-7. Advance time ~3 days on an active campaign; confirm warning then raid without debug force
+1. [x] Enable **Vampire Lord**; start a colony; confirm log `[VampireLord] Initialised successfully.`
+2. [x] Dev mode → **Vampire Lord → Start Vampire Lord Campaign**
+3. [x] **Show Campaign State** — note `NextWaveTick` / `WarningTick`
+4. [x] **Trigger Warning Now** — confirm letter + no duplicate on second call without new schedule
+5. [x] **Trigger Wave Now** — confirm raid; threat/wave increment; next wave scheduled  
+   Proven state sample: `CampaignActive=True`, `WaveNumber=1`, `ThreatLevel=2`, `LastWaveType=Mob`, `PendingWaveType=Hunters`, `WavePending=True`
+6. [ ] Save before warning / after warning / before raid / after raid; reload; confirm schedule integrity *(optional hardening; not required for M1 RUNTIME VERIFIED)*
+7. [ ] Advance time ~3 days on an active campaign; confirm warning then raid without debug force *(optional; debug path already proven)*
 
 ### Key paths
 

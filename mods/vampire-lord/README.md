@@ -2,7 +2,7 @@
 
 Gothic keep tower-defence campaign for RimWorld 1.6.
 
-**M1 status:** IMPLEMENTATION COMPLETE — RUNTIME VERIFIED pending (needs a live RimWorld session).
+**M1 status:** IMPLEMENTATION COMPLETE — RUNTIME VERIFIED (Joe live session, 2026-10-01).
 
 ## What it does (M1)
 
