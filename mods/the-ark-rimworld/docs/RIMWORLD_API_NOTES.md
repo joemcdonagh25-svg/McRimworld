@@ -259,6 +259,14 @@ Use this template:
 
 ---
 
+### 2026-10-01 — Scenario listing / Odyssey dependency (playtest)
+
+- **Goal:** Why New Game did not show **The Ark**.
+- **Evidence:** Operator report + RimWorld mod load behaviour; `ScenarioLister` serves `FromDef` scenarios only from enabled mods' loaded `ScenarioDef`s.
+- **Finding:** Hard `modDependencies` on `Ludeon.RimWorld.Odyssey` can leave The Ark unchecked when Odyssey is off, so `TheArk_Playtest` never enters the scenario list. V1.1 playtest is surface-only and does not need Odyssey yet.
+- **Decision for The Ark:** Remove hard Odyssey `modDependencies` for now; keep `loadAfter`. Activate campaign via ScenPart and `ArkCampaignGameComponent.StartedNewGame` when `Find.Scenario.name == "The Ark"`.
+- **Related milestone:** M2 playtest convenience / hotfix
+
 ### 2026-10-01 — Scenario + ScenPart playtest setup (M2 companion)
 
 - **Goal:** New Game entry that activates Ark campaign state without a global map-gen patch.
