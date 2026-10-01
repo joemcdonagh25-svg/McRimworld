@@ -8,6 +8,7 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ### What shipped
 - New Game scenario **The Ark** (`TheArk_Playtest`) + `ScenPart_ArkPlaytestSetup` (sets `CampaignActive` on start; Odyssey dependency in About).
+- RimWorld 1.6 scenario scaffolding: `ParentName="ScenarioBase"`, `PlayerFaction`, `PlanetLayerFixed`, `Defs/ScenParts/TheArkScenParts.xml` (avoids New Game Next NRE).
 - Dev Mode category **The Ark (DEV)** with Open Campaign Debug, Log Campaign State, Apply M1 Persistence Fixture.
 - Crude `[DEV] The Ark — Campaign Debug` window: view/edit all five M1 fields; Apply / Refresh / Fixture.
 - Explicit writes via `ArkCampaignDebugOps` into `ArkCampaignGameComponent` only (no duplicate state).
