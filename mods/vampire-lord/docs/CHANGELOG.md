@@ -4,6 +4,29 @@ Newest entries first.
 
 ---
 
+## 2026-10-01 — Fix: wave raid "no player home map"
+
+### What shipped
+- Raid target map resolution falls back to any map with free colonists (then CurrentMap) when `IsPlayerHome` / `AnyPlayerHomeMap` are empty.
+- Clearer failReason logging if still no map.
+- DLL rebuild.
+
+### What we learned
+- Joe's Trigger Wave Now failed with `no player home map` after Blood Tithe merge — playtest settle can leave the keep map playable without `IsPlayerHome` true.
+- Prefer home maps when present; colonist-bearing map is enough to fire a forced raid.
+
+### Key paths
+- `Source/VampireLord/Campaign/VampireLordRaidLauncher.cs`
+- `Assemblies/VampireLord.dll`
+
+### Operator notes
+- Pull + restart. New or existing Vampire Lord game → Dev Mode → **Trigger Wave Now** should launch (or a more specific fail reason).
+
+### Next steps
+- Joe retest wave launch + Blood Tithe starved path.
+
+---
+
 ## 2026-10-01 — M3 Blood Tithe V0 (implementation)
 
 ### What shipped

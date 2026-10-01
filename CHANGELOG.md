@@ -4,6 +4,20 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — Vampire Lord fix: raid home-map fallback
+
+### What shipped
+- Wave raids target colonist maps when `IsPlayerHome` is unset; DLL rebuild.
+- Branch: `cursor/vampire-lord-m3-raid-home-map-c5ad`.
+
+### Operator notes
+- After merge: pull, restart, Trigger Wave Now on the keep map.
+
+### Next steps
+- Merge; Joe retest.
+
+---
+
 ## 2026-10-01 — The Ark ConfigurePawns fix (from Joe Player.log)
 
 ### What shipped
