@@ -2,19 +2,18 @@
 <Defs>
 
   <!--
-    RimWorld 1.6: inherit ScenarioBase + explicit PlayerFaction / PlanetLayerFixed.
-    Parts are vanilla-only so the ScenarioDef can list even if C# types fail to resolve.
-    Campaign activation is handled in ArkCampaignGameComponent.StartedNewGame when
-    Find.Scenario.name == "The Ark".
+    Minimal RimWorld 1.6 scenario (same required scaffolding as Vampire Lord).
+    No custom ScenPart classes, no custom ScenPartDefs, no start dialog, no gear.
+    Campaign activate: ArkCampaignGameComponent when Find.Scenario.name == "The Ark".
   -->
   <ScenarioDef ParentName="ScenarioBase">
     <defName>TheArk_Playtest</defName>
     <label>The Ark</label>
-    <description>The ship is the colony. Land. Take what you need. Do not stay too long. Leave. Do it again.\n\nPlaytest scenario for The Ark (V1.1). Three crew, Ark campaign activates on start. Use Dev Mode - The Ark (DEV) - Apply M1 Persistence Fixture to prove save/load.\n\nSurface playtest start (no gravship spawn yet).</description>
+    <description>The ship is the colony. Land. Take what you need. Do not stay too long. Leave. Do it again.\n\nMinimal playtest start for The Ark campaign tooling.</description>
     <scenario>
       <name>The Ark</name>
-      <summary>Three crew, Ark campaign active on start, Dev tools for persistence proof.</summary>
-      <description>Your expedition wakes on the surface with the Ark campaign already tracking you. Confirm campaign state survives a save, then later milestones teach landings and Pursuit.</description>
+      <summary>Three crew. Ark campaign activates on start.</summary>
+      <description>Surface playtest start for The Ark. Use Dev Mode - The Ark (DEV) - Apply M1 Persistence Fixture to prove save/load.</description>
       <parts>
 
         <li Class="ScenPart_PlayerFaction">
@@ -29,12 +28,6 @@
           <tag>Surface</tag>
         </li>
 
-        <li Class="ScenPart_GameStartDialog">
-          <def>TheArk_GameStartDialog</def>
-          <text>THE ARK - playtest start.\n\nCampaign state should be ACTIVE.\n\nTo prove M1 persistence:\n1) Enable Dev Mode\n2) Debug Actions - The Ark (DEV) - Apply M1 Persistence Fixture\n3) Save - quit RimWorld completely - load\n4) Confirm LoadedGame log shows Day=47, Landing=6, Tier=2, Pursuit=73</text>
-          <closeSound>GameStartSting</closeSound>
-        </li>
-
         <li Class="ScenPart_ConfigPage_ConfigureStartingPawns">
           <def>ConfigurePawns</def>
           <pawnCount>3</pawnCount>
@@ -43,43 +36,6 @@
         <li Class="ScenPart_PlayerPawnsArriveMethod">
           <def>PlayerPawnsArriveMethod</def>
           <method>Standing</method>
-        </li>
-
-        <li Class="ScenPart_StartingThing_Defined">
-          <def>StartingThing_Defined</def>
-          <thingDef>MealSurvivalPack</thingDef>
-          <count>30</count>
-        </li>
-        <li Class="ScenPart_StartingThing_Defined">
-          <def>StartingThing_Defined</def>
-          <thingDef>MedicineIndustrial</thingDef>
-          <count>6</count>
-        </li>
-        <li Class="ScenPart_StartingThing_Defined">
-          <def>StartingThing_Defined</def>
-          <thingDef>Steel</thingDef>
-          <count>150</count>
-        </li>
-        <li Class="ScenPart_StartingThing_Defined">
-          <def>StartingThing_Defined</def>
-          <thingDef>ComponentIndustrial</thingDef>
-          <count>20</count>
-        </li>
-        <li Class="ScenPart_StartingThing_Defined">
-          <def>StartingThing_Defined</def>
-          <thingDef>Gun_BoltActionRifle</thingDef>
-          <count>2</count>
-        </li>
-        <li Class="ScenPart_StartingThing_Defined">
-          <def>StartingThing_Defined</def>
-          <thingDef>Apparel_Parka</thingDef>
-          <stuff>Cloth</stuff>
-          <count>3</count>
-        </li>
-
-        <li Class="ScenPart_StartingResearch">
-          <def>StartingResearch</def>
-          <project>ComplexClothing</project>
         </li>
 
       </parts>

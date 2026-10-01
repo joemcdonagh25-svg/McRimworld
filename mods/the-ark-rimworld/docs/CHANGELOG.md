@@ -4,6 +4,32 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — Minimal scenario + install diagnostics
+
+### What shipped
+- Playtest scenario stripped to required 1.6 parts only (PlayerFaction, PlanetLayerFixed, ConfigurePawns, Standing arrival).
+- Loud Player.log diagnostics: mod root/packageId, related mods, ScenarioDef ConfigErrors, ScenarioLister contains check.
+- `tools/junction-the-ark.ps1` to create the Windows Mods junction to `C:\McRimworld\mods\the-ark-rimworld`.
+
+### What we learned
+- Vampire Lord listing works for Joe; Ark still missing strongly suggests The Ark mod root is not junctioned/enabled (or an old packageId copy shadows it), not missing GitHub XML.
+
+### Key paths
+- `Defs/Scenarios/TheArkScenario.xml`
+- `Source/TheArk/TheArkBootstrap.cs`
+- `tools/junction-the-ark.ps1`
+
+### Operator notes
+1. Pull this change
+2. PowerShell: `mods\the-ark-rimworld\tools\junction-the-ark.ps1`
+3. Enable The Ark → restart
+4. Paste every Player.log line that starts with `[The Ark]`
+
+### Next steps
+- Joe paste `[The Ark]` log lines if still missing from New Game.
+
+---
+
 ## 2026-10-01 — Scenario visibility: vanilla parts + load diagnostic
 
 ### What shipped

@@ -18,6 +18,30 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — The Ark minimal scenario + install diagnostics
+
+### What shipped
+- Minimal The Ark ScenarioDef (required 1.6 parts only).
+- Player.log diagnostics for mod root, ConfigErrors, ScenarioLister membership.
+- `mods/the-ark-rimworld/tools/junction-the-ark.ps1` Windows junction helper.
+- Branch: `cursor/ark-scenario-min-diagnostic-5195` → draft PR into `main`.
+
+### What we learned
+- VL scenario lists for Joe; Ark still missing ⇒ almost certainly Mods junction/enable for `the-ark-rimworld`, not missing GitHub content.
+
+### Key paths
+- `mods/the-ark-rimworld/Defs/Scenarios/TheArkScenario.xml`
+- `mods/the-ark-rimworld/Source/TheArk/TheArkBootstrap.cs`
+- `mods/the-ark-rimworld/tools/junction-the-ark.ps1`
+
+### Operator notes
+- Pull → run junction script → enable The Ark → restart → paste all `[The Ark]` Player.log lines.
+
+### Next steps
+- Merge; Joe run junction script and paste log lines if still invisible.
+
+---
+
 ## 2026-10-01 — Vampire Lord M3 planning (Blood Tithe V0)
 
 ### What shipped
