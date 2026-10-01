@@ -4,6 +4,7 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+<<<<<<< HEAD
 ## 2026-10-01 — The Ark scenario list fix
 
 ### What shipped
@@ -26,6 +27,20 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ### Next steps
 - Merge; Joe confirm scenario visible; then fixture save/load proof.
+=======
+## 2026-10-01 — Vampire Lord M2 outside access / full-map reveal
+
+### What shipped
+- Open south gate, **full-map unfog** (PostMapGenerate + PostGameStart), PackedDirt approach lane, ideo/colonist safety; DLL rebuild.
+- Branch: `cursor/vampire-lord-m2-outside-access-c5ad`.
+- Joe’s pasted log was from the ownership DLL (`gate` text, no reveal line) — that build never cleared fog outside the keep.
+
+### Operator notes
+- After merge: pull `C:\McRimworld`, restart, New Game → Vampire Lord. Look for `open gate` + `Revealed map` in the log, then walk south.
+
+### Next steps
+- Merge; Joe runtime check of outside terrain + pathing.
+>>>>>>> origin/main
 
 ---
 
