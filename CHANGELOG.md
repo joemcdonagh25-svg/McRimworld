@@ -4,6 +4,23 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — The Ark New Game start RUNTIME CONFIRMED
+
+### What shipped
+- Docs: Joe’s Player.log confirms New Game → The Ark is playable after PR #19 (ideo generate, 3 colonists reassigned, campaign Active=True).
+- Branch: `cursor/ark-newgame-runtime-confirmed-5195`.
+
+### What we learned
+- ChooseIdeoPreset / Anomaly / History NREs still log and are acceptable noise for this playtest surface start.
+
+### Operator notes
+- Next proof for M1/M2: Dev Mode → The Ark (DEV) → Apply M1 Persistence Fixture → save → quit → load.
+
+### Next steps
+- Joe run fixture save/load; then mark M1 + M2 RUNTIME VERIFIED.
+
+---
+
 ## 2026-10-01 — The Ark Ideo/colonist start harden (from Joe Player.log)
 
 ### What shipped
@@ -23,7 +40,7 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 - Pull → restart → New Game → The Ark. Ideo NRE may still log; crew should be colonists and campaign active.
 
 ### Next steps
-- Joe confirm playable start + M1 fixture save/load.
+- Done for New Game start (Joe confirmed). Fixture save/load still pending.
 
 ---
 

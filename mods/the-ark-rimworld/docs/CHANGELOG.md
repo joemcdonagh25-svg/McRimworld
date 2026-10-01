@@ -4,6 +4,24 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — New Game → The Ark RUNTIME CONFIRMED (Joe Player.log)
+
+### What shipped
+- Docs only: record Joe’s live confirm after PR #19.
+
+### What we learned
+- Success lines present: ScenarioDef loaded, ScenarioLister contains The Ark, ideoligion generated (`Haxor-Mankindism`), **Reassigned 3** humanlike pawns to player faction, campaign `Active=True` at `Scenario.PostGameStart` and `StartedNewGame`.
+- Known noise still fires and did not block playable start: `Page_ChooseIdeoPreset` NRE, Anomaly `StartedNewGame` NRE, History `Sequence contains no elements`.
+
+### Operator notes
+- New Game start path is good enough for playtest.
+- Full M1/M2 **RUNTIME VERIFIED** still needs: Dev Mode → Apply M1 Persistence Fixture → save → quit → load → confirm LoadedGame values.
+
+### Next steps
+- Joe run the M1 fixture save/load proof; then mark M1 + M2 RUNTIME VERIFIED.
+
+---
+
 ## 2026-10-01 — Harden Ideo/colonist start after settle (Joe Player.log)
 
 ### What shipped
@@ -31,7 +49,7 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 5. Dev Mode → The Ark (DEV) → Apply M1 Persistence Fixture for save/load proof
 
 ### Next steps
-- Joe runtime confirm: playable colonists + campaign active; note if Ideo NRE still fires.
+- Done: Joe confirmed playable start (see entry above). Fixture save/load still pending.
 
 ---
 
