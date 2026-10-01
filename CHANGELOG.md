@@ -4,6 +4,24 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — Project-wide RimWorld engineering Cursor rule
+
+### What shipped
+- Added always-on Cursor rule for RimWorld mod engineering: PLAN → IMPLEMENT → REVIEW → FIX → VERIFY, lifecycle/persistence/scope discipline, model selection policy.
+- Path: `.cursor/rules/rimworld-engineering.mdc` (`alwaysApply: true`).
+- Branch: `cursor/rimworld-engineering-rule-be44`.
+
+### What we learned
+- Repo had no `.cursor/rules` yet; this is the first project-wide agent contract for multi-agent / human maintenance.
+
+### Operator notes
+- Rule applies to all agents in this workspace once merged/pulled; no mod DLL rebuild required.
+
+### Next steps
+- Use the rule on subsequent Ark / Vampire Lord work.
+
+---
+
 ## 2026-10-01 — The Ark M3 Landing Detection V0
 
 ### What shipped
@@ -14,7 +32,7 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 - Pull → New Game → The Ark → Dev Mode → Simulate Landing (second call ignored while session active).
 
 ### Next steps
-- Merge; Joe runtime verify; no M4 until asked.
+- Joe runtime verify; no M4 until asked.
 
 ---
 
