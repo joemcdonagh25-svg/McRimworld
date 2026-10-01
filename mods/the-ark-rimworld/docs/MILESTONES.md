@@ -153,7 +153,7 @@ Expose M1 state through a minimal development / debug interface.
 
 ## M3 — Landing Detection
 
-**Status:** IMPLEMENTATION COMPLETE — **RUNTIME VERIFIED** pending Joe’s Dev Mode Simulate Landing test
+**Status:** COMPLETE — **RUNTIME VERIFIED** (Joe, 2026-10-01; Dev Mode Simulate Landing → LandingNumber=1, Session=True)
 
 ### Goal
 
@@ -188,13 +188,13 @@ Reliably determine when the Ark has landed and establish a landing session.
 4. Simulate Landing again → ignored (session already active).
 5. Optional: End Landing Session → Simulate again → LandingNumber up again.
 6. Save / load mid-session → session + LandingNumber persist.
-7. On success: mark M3 **RUNTIME VERIFIED**.
+7. On success: mark M3 **RUNTIME VERIFIED**. *(Done via Simulate Landing; real Odyssey hop still optional later.)*
 
 ### Likely technical risks
 
 - Odyssey API discovery; false positives from caravan / map transitions
 - Multiplayer or multiple-map edge cases (note; may be out of scope)
-- Real gravship hop still UNVERIFIED until Joe lands with Odyssey
+- Real gravship hop still UNVERIFIED until Joe lands with Odyssey (Simulate Landing proof accepted for V0)
 
 ---
 
@@ -442,7 +442,6 @@ Each future slice must be broken into its own milestone with goal, non-goals, ac
 
 ## Next implementation target
 
-**M1 + M2** are COMPLETE / RUNTIME VERIFIED.  
-**M3** is IMPLEMENTATION COMPLETE — RUNTIME VERIFIED pending Joe’s Simulate Landing proof.
+**M1–M3** are COMPLETE / RUNTIME VERIFIED (Joe, 2026-10-01).
 
-Do **not** begin M4 (Landing Timer) until Joe asks / approves after M3 runtime proof.
+Do **not** begin M4 (Landing Timer) until Joe asks / approves.
