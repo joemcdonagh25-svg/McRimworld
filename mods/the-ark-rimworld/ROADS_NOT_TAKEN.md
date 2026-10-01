@@ -39,3 +39,4 @@ Agents and humans: before expanding scope, check this file. Prefer the active mi
 - Idea: Harmony-first integration style for most features `(deferred — rejected as default)`; Harmony only when no reasonable extension point exists.
 - Idea: Polished player UI before debug UI `(deferred)` — M2 is debug-first.
 - Idea: Implementing gameplay systems during documentation pass `(deferred — intentionally skipped)`.
+- Idea: Odyssey gravship wreckage / official gravship New Game start inside The Ark scenario `(deferred)` — V1.1 playtest scenario is a surface start + campaign activate; true ship-is-colony spawn needs verified Odyssey start/GenStep path (candidates: `GenStep_GravshipWreckage`, `GravshipUtility.GenerateGravship`).

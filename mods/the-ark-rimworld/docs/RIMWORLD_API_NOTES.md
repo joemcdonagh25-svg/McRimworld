@@ -259,6 +259,38 @@ Use this template:
 
 ---
 
+### 2026-10-01 — Scenario + ScenPart playtest setup (M2 companion)
+
+- **Goal:** New Game entry that activates Ark campaign state without a global map-gen patch.
+- **Evidence:** Same `ScenPart` surface as Vampire Lord M2; metadata confirms `RimWorld.ScenPart` hooks including `PostGameStart()`, `GenerateIntoMap(Map)`, and also `PostGravshipLanded` (unused here; candidate for later landing work).
+- **API:**
+  - `RimWorld.ScenarioDef` / scenario `parts` list
+  - `RimWorld.ScenPart` → custom `TheArk.Scenario.ScenPart_ArkPlaytestSetup`
+  - `ScenPart_ConfigPage_ConfigureStartingPawns` field `pawnCount`
+  - `ScenPart_GameStartDialog`, `ScenPart_PlayerPawnsArriveMethod`, `ScenPart_StartingThing_Defined`, `ScenPart_StartingResearch`
+  - Odyssey packageId string present in assembly: `Ludeon.RimWorld.Odyssey`
+- **Decision for The Ark:** Scenario-scoped activation of `CampaignActive` in `PostGameStart`. No gravship spawn in this scenario (Odyssey wreckage/start deferred). M1 fixture remains a Dev action.
+- **Related milestone:** M2 / V1.1 playtest convenience
+
+### 2026-10-01 — M2 / V1.1 Campaign Debug UI (Dev Mode)
+
+- **Goal:** Inspect and deliberately edit the five M1 campaign fields in-game without a second state owner; enable M1 save/load proof.
+- **Evidence:** Metadata inspection of `Krafs.Rimworld.Ref` 1.6.4871 `Assembly-CSharp.dll` (Cloud); Vampire Lord runtime-proven `DebugAction` pattern on the same machine/install family.
+- **API:**
+  - `LudeonTK.DebugActionAttribute` fields observed: `name`, `category`, `allowedGameStates`, `actionType`, DLC flags, `displayPriority`, `hideInSubMenu`
+  - `LudeonTK.AllowedGameStates.PlayingOnMap`
+  - `Verse.Window` (`DoWindowContents`, `InitialSize`, `optionalTitle`, `onlyDrawInDevMode`, close/drag flags)
+  - `Verse.Find.WindowStack.Add(Window)`
+  - `Verse.Listing_Standard`: `Begin` / `End`, `CheckboxLabeled`, `TextFieldNumericLabeled`, `ButtonText`, `Label`, `Gap` / `GapLine`
+  - `Verse.Prefs.DevMode` (get/set)
+  - `Verse.Widgets` text/button helpers also present (listing wrappers used)
+- **Behaviour notes:** Debug actions appear under Dev Mode tools. Draft UI buffers are discarded unless Apply runs. Fixture sets Active=true, Day=47, Landing=6, Tier=2, Pursuit=73.
+- **Decision for The Ark:** Ship `ArkCampaignDebugActions` + `Dialog_ArkCampaignDebug` + `ArkCampaignDebugOps`. No Harmony. No MainTab. No player-facing Pursuit UI yet (M6).
+- **Runtime status:** UI behaviour **UNVERIFIED** until Joe’s in-RimWorld test.
+- **Related milestone:** M2 / V1.1
+
+---
+
 ## Pending investigations (not yet verified)
 
 These are **questions**, not APIs. Do not implement against assumed answers.
@@ -266,7 +298,7 @@ These are **questions**, not APIs. Do not implement against assumed answers.
 | Topic | Needed by | Question |
 |-------|-----------|----------|
 | Campaign persistence owner | M1 | **Resolved:** `ArkCampaignGameComponent` (`GameComponent`). |
-| Runtime save/load proof of Ark fields | M1 | Confirm fields round-trip in a real RimWorld save (manual test pending). |
+| Runtime save/load proof of Ark fields | M1/M2 | Confirm fields round-trip via M1 fixture + debug UI (manual test pending). |
 | Gravship landed state | M3 | How to detect landed state; candidates include `WorldComponent_GravshipController.InitiateLanding` / `Map.wasSpawnedViaGravShipLanding` — behaviour UNVERIFIED. |
 | Gravship departure | M8 | Confirm `InitiateTakeoff` (or other) as reliable session teardown signal. |
 | Gravship object lifetime | M3/M8 | Does `Game.Gravship` / `Planet.Gravship` persist, null out, or get replaced across travel? |
