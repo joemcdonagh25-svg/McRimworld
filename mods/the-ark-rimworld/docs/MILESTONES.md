@@ -442,7 +442,6 @@ Each future slice must be broken into its own milestone with goal, non-goals, ac
 
 ## Next implementation target
 
-**M1 + M2** are COMPLETE / RUNTIME VERIFIED.  
-**M3** is IMPLEMENTATION COMPLETE — RUNTIME VERIFIED pending Joe’s Simulate Landing proof.
+**M1–M3** are COMPLETE / RUNTIME VERIFIED (Joe, 2026-10-01).
 
-Do **not** begin M4 (Landing Timer) until Joe asks / approves after M3 runtime proof.
+Do **not** begin M4 (Landing Timer) until Joe asks / approves.
