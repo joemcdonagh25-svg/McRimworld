@@ -4,6 +4,31 @@ Newest entries first.
 
 ---
 
+## 2026-10-01 — M2 keep walls owned by player + gladius stuff
+
+### What shipped
+- Courtyard walls/door now `SetFaction` to **Faction.OfPlayer** so they can be deconstructed / managed as colony buildings.
+- Place courtyard **before** pawn arrival; stop wiping starting items when clearing the footprint.
+- Gladius starting thing gets `<stuff>Steel</stuff>` (fixes MakeThing madeFromStuff error).
+- Rebuilt DLL.
+
+### What we learned
+- Unfactioned spawned walls look like ruins: not claimable/deconstructable the way players expect.
+- Clearing `ThingCategory.Item` in the courtyard after gear drop could destroy starter loot.
+
+### Key paths
+- `Source/VampireLord/Scenario/ScenPart_VampireLordPlaytestSetup.cs`
+- `Defs/Scenarios/VampireLordScenario.xml`
+
+### Operator notes
+- Pull + restart + **New Game** (old saves keep old unfactioned walls).
+- Ideology/Anomaly NREs in Joe’s log look separate from courtyard ownership; re-check after this fix.
+
+### Next steps
+- Joe retry New Game; confirm walls deconstruct and campaign still auto-starts.
+
+---
+
 ## 2026-10-01 — M2 scenario config fix (1.6 required parts)
 
 ### What shipped
