@@ -4,6 +4,34 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — Scenario visibility: vanilla parts + load diagnostic
+
+### What shipped
+- Playtest scenario parts are **vanilla-only** (no custom ScenPart Class) so listing does not depend on resolving mod C# types in XML.
+- Startup log after defs load: `ScenarioDef TheArk_Playtest LOADED` or a clear MISSING warning with install checklist.
+- Campaign still activates via `ArkCampaignGameComponent` when scenario name is The Ark.
+
+### What we learned
+- If Player.log never shows `[The Ark] Initialised successfully.`, the mod folder is not the McRimworld `mods/the-ark-rimworld` root (or the mod is disabled).
+- A second older The Ark install with the same `packageId` can shadow the McRimworld copy that has `Defs/`.
+
+### Key paths
+- `Defs/Scenarios/TheArkScenario.xml`
+- `Source/TheArk/TheArkBootstrap.cs`
+- `Source/TheArk/Campaign/ArkCampaignGameComponent.cs`
+
+### Operator notes
+1. Pull `main` / this PR on `C:\McRimworld`
+2. Junction **only** `C:\McRimworld\mods\the-ark-rimworld` → RimWorld `Mods\the-ark-rimworld`
+3. Remove/disable any other The Ark mod folder
+4. Enable The Ark → restart → search Player.log for `TheArk_Playtest LOADED`
+5. New Game → The Ark
+
+### Next steps
+- Joe confirm LOADED line + scenario list entry.
+
+---
+
 ## 2026-10-01 — Fix: New Game scenario not listing
 
 ### What shipped
