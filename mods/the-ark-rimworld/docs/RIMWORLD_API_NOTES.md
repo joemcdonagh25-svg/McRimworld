@@ -269,7 +269,7 @@ Use this template:
   - `LetterDefOf` Neutral / Negative / ThreatSmall / ThreatBig by band
   - Scribe: `arkLandingPursuitDaysApplied`, `arkLastNotifiedPursuitBand`
 - **Decision for The Ark:** No Harmony. No MainTab for V0. Letters on band change only (baseline sync on new/load). Incidents deferred to M7.
-- **Runtime status:** Pending Joe Pressure V0 pack checklist.
+- **Runtime status:** **RUNTIME VERIFIED** (Joe, 2026-10-02; `Pressure V0 proof PASS` — pursuitGrew, harbinger, pursuitKept).
 - **Related milestone:** M5 / M6
 
 ### 2026-10-01 — M4 Landing Timer (session ticks)
@@ -281,7 +281,7 @@ Use this template:
   - `RimWorld.GenDate.TicksPerDay` — day formatting / +1 day debug advance
   - Scribe: `arkLandingSessionTicks` (`int`, default 0)
 - **Decision for The Ark:** Persist accumulated session ticks (reset on begin/end). Do not write `CampaignDay`. Pursuit growth deferred to M5.
-- **Runtime status:** UNVERIFIED until Joe’s Simulate Landing + timer advance / save-load check.
+- **Runtime status:** **RUNTIME VERIFIED** (Joe, 2026-10-02; `Pressure V0 proof PASS` — timerStartZero, timerDay, timerCleared).
 - **Related milestone:** M4
 
 ### 2026-10-01 — M3 Landing Detection (no Harmony)
