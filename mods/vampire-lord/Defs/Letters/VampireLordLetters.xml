@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <LetterDef>
+    <defName>VampireLord_FortifyOffer</defName>
+    <label>keep fortification offer</label>
+    <color>(0.72, 0.22, 0.22)</color>
+    <letterClass>VampireLord.Campaign.ChoiceLetter_VampireLordFortify</letterClass>
+    <!-- Vanilla sound is LetterArrive (LetterArrive_Good does not exist and can break the def). -->
+    <arriveSound>LetterArrive</arriveSound>
+  </LetterDef>
+
+</Defs>

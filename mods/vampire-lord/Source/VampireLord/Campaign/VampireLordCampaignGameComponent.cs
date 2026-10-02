@@ -32,6 +32,14 @@ namespace VampireLord.Campaign
         private int lastWaveBloodSpent;
         private int lastWaveBloodCost;
 
+        // M4 Keep Fortification
+        private int fortifyPurchasesThisWindow;
+        private int lastFortifyWaveNumber = -1;
+        private int lastFortifyPlacedCount;
+        private int fortifyOfferDueTick = -1;
+        private bool fortifyOfferSentThisWindow;
+        private bool autoFortifyPlaytest;
+
         public bool CampaignActive
         {
             get => campaignActive;
@@ -129,6 +137,45 @@ namespace VampireLord.Campaign
             set => lastWaveBloodCost = value;
         }
 
+        public int FortifyPurchasesThisWindow
+        {
+            get => fortifyPurchasesThisWindow;
+            set => fortifyPurchasesThisWindow = value < 0 ? 0 : value;
+        }
+
+        public int LastFortifyWaveNumber
+        {
+            get => lastFortifyWaveNumber;
+            set => lastFortifyWaveNumber = value;
+        }
+
+        public int LastFortifyPlacedCount
+        {
+            get => lastFortifyPlacedCount;
+            set => lastFortifyPlacedCount = value < 0 ? 0 : value;
+        }
+
+        public int FortifyOfferDueTick
+        {
+            get => fortifyOfferDueTick;
+            set => fortifyOfferDueTick = value;
+        }
+
+        public bool FortifyOfferSentThisWindow
+        {
+            get => fortifyOfferSentThisWindow;
+            set => fortifyOfferSentThisWindow = value;
+        }
+
+        /// <summary>
+        /// Playtest QoL: when true, prep windows auto-place gate sandbags instead of sending the Accept letter.
+        /// </summary>
+        public bool AutoFortifyPlaytest
+        {
+            get => autoFortifyPlaytest;
+            set => autoFortifyPlaytest = value;
+        }
+
         /// <summary>1-based number of the currently pending / next wave.</summary>
         public int UpcomingWaveNumber => waveNumber + 1;
 
@@ -183,6 +230,12 @@ namespace VampireLord.Campaign
             Scribe_Values.Look(ref lastWaveBloodStarved, "vlLastWaveBloodStarved", false);
             Scribe_Values.Look(ref lastWaveBloodSpent, "vlLastWaveBloodSpent", 0);
             Scribe_Values.Look(ref lastWaveBloodCost, "vlLastWaveBloodCost", 0);
+            Scribe_Values.Look(ref fortifyPurchasesThisWindow, "vlFortifyPurchasesThisWindow", 0);
+            Scribe_Values.Look(ref lastFortifyWaveNumber, "vlLastFortifyWaveNumber", -1);
+            Scribe_Values.Look(ref lastFortifyPlacedCount, "vlLastFortifyPlacedCount", 0);
+            Scribe_Values.Look(ref fortifyOfferDueTick, "vlFortifyOfferDueTick", -1);
+            Scribe_Values.Look(ref fortifyOfferSentThisWindow, "vlFortifyOfferSentThisWindow", false);
+            Scribe_Values.Look(ref autoFortifyPlaytest, "vlAutoFortifyPlaytest", false);
         }
 
         public override void StartedNewGame()
@@ -215,6 +268,9 @@ namespace VampireLord.Campaign
                 VampireLordBloodTithe.ScanForFreshKills(this);
             }
 
+            // Fortify Accept letter is delayed so it is not lost during PostGameStart settle.
+            VampireLordFortify.EvaluatePendingOffer(this);
+
             if (lastScheduleCheckTick >= 0 &&
                 ticks - lastScheduleCheckTick < VampireLordTuning.ScheduleCheckIntervalTicks)
             {
@@ -233,7 +289,8 @@ namespace VampireLord.Campaign
                 $"Active={campaignActive}, Day={campaignDay}, Wave={waveNumber}, Threat={threatLevel}, " +
                 $"Pending={wavePending}, WarningIssued={warningIssued}, Type={pendingWaveType}, " +
                 $"WarningTick={warningTick}, NextWaveTick={nextWaveTick}, " +
-                $"Blood={bloodReserve}, GainedSinceWave={bloodGainedSinceWave}, LastStarved={lastWaveBloodStarved}");
+                $"Blood={bloodReserve}, GainedSinceWave={bloodGainedSinceWave}, LastStarved={lastWaveBloodStarved}, " +
+                $"FortifyPurchases={fortifyPurchasesThisWindow}, LastFortifyWave={lastFortifyWaveNumber}");
         }
     }
 }

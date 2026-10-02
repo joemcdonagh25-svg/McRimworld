@@ -4,6 +4,65 @@ Newest entries first.
 
 ---
 
+## 2026-10-02 — Fixture-save playtest workflow
+
+### What shipped
+- Docs: `docs/PLAYTEST_FIXTURE.md` — create `VL_prep`, reload instead of New Game.
+- Debug: **Ensure Prep Fixture**, **Toggle Auto-Fortify Playtest**, **Print Fixture Workflow**.
+- Auto-Fortify (scribed): prep windows place sandbags with no Accept letter.
+- DLL rebuild.
+
+### Operator notes
+1. Pull + restart → New Game once → **Ensure Prep Fixture** → optional Auto-Fortify ON → save `VL_prep`.
+2. Later changes: load `VL_prep` + Force Fortify / Trigger Wave.
+
+---
+
+## 2026-10-01 — Fix: fortify offer letter delivery
+
+### What shipped
+- Fortify offer is a **letter** (`Blood for the Walls` in the letter stack), not a Quests-tab quest.
+- Delay delivery ~90 ticks after prep window opens so PostGameStart settle does not swallow it.
+- Fix LetterDef sound (`LetterArrive`); always fall back to a plain letter if ChoiceLetter fails.
+- Retry/schedule tracked on the campaign component.
+
+### Operator notes
+1. Pull + restart; New Game → Vampire Lord (or **Offer Fortify** in Dev Mode).
+2. Wait a moment after the keep loads; open the **letter stack** (top-right), not Quests.
+3. Log line: `Fortify offer letter sent` / `Fortify offer scheduled`.
+
+---
+
+## 2026-10-01 — M4 Keep Fortification V0
+
+### What shipped
+- Between-wave blood spend (15) places player-owned sandbags south of the keep gate.
+- Prep window = wave pending and warning not yet issued; 1 package per window.
+- Accept letter `VampireLord_FortifyOffer` on campaign activate + after each wave; debug Offer / Force / Show.
+- Gate position remembered from playtest courtyard (`VampireLordKeepLayout`).
+- DLL rebuild.
+
+### What we learned
+- Blood Tithe needed a keep-changing sink; sandbag flanks are the smallest cover that sells tower-defence prep.
+- ChoiceLetter + LetterDef avoids Harmony and custom UI panels.
+
+### Key paths
+- `Source/VampireLord/Campaign/VampireLordFortify.cs`
+- `Source/VampireLord/Campaign/ChoiceLetter_VampireLordFortify.cs`
+- `Source/VampireLord/Scenario/VampireLordKeepLayout.cs`
+- `Defs/Letters/VampireLordLetters.xml`
+- `Assemblies/VampireLord.dll`
+
+### Operator notes
+1. Pull + restart → New Game → Vampire Lord.
+2. Accept **Blood for the Walls** (or Dev Mode → **Force Fortify Now**).
+3. Confirm sandbags at gate + Blood Reserve drop; second buy blocked until after next wave schedules.
+
+### Next steps
+- Joe RUNTIME VERIFIED checklist on the M4 card.
+
+---
+
 ## 2026-10-01 — Fix: keep is a real player home (not caravan)
 
 ### What shipped

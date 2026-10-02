@@ -4,6 +4,45 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-02 — Vampire Lord fixture-save playtest workflow
+
+### What shipped
+- `VL_prep` workflow docs + Dev Mode Ensure Prep Fixture / Auto-Fortify Playtest toggle.
+- Branch: `cursor/vampire-lord-m4-fortify-c5ad` (updates PR #24).
+
+### Operator notes
+- One New Game to make `VL_prep`; then load that save for fortify/wave iteration.
+
+---
+
+## 2026-10-01 — Vampire Lord fortify offer letter fix
+
+### What shipped
+- Delayed fortify Accept letter; fix LetterDef sound; clarify letter stack vs Quests.
+- Same branch: `cursor/vampire-lord-m4-fortify-c5ad`.
+
+### Operator notes
+- Pull/restart; look for **Blood for the Walls** in the letter stack (not Quests).
+
+---
+
+## 2026-10-01 — Vampire Lord M4 Keep Fortification V0
+
+### What shipped
+- Spend Blood Tithe between waves on gate sandbags (Accept letter + debug). No Harmony.
+- Branch: `cursor/vampire-lord-m4-fortify-c5ad`.
+
+### What we learned
+- Prep-window gate (`!WarningIssued`) is enough to time the offer without a custom UI.
+
+### Operator notes
+- Pull, restart, New Game → Vampire Lord; accept **Blood for the Walls** or use **Force Fortify Now**.
+
+### Next steps
+- Joe RUNTIME VERIFIED; then pick next parked card when ready.
+
+---
+
 ## 2026-10-01 — The Ark M3 Landing Detection RUNTIME VERIFIED
 
 ### What shipped
