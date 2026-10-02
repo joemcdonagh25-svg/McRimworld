@@ -138,7 +138,7 @@ Blood economy, castle progression between waves, custom UI panel, custom faction
 - Courtyard is a rectangle footprint, not an authored castle map
 - Map size/biome still chosen on the world/new-game pages (scenario does not force a custom planet)
 - Biotech DLC required for the default scenario cast
-- Ideology `Page_ChooseIdeoPreset` can still NRE on settle (game continues; ideo is pre-generated)
+- Ideology settle: scenario skips `Page_ChooseIdeoPreset` via auto-classic page (see Ideology polish entry)
 - Unrelated noise in Joe's stack: Anomaly `StartedNewGame` NRE, History `Sequence contains no elements`
 
 ---
@@ -180,7 +180,6 @@ Survive the wave → harvest blood → stock the keep → face the next host hun
 - Custom UI panel
 - Castle wall upgrades / approach-lane castle gen
 - Custom factions / weapons / armour
-- Ideology ChooseIdeoPreset polish
 - Bosses / victory condition
 
 ### Acceptance (implementation)
@@ -289,9 +288,27 @@ Prefer the fixture loop in `docs/PLAYTEST_FIXTURE.md` after the first New Game.
 | Campaign UI panel | Always-on Blood / Wave / Threat readout |
 | Prisoners & Tithe jobs | Capture → extract → stock the keep |
 | Dark Boons | Permanent powers bought with blood |
+---
+
+## Ideology settle polish (shipped 2026-10-01)
+
+**IMPLEMENTATION COMPLETE:** yes  
+**RUNTIME VERIFIED:** no
+
+### Goal
+Kill `Page_ChooseIdeoPreset.PostOpen` NRE on Vampire Lord settle without Harmony.
+
+### Shipped
+- `VampireLordScenario.GetFirstConfigPage` → `Page_VampireLordAutoIdeo` instead of vanilla ChooseIdeoPreset
+- Harden `allowedCultures`, classic ideo, `PostIdeoChosen`, auto-next
+
+### Manual runtime test (Joe)
+1. Ideology enabled → New Game → Vampire Lord → past starting site
+2. No ChooseIdeoPreset NRE; log shows AutoIdeoPage classic ideo
+3. Keep still playable (player home + campaign)
 
 ---
 
 ## Planning note
 
-M3 Blood Tithe and M4 Fortification **RUNTIME VERIFIED** await Joe’s checklists. No M5+ until Joe picks a parked card.
+M3 Blood Tithe and M4 Fortification **RUNTIME VERIFIED** await Joe’s checklists. Ideology settle polish shipped; settle retest pending. No M5+ until Joe picks a parked card.

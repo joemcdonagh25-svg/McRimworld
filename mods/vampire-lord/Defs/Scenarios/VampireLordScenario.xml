@@ -11,7 +11,8 @@
     <defName>VampireLord_PlaytestKeep</defName>
     <label>Vampire Lord</label>
     <description>Rule the Black Keep. One Vampire Lord and two thralls begin behind stone walls. Warnings come down the road. Prepare. Survive the wave. Repeat.\n\nTower-defence playtest scenario for Vampire Lord (M2). Requires Biotech.</description>
-    <scenario>
+    <!-- Custom Scenario class skips Ideology ChooseIdeoPreset (CultureDef NRE) via auto-classic page. -->
+    <scenario Class="VampireLord.Scenario.VampireLordScenario">
       <name>Vampire Lord</name>
       <summary>Defend the Black Keep: 1 Vampire Lord, 2 thralls, courtyard walls, escalating raids.</summary>
       <description>You hold a lonely keep at the edge of the wilds. Mortals already whisper of torchlight on the road. The Wave Director is active - prepare the walls before the next host arrives.</description>

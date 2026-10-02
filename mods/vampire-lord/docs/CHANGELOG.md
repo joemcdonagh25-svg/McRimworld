@@ -4,6 +4,28 @@ Newest entries first.
 
 ---
 
+## 2026-10-02 — Ideology settle polish (skip ChooseIdeoPreset NRE)
+
+### What shipped
+- Vampire Lord scenario uses a custom `VampireLordScenario` class that replaces Ideology's `Page_ChooseIdeoPreset` with `Page_VampireLordAutoIdeo`.
+- Auto page hardens null/empty `FactionDef.allowedCultures`, assigns a classic player ideoligion, runs `PostIdeoChosen`, and advances immediately (no Ideo UI).
+- Playtest setup still ensures cultures + ideo as a safety net.
+- DLL rebuild.
+
+### Key paths
+- `Defs/Scenarios/VampireLordScenario.xml`
+- `Source/VampireLord/Scenario/VampireLordScenario.cs`
+- `Source/VampireLord/Scenario/Page_VampireLordAutoIdeo.cs`
+- `Source/VampireLord/Scenario/VampireLordIdeoSettle.cs`
+- `Assemblies/VampireLord.dll`
+
+### Operator notes
+1. Pull + restart RimWorld (Ideology can stay enabled).
+2. New Game → **Vampire Lord** → finish storyteller/world/site.
+3. Expect log: `Ideo settle (AutoIdeoPage): classic ideo ... skipped ChooseIdeoPreset UI`.
+
+---
+
 ## 2026-10-02 — Fixture-save playtest workflow
 
 ### What shipped

@@ -4,6 +4,17 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-02 — Vampire Lord Ideology settle polish (merge)
+
+### What shipped
+- Vampire Lord scenario subclasses `Scenario` to replace `Page_ChooseIdeoPreset` with an auto-classic ideo page (harden `allowedCultures`, skip broken UI). No Harmony.
+- Branch: `cursor/vampire-lord-ideo-settle-c5ad`.
+
+### Operator notes
+- Pull, restart, New Game → Vampire Lord with Ideology on; confirm no ChooseIdeoPreset NRE and AutoIdeoPage log line.
+
+---
+
 ## 2026-10-02 — Vampire Lord fixture-save playtest workflow
 
 ### What shipped
