@@ -18,12 +18,17 @@ namespace VampireLord.Campaign
             campaign.WarningIssued = false;
             campaign.WavePending = false;
             campaign.SameArchetypeStreak = 0;
+            // Less-fussy playtest defaults (can toggle off in Dev Mode).
+            campaign.AutoFortifyPlaytest = true;
+            campaign.PlaytestPace = true;
+            campaign.PlaytestQuietLetters = true;
             VampireLordBloodTithe.ResetSessionCredits();
             VampireLordBloodTithe.EnsureStartingReserve(campaign);
             ScheduleNextWave(campaign);
             VampireLordFortify.NotifyPrepWindowOpened(campaign);
             Log.Message(
-                $"[VampireLord] Campaign activated. Blood Reserve={campaign.BloodReserve}.");
+                $"[VampireLord] Campaign activated. Blood={campaign.BloodReserve}, " +
+                $"AutoFortify=ON, Pace={campaign.EffectiveDaysBetweenWaves:0.##}d between waves, QuietLetters=ON.");
         }
 
         public static void StopCampaign(VampireLordCampaignGameComponent campaign)
@@ -37,8 +42,8 @@ namespace VampireLord.Campaign
         public static void ScheduleNextWave(VampireLordCampaignGameComponent campaign)
         {
             int now = Find.TickManager.TicksGame;
-            int between = DaysToTicks(VampireLordTuning.DaysBetweenWaves);
-            int lead = DaysToTicks(VampireLordTuning.WarningLeadDays);
+            int between = DaysToTicks(campaign.EffectiveDaysBetweenWaves);
+            int lead = DaysToTicks(campaign.EffectiveWarningLeadDays);
 
             campaign.PendingWaveType = SelectArchetype(campaign);
             campaign.NextWaveTick = now + between;
@@ -99,7 +104,7 @@ namespace VampireLord.Campaign
             // Pull warning/wave timing forward so the schedule stays consistent after a forced warning.
             int now = Find.TickManager.TicksGame;
             campaign.WarningTick = now;
-            campaign.NextWaveTick = now + DaysToTicks(VampireLordTuning.WarningLeadDays);
+            campaign.NextWaveTick = now + DaysToTicks(campaign.EffectiveWarningLeadDays);
             IssueWarning(campaign);
         }
 
@@ -273,6 +278,9 @@ namespace VampireLord.Campaign
             sb.AppendLine($"FortifyPrepWindow={VampireLordFortify.IsPrepWindow(campaign)}");
             sb.AppendLine($"FortifyPurchasesThisWindow={campaign.FortifyPurchasesThisWindow}/{VampireLordTuning.FortifyMaxPerPrepWindow}");
             sb.AppendLine($"LastFortifyWaveNumber={campaign.LastFortifyWaveNumber}");
+            sb.AppendLine($"AutoFortifyPlaytest={campaign.AutoFortifyPlaytest}");
+            sb.AppendLine($"PlaytestPace={campaign.PlaytestPace} ({campaign.EffectiveDaysBetweenWaves:0.##}d / warn {campaign.EffectiveWarningLeadDays:0.##}d)");
+            sb.AppendLine($"PlaytestQuietLetters={campaign.PlaytestQuietLetters}");
             return sb.ToString().TrimEnd();
         }
 

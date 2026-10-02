@@ -4,6 +4,17 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-02 — Vampire Lord less-fussy playtest defaults
+
+### What shipped
+- AutoFortify + fast pace + quiet letters ON by default; no game-start dialog; pack-paced VL agent rule.
+- Branch: `cursor/vampire-lord-less-fussy-c5ad`.
+
+### Operator notes
+- Pull, restart, one New Game → save `VL_prep` → iterate with Trigger Wave.
+
+---
+
 ## 2026-10-02 — Vampire Lord Ideology settle polish (merge)
 
 ### What shipped

@@ -1,0 +1,33 @@
+---
+description: Vampire Lord collaboration pace — pack-sized work, less confirm fuss
+globs:
+  - mods/vampire-lord/**
+alwaysApply: false
+---
+
+# Vampire Lord — less-fussy collaboration
+
+Joe wants **speed over granularity** for Vampire Lord.
+
+## Defaults
+
+- Ship **feature packs**, not micro-PRs for every letter/tuning tweak.
+- After a milestone card is confirmed, **do not ask again** for polish/QoL inside that card — just ship.
+- Prefer one draft PR per pack; merge when Joe says merge.
+- RUNTIME VERIFY once at pack end, not after every fix.
+
+## In-game playtest defaults (code)
+
+Campaign activate turns ON:
+
+- AutoFortify (sandbags, no Accept letter)
+- Playtest Pace (~1 day between waves, short warning)
+- Quiet Letters (skip harvest / fortify-complete spam)
+
+Joe iterates via `VL_prep` save + Dev Mode **Trigger Wave** / **Force Fortify**. See `mods/vampire-lord/docs/PLAYTEST_FIXTURE.md`.
+
+## What still needs a human pick
+
+- Starting a **new** milestone from the parked table (Approach Lanes / UI / Prisoners / Dark Boons)
+- Merging PRs when Joe says merge
+- Marking RUNTIME VERIFIED when Joe confirms a live session

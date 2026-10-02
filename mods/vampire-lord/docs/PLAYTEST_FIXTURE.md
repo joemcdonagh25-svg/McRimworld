@@ -1,45 +1,42 @@
-# Vampire Lord — Fixture-save playtest workflow
+# Vampire Lord — Less-fussy playtest
 
-**Goal:** Stop doing New Game for every DLL change. Load `VL_prep`, poke debug actions, iterate.
+**Goal:** Load once, poke debug, iterate. Minimal letters. Minimal New Games.
+
+## Defaults (ON at campaign start)
+
+| Flag | Effect |
+|------|--------|
+| **AutoFortify** | Sandbags place themselves each prep window — no Accept letter |
+| **Playtest Pace** | ~1 day between waves, ~0.25 day warning (not 3+1) |
+| **Quiet Letters** | Skip harvest + fortify-complete spam; keep warning + tithe |
+
+Toggle any of these off in Dev Mode if you want the “full” UI.
+
+Game start dialog is removed from the scenario (one less click).
 
 ---
 
-## Once (create the fixture)
+## Once
 
-1. Pull latest Vampire Lord + restart RimWorld.
-2. **New Game → Vampire Lord** → finish setup; let the keep load (campaign auto-starts).
-3. Dev Mode → **Vampire Lord** → **Ensure Prep Fixture**  
-   (blood topped up, prep window open, player home ensured, fortify offer scheduled / auto-applied)
-4. Optional: **Toggle Auto-Fortify Playtest** → ON  
-   (sandbags place themselves each prep window — no Accept letter)
-5. **Save** as `VL_prep` (or any name you will reuse).
-
-Dev Mode → **Print Fixture Workflow** dumps this checklist into the log anytime.
+1. Pull + restart RimWorld.
+2. **New Game → Vampire Lord** → finish setup; keep loads; campaign auto-starts.
+3. Optional: Dev Mode → **Ensure Prep Fixture** (resets prep + reapplies defaults).
+4. **Save** as `VL_prep`.
 
 ---
 
 ## Each code change
 
-1. Pull / rebuild `Assemblies/VampireLord.dll` → **restart RimWorld** (C# requires restart).
-2. **Load `VL_prep`** — do not New Game.
-3. Hit the debug action you care about:
+1. Pull / rebuild DLL → **restart RimWorld**.
+2. **Load `VL_prep`**.
+3. Use:
 
-| Want | Debug action |
-|------|----------------|
-| Place sandbags now | **Force Fortify Now** |
-| Auto sandbags each prep | **Toggle Auto-Fortify Playtest** |
-| Reset prep + blood | **Ensure Prep Fixture** (then re-save `VL_prep` if you want) |
-| Fire a wave | **Trigger Wave Now** |
-| Advance warning only | **Trigger Warning Now** |
-| Blood inspect / tweak | **Show / Add / Spend / Force Low Blood** |
-| State dump | **Show Campaign State** / **Show Fortify State** |
+| Want | Action |
+|------|--------|
+| Next raid now | **Trigger Wave Now** |
+| Warning only | **Trigger Warning Now** |
+| Sandbags now | **Force Fortify Now** (or wait — AutoFortify does it) |
+| Reset prep | **Ensure Prep Fixture** → re-save `VL_prep` if needed |
+| Inspect | **Show Campaign State** / **Print Fixture Workflow** |
 
-4. If the save drifts (wrong window, low blood): **Ensure Prep Fixture** → save over `VL_prep`.
-
----
-
-## Notes
-
-- Fortify offer is a **letter stack** item (`Blood for the Walls`), not a Quests-tab quest. Auto-Fortify skips it.
-- Auto-Fortify is a **playtest flag** stored on the campaign (survives save/load). Leave it OFF for “real” Accept-letter checks.
-- New Game is only needed for settle / scenario / Ideology path tests.
+New Game only for settle / Ideology / scenario path tests.

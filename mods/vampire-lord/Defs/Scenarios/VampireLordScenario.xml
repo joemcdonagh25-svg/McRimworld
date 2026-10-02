@@ -30,11 +30,7 @@
           <tag>Surface</tag>
         </li>
 
-        <li Class="ScenPart_GameStartDialog">
-          <def>VampireLord_GameStartDialog</def>
-          <text>The Black Keep is yours.\n\nOne Vampire Lord. Two thralls. Stone walls and an open south gate to the wilds.\n\nScouts will warn you before each host arrives. Use the time. Raise the walls. Survive the wave.\n\n(Debug actions under Vampire Lord still work if you want to force a warning or raid.)</text>
-          <closeSound>GameStartSting</closeSound>
-        </li>
+        <!-- GameStartDialog removed: one less click on every New Game (playtest pace). -->
 
         <li Class="ScenPart_ConfigPage_ConfigureStartingPawns_Xenotypes">
           <def>ConfigurePawnsXenotypes</def>
