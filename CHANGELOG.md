@@ -7,28 +7,64 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 ## 2026-10-02 — The Ark Pressure V0 pack (M4+M5+M6)
 
 ### What shipped
-- One playtest pack: Landing Timer + Pursuit-from-landed-days + band letters; DLL rebuild.
-- Branch: `cursor/ark-pressure-v0-5195` (supersedes standalone M4 PR scope).
+- One playtest pack: Landing Timer + Pursuit-from-landed-days + band letters; one-click **Run Pressure V0 Proof**; DLL rebuild.
+- Branch: `cursor/ark-pressure-v0-5195` → merged into `main`.
 
 ### Operator notes
-- One RimWorld boot → Dev Mode → **Run Pressure V0 Proof** → paste `Pressure V0 proof PASS`.
+- Pull → restart once → New Game → The Ark → Dev Mode → **Run Pressure V0 Proof** → paste `Pressure V0 proof PASS`.
 
 ### Next steps
-- Merge; Joe one-click verify; no M7 until asked.
+- Joe one-click verify; no M7 until asked.
 
 ---
 
-## 2026-10-01 — The Ark M4 Landing Timer V0
+## 2026-10-02 — Vampire Lord Ideology settle polish (merge)
 
 ### What shipped
-- Session-only landing timer (ticks) while landing session active; Dev Advance +1 Day; DLL rebuild.
-- Branch: `cursor/ark-m4-landing-timer-5195`.
+- Vampire Lord scenario subclasses `Scenario` to replace `Page_ChooseIdeoPreset` with an auto-classic ideo page (harden `allowedCultures`, skip broken UI). No Harmony.
+- Branch: `cursor/vampire-lord-ideo-settle-c5ad`.
 
 ### Operator notes
-- Pull → Simulate Landing → unpause or Advance Landing Timer +1 Day → confirm TimerTicks / ~days.
+- Pull, restart, New Game → Vampire Lord with Ideology on; confirm no ChooseIdeoPreset NRE and AutoIdeoPage log line.
+
+---
+
+## 2026-10-02 — Vampire Lord fixture-save playtest workflow
+
+### What shipped
+- `VL_prep` workflow docs + Dev Mode Ensure Prep Fixture / Auto-Fortify Playtest toggle.
+- Branch: `cursor/vampire-lord-m4-fortify-c5ad` (updates PR #24).
+
+### Operator notes
+- One New Game to make `VL_prep`; then load that save for fortify/wave iteration.
+
+---
+
+## 2026-10-01 — Vampire Lord fortify offer letter fix
+
+### What shipped
+- Delayed fortify Accept letter; fix LetterDef sound; clarify letter stack vs Quests.
+- Same branch: `cursor/vampire-lord-m4-fortify-c5ad`.
+
+### Operator notes
+- Pull/restart; look for **Blood for the Walls** in the letter stack (not Quests).
+
+---
+
+## 2026-10-01 — Vampire Lord M4 Keep Fortification V0
+
+### What shipped
+- Spend Blood Tithe between waves on gate sandbags (Accept letter + debug). No Harmony.
+- Branch: `cursor/vampire-lord-m4-fortify-c5ad`.
+
+### What we learned
+- Prep-window gate (`!WarningIssued`) is enough to time the offer without a custom UI.
+
+### Operator notes
+- Pull, restart, New Game → Vampire Lord; accept **Blood for the Walls** or use **Force Fortify Now**.
 
 ### Next steps
-- Merge; Joe runtime verify; no M5 until asked.
+- Joe RUNTIME VERIFIED; then pick next parked card when ready.
 
 ---
 

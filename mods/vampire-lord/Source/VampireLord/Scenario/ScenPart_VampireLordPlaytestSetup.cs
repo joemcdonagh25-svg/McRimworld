@@ -84,6 +84,12 @@ namespace VampireLord.Scenario
                 return;
             }
 
+            // Harden cultures even when an ideo already exists (helps odd mid-game reloads).
+            if (player.def != null)
+            {
+                VampireLordIdeoSettle.EnsureAllowedCultures(player.def, "PlaytestSetup");
+            }
+
             if (player.ideos.PrimaryIdeo != null)
             {
                 return;
@@ -204,6 +210,7 @@ namespace VampireLord.Scenario
 
             lastGateCenter = gateCenter;
             s_lastGateCenter = gateCenter;
+            VampireLordKeepLayout.Remember(map, exterior, gateCenter);
 
             foreach (IntVec3 cell in exterior.EdgeCells)
             {
@@ -284,6 +291,7 @@ namespace VampireLord.Scenario
             {
                 lastCourtyard = s_lastCourtyard;
                 lastGateCenter = s_lastGateCenter;
+                VampireLordKeepLayout.Remember(map, lastCourtyard, lastGateCenter);
             }
         }
 
