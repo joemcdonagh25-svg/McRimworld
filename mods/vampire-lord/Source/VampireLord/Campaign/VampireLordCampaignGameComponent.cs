@@ -38,6 +38,7 @@ namespace VampireLord.Campaign
         private int lastFortifyPlacedCount;
         private int fortifyOfferDueTick = -1;
         private bool fortifyOfferSentThisWindow;
+        private bool autoFortifyPlaytest;
 
         public bool CampaignActive
         {
@@ -166,6 +167,15 @@ namespace VampireLord.Campaign
             set => fortifyOfferSentThisWindow = value;
         }
 
+        /// <summary>
+        /// Playtest QoL: when true, prep windows auto-place gate sandbags instead of sending the Accept letter.
+        /// </summary>
+        public bool AutoFortifyPlaytest
+        {
+            get => autoFortifyPlaytest;
+            set => autoFortifyPlaytest = value;
+        }
+
         /// <summary>1-based number of the currently pending / next wave.</summary>
         public int UpcomingWaveNumber => waveNumber + 1;
 
@@ -225,6 +235,7 @@ namespace VampireLord.Campaign
             Scribe_Values.Look(ref lastFortifyPlacedCount, "vlLastFortifyPlacedCount", 0);
             Scribe_Values.Look(ref fortifyOfferDueTick, "vlFortifyOfferDueTick", -1);
             Scribe_Values.Look(ref fortifyOfferSentThisWindow, "vlFortifyOfferSentThisWindow", false);
+            Scribe_Values.Look(ref autoFortifyPlaytest, "vlAutoFortifyPlaytest", false);
         }
 
         public override void StartedNewGame()

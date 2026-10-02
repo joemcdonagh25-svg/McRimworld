@@ -49,6 +49,8 @@ After the campaign starts, the Wave Director:
 ### Debug (optional)
 Dev Mode → category **Vampire Lord** → Start / Stop / Trigger Warning / Trigger Wave / Show Campaign State / Blood Tithe / Fortify tools.
 
+**Fast loop:** see `docs/PLAYTEST_FIXTURE.md` — save `VL_prep`, then **Ensure Prep Fixture** / **Toggle Auto-Fortify Playtest** / **Force Fortify Now** instead of New Game every time.
+
 ## Build
 
 ```bash

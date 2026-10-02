@@ -262,12 +262,14 @@ Harvest blood from the host → spend it on the walls before the next warning �
 
 ### Manual runtime test (Joe)
 
-1. Pull + restart → New Game → Vampire Lord → campaign active; Blood Reserve ≥ 15
-2. Wait ~1–2 seconds after load; open the **letter stack** (top-right) — **not** the Quests tab — for **Blood for the Walls** (or Dev Mode → **Offer Fortify**)
-3. Accept → reserve −15; sandbags south of gate; log `Fortified gate`
-4. **Show Fortify State** — purchases 1/1; second Accept disabled until next prep window
-5. **Trigger Warning Now** → fortify blocked until after next wave; **Force Fortify Now** still works for debug
-6. Save/load mid-prep → purchase cap still sane
+Prefer the fixture loop in `docs/PLAYTEST_FIXTURE.md` after the first New Game.
+
+1. Pull + restart → New Game → Vampire Lord → **Ensure Prep Fixture** → save `VL_prep`
+2. Letter path: wait for **Blood for the Walls** (letter stack) **or** turn **Auto-Fortify Playtest** ON
+3. Accept / auto → reserve −15; sandbags south of gate; log `Fortified gate`
+4. **Show Fortify State** — purchases 1/1; second buy blocked until next prep window
+5. **Trigger Warning Now** → fortify blocked; **Force Fortify Now** still works for debug
+6. Later iterations: load `VL_prep` instead of New Game
 
 ### Key paths
 

@@ -125,6 +125,55 @@ namespace VampireLord.Campaign
                 return;
             }
 
+            DeliverPrepFortify(campaign);
+        }
+
+        /// <summary>
+        /// Either auto-place sandbags (playtest toggle) or send the Accept letter.
+        /// </summary>
+        public static void DeliverPrepFortify(VampireLordCampaignGameComponent campaign)
+        {
+            if (campaign == null || !campaign.CampaignActive)
+            {
+                return;
+            }
+
+            if (campaign.FortifyOfferSentThisWindow)
+            {
+                Log.Message($"{LogPrefix} Fortify offer already handled this prep window.");
+                return;
+            }
+
+            if (!IsPrepWindow(campaign))
+            {
+                Log.Message($"{LogPrefix} Fortify offer skipped — not in prep window.");
+                return;
+            }
+
+            if (campaign.FortifyPurchasesThisWindow >= VampireLordTuning.FortifyMaxPerPrepWindow)
+            {
+                Log.Message($"{LogPrefix} Fortify offer skipped — already fortified this window.");
+                return;
+            }
+
+            if (campaign.AutoFortifyPlaytest)
+            {
+                campaign.FortifyOfferDueTick = -1;
+                if (TryPurchase(campaign, forced: false, reason: "auto-playtest"))
+                {
+                    campaign.FortifyOfferSentThisWindow = true;
+                    Log.Message($"{LogPrefix} Auto-Fortify Playtest placed sandbags (no letter).");
+                }
+                else
+                {
+                    // Keep due cleared; Joe can Force Fortify or top up blood.
+                    campaign.FortifyOfferSentThisWindow = true;
+                    Log.Warning($"{LogPrefix} Auto-Fortify Playtest failed — use Force Fortify Now or Ensure Prep Fixture.");
+                }
+
+                return;
+            }
+
             TrySendOfferLetter(campaign);
         }
 
@@ -215,6 +264,7 @@ namespace VampireLord.Campaign
             sb.AppendLine($"PrepWindow={IsPrepWindow(campaign)}");
             sb.AppendLine($"FortifyBloodCost={VampireLordTuning.FortifyBloodCost}");
             sb.AppendLine($"FortifyPurchasesThisWindow={campaign.FortifyPurchasesThisWindow}/{VampireLordTuning.FortifyMaxPerPrepWindow}");
+            sb.AppendLine($"AutoFortifyPlaytest={campaign.AutoFortifyPlaytest}");
             sb.AppendLine($"FortifyOfferSentThisWindow={campaign.FortifyOfferSentThisWindow}");
             sb.AppendLine($"FortifyOfferDueTick={campaign.FortifyOfferDueTick}");
             sb.AppendLine($"LastFortifyWaveNumber={campaign.LastFortifyWaveNumber}");

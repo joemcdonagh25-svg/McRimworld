@@ -4,6 +4,17 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-02 — Vampire Lord fixture-save playtest workflow
+
+### What shipped
+- `VL_prep` workflow docs + Dev Mode Ensure Prep Fixture / Auto-Fortify Playtest toggle.
+- Branch: `cursor/vampire-lord-m4-fortify-c5ad` (updates PR #24).
+
+### Operator notes
+- One New Game to make `VL_prep`; then load that save for fortify/wave iteration.
+
+---
+
 ## 2026-10-01 — Vampire Lord fortify offer letter fix
 
 ### What shipped

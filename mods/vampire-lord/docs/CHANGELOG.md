@@ -4,6 +4,20 @@ Newest entries first.
 
 ---
 
+## 2026-10-02 — Fixture-save playtest workflow
+
+### What shipped
+- Docs: `docs/PLAYTEST_FIXTURE.md` — create `VL_prep`, reload instead of New Game.
+- Debug: **Ensure Prep Fixture**, **Toggle Auto-Fortify Playtest**, **Print Fixture Workflow**.
+- Auto-Fortify (scribed): prep windows place sandbags with no Accept letter.
+- DLL rebuild.
+
+### Operator notes
+1. Pull + restart → New Game once → **Ensure Prep Fixture** → optional Auto-Fortify ON → save `VL_prep`.
+2. Later changes: load `VL_prep` + Force Fortify / Trigger Wave.
+
+---
+
 ## 2026-10-01 — Fix: fortify offer letter delivery
 
 ### What shipped
