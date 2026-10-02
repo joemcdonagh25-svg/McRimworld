@@ -268,7 +268,7 @@ Increase Pursuit based on time since landing.
 
 ### Manual test
 
-Covered by **Pressure V0 pack** checklist (same boot as M4/M6).
+Dev Mode → **Run Pressure V0 Proof** → paste `Pressure V0 proof PASS`.
 
 ### Likely technical risks
 
@@ -304,7 +304,7 @@ Provide clear player-facing Pursuit state (QUIET → HARBINGER bands).
 
 ### Manual test
 
-Covered by **Pressure V0 pack** checklist (same boot as M4/M5).
+Dev Mode → **Run Pressure V0 Proof** → paste `Pressure V0 proof PASS`.
 
 ### Likely technical risks
 

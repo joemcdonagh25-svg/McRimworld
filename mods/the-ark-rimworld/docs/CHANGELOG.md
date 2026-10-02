@@ -10,7 +10,7 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 - **M4** Landing Timer (already on branch): session ticks while landed.
 - **M5** Pursuit V0: +1 Pursuit per whole landed day while session active; clamp 0–100; durable across End Session.
 - **M6** Pursuit band letters: QUIET → NOTICED → HUNTED → BESIEGED → HARBINGER on threshold cross.
-- Dev: Advance Landing Timer +1 Day, Jump Pursuit To Next Band.
+- Dev: **Run Pressure V0 Proof** one-click (plus finer actions if needed).
 - Rebuild `Assemblies/TheArk.dll`.
 - Branch: `cursor/ark-pressure-v0-5195` (includes M4).
 
