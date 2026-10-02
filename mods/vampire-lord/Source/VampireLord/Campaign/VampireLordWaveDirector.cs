@@ -281,6 +281,7 @@ namespace VampireLord.Campaign
             sb.AppendLine($"AutoFortifyPlaytest={campaign.AutoFortifyPlaytest}");
             sb.AppendLine($"PlaytestPace={campaign.PlaytestPace} ({campaign.EffectiveDaysBetweenWaves:0.##}d / warn {campaign.EffectiveWarningLeadDays:0.##}d)");
             sb.AppendLine($"PlaytestQuietLetters={campaign.PlaytestQuietLetters}");
+            sb.AppendLine($"ShowCampaignHud={campaign.ShowCampaignHud}");
             return sb.ToString().TrimEnd();
         }
 

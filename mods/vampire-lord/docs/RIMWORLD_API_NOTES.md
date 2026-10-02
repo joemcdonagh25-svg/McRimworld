@@ -187,6 +187,14 @@ Target: RimWorld **1.6** via `Krafs.Rimworld.Ref` 1.6.4871 (Cloud/CI) or local S
 - **Decision for Vampire Lord:** `VampireLordScenario` swaps in `Page_VampireLordAutoIdeo` (harden cultures → classic ideo → `PostIdeoChosen` → immediate `DoNext`). No Harmony.
 - **Related milestone:** Ideology settle polish
 
+### 2026-10-02 — Campaign HUD via GameComponentOnGUI
+
+- **Goal:** Always-on Blood / Wave / Threat readout without Harmony or a MainTab click.
+- **Evidence:** Krafs.Rimworld.Ref 1.6.4871 — `Verse.GameComponent.GameComponentOnGUI()` is virtual.
+- **API:** Override `GameComponentOnGUI` on the campaign component; draw with `Widgets.Label` / `Widgets.DrawBoxSolid` using `UI.screenHeight`.
+- **Decision for Vampire Lord:** Bottom-left strip while `CampaignActive && ShowCampaignHud`; skip when not `ProgramState.Playing`.
+- **Related milestone:** M5
+
 ### 2026-10-01 — Keep Fortification ChoiceLetter + sandbags
 
 - **Goal:** Spend blood between waves on gate cover without Harmony or a custom UI panel.
@@ -213,6 +221,7 @@ Target: RimWorld **1.6** via `Krafs.Rimworld.Ref` 1.6.4871 (Cloud/CI) or local S
 | M3 Blood Reserve persist + kill credit + wave tithe / starved | PENDING |
 | Ideology ChooseIdeoPreset skip / AutoIdeoPage | PENDING (Joe settle retest) |
 | M4 Fortify offer letter + sandbags at gate | PENDING |
+| M5 Campaign HUD Blood/Wave/Threat | PENDING |
 
 ---
 

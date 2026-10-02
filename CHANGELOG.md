@@ -4,6 +4,17 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-02 — Vampire Lord M5 Campaign UI HUD
+
+### What shipped
+- Always-on Blood / Wave / Threat HUD (bottom-left). No Harmony.
+- Branch: `cursor/vampire-lord-campaign-ui-c5ad`.
+
+### Operator notes
+- Pull, restart, load `VL_prep` — look bottom-left for the Black Keep strip.
+
+---
+
 ## 2026-10-02 — The Ark Pressure V0 RUNTIME VERIFIED (Joe Player.log)
 
 ### What shipped

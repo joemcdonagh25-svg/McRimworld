@@ -260,6 +260,22 @@ namespace VampireLord.Debug
             Log.Message(VampireLordPlaytest.FormatFixtureChecklist(campaign));
         }
 
+        [DebugAction(
+            category = "Vampire Lord",
+            name = "Toggle Campaign HUD",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void ToggleCampaignHud()
+        {
+            if (!TryGet(out VampireLordCampaignGameComponent campaign))
+            {
+                return;
+            }
+
+            campaign.ShowCampaignHud = !campaign.ShowCampaignHud;
+            Log.Message(
+                $"[VampireLord] Campaign HUD {(campaign.ShowCampaignHud ? "ON" : "OFF")}.");
+        }
+
         private static bool TryGet(out VampireLordCampaignGameComponent campaign)
         {
             if (VampireLordCampaign.TryGet(out campaign))
