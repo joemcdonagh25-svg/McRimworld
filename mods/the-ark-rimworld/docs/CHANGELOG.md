@@ -4,6 +4,38 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-02 — M7 Pursuit Incident V0
+
+### What shipped
+- One Pursuit consequence: at **BESIEGED (Pursuit ≥ 61)** while landed, fire vanilla **ManhunterPack** once per landing session.
+- Fixed points (350) — not scaled with Pursuit (avoids raid-farm ladders).
+- Session flag `arkPursuitIncidentFiredThisSession`; reset on begin/end landing.
+- Dev: **Run Pursuit Incident Proof** (one-click) + **Force Fire Pursuit Incident**.
+- Rebuild `Assemblies/TheArk.dll`.
+- Branch: `cursor/ark-m7-pursuit-incident-5195`.
+
+### What we learned
+- Same `IncidentParms` + `TryExecute` pattern as Vampire Lord, but **ManhunterPack** instead of `RaidEnemy` so we do not fight human raid-point escalation.
+- Evacuation fantasy: one animal-pack pressure beat when BESIEGED hits; leave remains the intended answer (Harbinger encounter still deferred).
+
+### Key paths
+- `Source/TheArk/Campaign/ArkPursuitIncident.cs`
+- `Source/TheArk/Campaign/ArkCampaignGameComponent.cs`
+- `Source/TheArk/Debug/ArkCampaignDebugOps.cs`
+- `Source/TheArk/Debug/ArkCampaignDebugActions.cs`
+
+### Operator notes — ONE click after one boot
+1. Pull / merge → restart once
+2. New Game → **The Ark** → Dev Mode
+3. Dev Actions → **The Ark (DEV)** → **Run Pursuit Incident Proof**
+4. Paste the log line starting with `Pursuit Incident proof PASS` (or FAIL)
+5. Expect animals / ManhunterPack letter once when Pursuit hits 61; proof also checks no second auto-fire
+
+### Next steps
+- Joe RUNTIME VERIFIED via one-click proof; no M8 until asked.
+
+---
+
 ## 2026-10-02 — Pressure V0 (M4+M5+M6) RUNTIME VERIFIED (Joe Player.log)
 
 ### What shipped

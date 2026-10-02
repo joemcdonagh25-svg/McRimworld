@@ -53,8 +53,14 @@ namespace TheArk.Debug
             listing.Begin(inRect);
 
             listing.Label("DEVELOPMENT / DEBUG ONLY — not player UI.");
-            listing.Label("Prefer one-click: Run Pressure V0 Proof (also in Dev Actions).");
+            listing.Label("Prefer one-click proofs in Dev Actions.");
             listing.GapLine();
+
+            if (listing.ButtonText("Run Pursuit Incident Proof (M7)"))
+            {
+                ArkCampaignDebugOps.RunPursuitIncidentProof(campaign);
+                PullFromCampaign();
+            }
 
             if (listing.ButtonText("Run Pressure V0 Proof (M4+M5+M6)"))
             {

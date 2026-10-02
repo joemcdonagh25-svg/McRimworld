@@ -315,7 +315,7 @@ Dev Mode → **Run Pressure V0 Proof** → paste `Pressure V0 proof PASS`.
 
 ## M7 — Pursuit Incident
 
-**Status:** PLANNED
+**Status:** IMPLEMENTATION COMPLETE — **RUNTIME VERIFIED** pending Joe one-click proof
 
 ### Goal
 
@@ -333,11 +333,21 @@ Cause **one** verified gameplay consequence from Pursuit.
 - Consequence is reproducible in manual test
 - Evacuation remains the intended strategic response direction (document how this incident supports that)
 
+### Implementation notes
+
+- Trigger: Pursuit ≥ **61 (BESIEGED)** while campaign + landing session active
+- Consequence: vanilla **`IncidentDefOf.ManhunterPack`** via `Worker.TryExecute` (fixed **350** points — not scaled with Pursuit)
+- Once per landing session (`arkPursuitIncidentFiredThisSession`); resets on begin/end session
+- Why this supports evacuation: one animal-pack pressure event, no human raid ladder / storyteller farming loop
+- Dev: **Run Pursuit Incident Proof**; **Force Fire Pursuit Incident**
+
 ### Manual test
 
-1. Drive Pursuit to the trigger condition.
-2. Observe the single consequence.
-3. Confirm it does not require unrelated systems beyond this milestone.
+1. Pull / merge → restart RimWorld once.
+2. New Game → **The Ark** → Dev Mode.
+3. Dev Actions → **The Ark (DEV)** → **Run Pursuit Incident Proof**.
+4. Paste the log line starting with `Pursuit Incident proof PASS` (or FAIL).
+5. On success: mark M7 **RUNTIME VERIFIED**.
 
 ### Likely technical risks
 
@@ -462,6 +472,7 @@ Each future slice must be broken into its own milestone with goal, non-goals, ac
 
 ## Next implementation target
 
-**M1–M6** COMPLETE / RUNTIME VERIFIED (Joe; Pressure V0 one-click proof 2026-10-02).
+**M1–M6** COMPLETE / RUNTIME VERIFIED.  
+**M7** IMPLEMENTATION COMPLETE — one-click **Run Pursuit Incident Proof** pending Joe.
 
-Do **not** begin M7 (Pursuit Incident) until Joe asks / approves.
+Do **not** begin M8 (Departure Lifecycle) until Joe asks / approves after M7 runtime proof.

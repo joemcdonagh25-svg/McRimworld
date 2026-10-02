@@ -259,6 +259,19 @@ Use this template:
 
 ---
 
+### 2026-10-02 — M7 Pursuit incident (ManhunterPack)
+
+- **Goal:** One real gameplay consequence from Pursuit without a human raid ladder.
+- **Evidence:** MetadataLoadContext on `Krafs.Rimworld.Ref` 1.6.4871 `RimWorld.IncidentDefOf` + VL pattern in-repo (`VampireLordRaidLauncher`).
+- **API:**
+  - `RimWorld.IncidentDefOf.ManhunterPack`
+  - `IncidentWorker.TryExecute(IncidentParms)`
+  - `IncidentParms`: `target`, `points`, `forced`, `bypassStorytellerSettings` (no `faction` / `raidStrategy`)
+- **Behaviour notes:** Fixed points (350). Once per landing session via `arkPursuitIncidentFiredThisSession`. Trigger Pursuit ≥ 61 (BESIEGED) while session active.
+- **Decision for The Ark:** Prefer ManhunterPack over `RaidEnemy` for M7 — supports leave-don't-farm; Harbinger encounter deferred.
+- **Runtime status:** Pending Joe **Run Pursuit Incident Proof**.
+- **Related milestone:** M7
+
 ### 2026-10-02 — M5/M6 Pursuit growth + band letters (Pressure V0)
 
 - **Goal:** Pursuit rises with landed time; player sees QUIET→HARBINGER via letters.
@@ -365,7 +378,7 @@ These are **questions**, not APIs. Do not implement against assumed answers.
 | Gravship landed state | M3 | **Implemented (poll):** travel edge + `wasSpawnedViaGravShipLanding` + `PostGravshipLanded`; real hop UNVERIFIED; Simulate Landing is V0 proof. |
 | Gravship departure | M8 | Confirm `InitiateTakeoff` (or other) as reliable session teardown signal. |
 | Gravship object lifetime | M3/M8 | Does `Game.Gravship` / `Planet.Gravship` persist, null out, or get replaced across travel? |
-| Incident hooks for Pursuit | M7 | Best supported path for one Pursuit-driven consequence without fighting vanilla raid logic? |
+| Incident hooks for Pursuit | M7 | **Resolved (impl):** `IncidentDefOf.ManhunterPack` + fixed points; RUNTIME VERIFIED pending Joe proof. |
 | Quest / objective scaffolding | M9 | Prefer quests, incidents, custom map components, or another verified pattern for Expedition V0? |
 
 ---

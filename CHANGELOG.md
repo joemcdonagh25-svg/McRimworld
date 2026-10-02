@@ -4,6 +4,20 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-02 — The Ark M7 Pursuit Incident V0
+
+### What shipped
+- One BESIEGED+ consequence: vanilla ManhunterPack once per landing; one-click **Run Pursuit Incident Proof**; DLL rebuild.
+- Branch: `cursor/ark-m7-pursuit-incident-5195`.
+
+### Operator notes
+- Pull → restart once → New Game → The Ark → Dev Mode → **Run Pursuit Incident Proof** → paste `Pursuit Incident proof PASS`.
+
+### Next steps
+- Joe one-click verify; no M8 until asked.
+
+---
+
 ## 2026-10-02 — The Ark Pressure V0 RUNTIME VERIFIED (Joe Player.log)
 
 ### What shipped

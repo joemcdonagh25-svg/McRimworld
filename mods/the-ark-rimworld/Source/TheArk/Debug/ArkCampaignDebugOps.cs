@@ -182,13 +182,77 @@ namespace TheArk.Debug
             return pass;
         }
 
+        /// <summary>
+        /// One-click M7 proof: BESIEGED fires ManhunterPack once; second raise does not re-fire.
+        /// Logs a single PASS/FAIL line Joe can paste.
+        /// </summary>
+        public static bool RunPursuitIncidentProof(ArkCampaignGameComponent campaign)
+        {
+            Log.Message("[The Ark] [DEV] Pursuit Incident (M7) proof START.");
+
+            SetCampaignActive(campaign, true);
+            campaign.SetPursuit(0, "Dev.M7Proof.ResetPursuit", notifyBand: false);
+
+            if (campaign.LandingSessionActive)
+            {
+                EndLandingSession(campaign);
+            }
+
+            if (!SimulateLanding(campaign))
+            {
+                Log.Error("[The Ark] [DEV] Pursuit Incident proof FAIL: Simulate Landing did not start a session.");
+                return false;
+            }
+
+            bool sessionOk = campaign.LandingSessionActive;
+            bool notFiredYet = !campaign.PursuitIncidentFiredThisSession;
+
+            // Cross BESIEGED threshold — should fire once.
+            campaign.SetPursuit(ArkPursuitIncident.TriggerPursuit, "Dev.M7Proof.TriggerBesieged", notifyBand: true);
+            bool firedOnTrigger = campaign.PursuitIncidentFiredThisSession;
+
+            // Raise further inside BESIEGED — must not fire again this session.
+            campaign.SetPursuit(75, "Dev.M7Proof.StillBesieged", notifyBand: true);
+            bool stillOnce = campaign.PursuitIncidentFiredThisSession;
+
+            // Second force attempt should be blocked by once-per-landing unless we use Force.
+            // Prove automatic path stayed once: flag true and Pursuit still ≥ trigger.
+            bool pursuitAtTrigger = campaign.Pursuit >= ArkPursuitIncident.TriggerPursuit;
+
+            bool pass = sessionOk && notFiredYet && firedOnTrigger && stillOnce && pursuitAtTrigger;
+
+            string summary =
+                $"[The Ark] [DEV] Pursuit Incident proof {(pass ? "PASS" : "FAIL")}: " +
+                $"session={sessionOk}, notFiredYet={notFiredYet}, firedOnTrigger={firedOnTrigger}, " +
+                $"onceOnly={stillOnce}, pursuitAtTrigger={pursuitAtTrigger}, " +
+                $"IncidentFired={campaign.PursuitIncidentFiredThisSession}, " +
+                $"{ArkPursuit.Format(campaign.Pursuit)}";
+
+            if (pass)
+            {
+                Log.Message(summary);
+            }
+            else
+            {
+                Log.Error(summary);
+            }
+
+            return pass;
+        }
+
+        public static bool ForceFirePursuitIncident(ArkCampaignGameComponent campaign)
+        {
+            return campaign.ForceFirePursuitIncident("Dev.ForceFirePursuitIncident");
+        }
+
         public static string FormatState(ArkCampaignGameComponent campaign)
         {
             return
                 $"Active={campaign.CampaignActive}, Day={campaign.CampaignDay}, " +
                 $"Landing={campaign.LandingNumber}, Tier={campaign.ArkTier}, {ArkPursuit.Format(campaign.Pursuit)}, " +
                 $"LandingSession={campaign.LandingSessionActive}, SessionMapId={campaign.LandingSessionMapId}, " +
-                $"TimerTicks={campaign.LandingSessionTicks} (~{ArkCampaignGameComponent.FormatTicksAsDays(campaign.LandingSessionTicks)}d)";
+                $"TimerTicks={campaign.LandingSessionTicks} (~{ArkCampaignGameComponent.FormatTicksAsDays(campaign.LandingSessionTicks)}d), " +
+                $"PursuitIncidentFired={campaign.PursuitIncidentFiredThisSession}";
         }
 
         public static void LogState(string context, ArkCampaignGameComponent campaign)

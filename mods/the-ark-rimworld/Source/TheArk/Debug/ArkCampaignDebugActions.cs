@@ -11,9 +11,25 @@ namespace TheArk.Debug
     {
         [DebugAction(
             category = "The Ark (DEV)",
-            name = "Run Pressure V0 Proof",
+            name = "Run Pursuit Incident Proof",
             allowedGameStates = AllowedGameStates.PlayingOnMap,
             displayPriority = 1000)]
+        private static void RunPursuitIncidentProof()
+        {
+            if (!ArkCampaignDebugOps.TryGet(out ArkCampaignGameComponent campaign))
+            {
+                Log.Error("[The Ark] [DEV] No ArkCampaignGameComponent on Current.Game.");
+                return;
+            }
+
+            ArkCampaignDebugOps.RunPursuitIncidentProof(campaign);
+        }
+
+        [DebugAction(
+            category = "The Ark (DEV)",
+            name = "Run Pressure V0 Proof",
+            allowedGameStates = AllowedGameStates.PlayingOnMap,
+            displayPriority = 900)]
         private static void RunPressureV0Proof()
         {
             if (!ArkCampaignDebugOps.TryGet(out ArkCampaignGameComponent campaign))
@@ -23,6 +39,21 @@ namespace TheArk.Debug
             }
 
             ArkCampaignDebugOps.RunPressureV0Proof(campaign);
+        }
+
+        [DebugAction(
+            category = "The Ark (DEV)",
+            name = "Force Fire Pursuit Incident",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void ForceFirePursuitIncident()
+        {
+            if (!ArkCampaignDebugOps.TryGet(out ArkCampaignGameComponent campaign))
+            {
+                Log.Error("[The Ark] [DEV] No ArkCampaignGameComponent on Current.Game.");
+                return;
+            }
+
+            ArkCampaignDebugOps.ForceFirePursuitIncident(campaign);
         }
 
         [DebugAction(

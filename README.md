@@ -17,7 +17,7 @@ McRimworld/
 
 | Folder | Package | Status |
 |--------|---------|--------|
-| `mods/the-ark-rimworld/` | `joemcdonagh.theark` | RimWorld 1.6 — M1–M6 **RUNTIME VERIFIED** (Pressure V0 one-click proof); no M7 until Joe asks |
+| `mods/the-ark-rimworld/` | `joemcdonagh.theark` | RimWorld 1.6 — M1–M6 **RUNTIME VERIFIED**; M7 Pursuit Incident implemented — one-click verify pending |
 | `mods/vampire-lord/` | `joemcdonagh.vampirelord` | RimWorld 1.6 — M1 + M2 RUNTIME VERIFIED; M3 Blood Tithe implemented (runtime pending) |
 
 ### The Ark

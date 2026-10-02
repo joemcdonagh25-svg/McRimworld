@@ -15,7 +15,8 @@ Agents and humans: before expanding scope, check this file. Prefer the active mi
 ## Pursuit
 
 - Idea: Multi-factor Pursuit drivers (wealth, crew count, Ark tier, player actions, expedition events, campaign events) `(deferred)` — V0 is time-since-landing only (M5).
-- Idea: Harbinger as a distinct encounter / pressure fantasy beyond raid-point escalation `(deferred)` — after M7 baseline consequence exists.
+- Idea: Harbinger as a distinct encounter / pressure fantasy beyond raid-point escalation `(deferred)` — M7 baseline is ManhunterPack at BESIEGED; richer Harbinger still later.
+- Idea: Scaling Manhunter/raid points with Pursuit 0–100 `(deferred — rejected for M7)` — fixed points keep leave-don't-farm fantasy.
 - Idea: Tuned Pursuit decay / freeze / reset policies with player-facing explanation on every departure `(deferred)` — must be chosen explicitly at M8, richer tuning later.
 
 ## Expeditions & content
