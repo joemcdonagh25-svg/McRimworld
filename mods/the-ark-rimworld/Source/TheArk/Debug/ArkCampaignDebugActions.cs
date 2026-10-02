@@ -104,5 +104,20 @@ namespace TheArk.Debug
 
             ArkCampaignDebugOps.AdvanceLandingTimerOneDay(campaign);
         }
+
+        [DebugAction(
+            category = "The Ark (DEV)",
+            name = "Jump Pursuit To Next Band",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void JumpPursuitToNextBand()
+        {
+            if (!ArkCampaignDebugOps.TryGet(out ArkCampaignGameComponent campaign))
+            {
+                Log.Error("[The Ark] [DEV] No ArkCampaignGameComponent on Current.Game.");
+                return;
+            }
+
+            ArkCampaignDebugOps.JumpPursuitToNextBand(campaign);
+        }
     }
 }

@@ -242,7 +242,7 @@ Track elapsed time since landing.
 
 ## M5 — Pursuit V0
 
-**Status:** PLANNED
+**Status:** IMPLEMENTATION COMPLETE — **RUNTIME VERIFIED** pending Pressure V0 pack test
 
 ### Goal
 
@@ -259,11 +259,16 @@ Increase Pursuit based on time since landing.
 - Pursuit clamps or saturates within 0–100 as designed
 - No additional drivers required for V0
 
+### Implementation notes
+
+- Rate: **+1 Pursuit per whole landed day** (`GenDate.TicksPerDay`) while landing session active
+- Clamp 0–100 via `ArkPursuit`
+- Durable `arkPursuit` persists across End Session; growth stops when not landed
+- Session field `arkLandingPursuitDaysApplied` prevents double-grant after save/load
+
 ### Manual test
 
-1. Land with Pursuit at a known value.
-2. Wait / advance time.
-3. Confirm Pursuit increases only while landed (per design).
+Covered by **Pressure V0 pack** checklist (same boot as M4/M6).
 
 ### Likely technical risks
 
@@ -274,7 +279,7 @@ Increase Pursuit based on time since landing.
 
 ## M6 — Pursuit Feedback
 
-**Status:** PLANNED
+**Status:** IMPLEMENTATION COMPLETE — **RUNTIME VERIFIED** pending Pressure V0 pack test
 
 ### Goal
 
@@ -291,10 +296,15 @@ Provide clear player-facing Pursuit state (QUIET → HARBINGER bands).
 - Band thresholds match design (0–20 Quiet, etc.)
 - Feedback updates when Pursuit crosses thresholds
 
+### Implementation notes
+
+- Bands: QUIET 0–20, NOTICED 21–40, HUNTED 41–60, BESIEGED 61–80, HARBINGER 81–100
+- Letter on band change (`ArkPursuitLetters`); baseline synced on new/load (no re-spam)
+- Dev: **Jump Pursuit To Next Band**
+
 ### Manual test
 
-1. Set or grow Pursuit across thresholds.
-2. Confirm player-facing feedback changes at each band.
+Covered by **Pressure V0 pack** checklist (same boot as M4/M5).
 
 ### Likely technical risks
 
@@ -452,7 +462,7 @@ Each future slice must be broken into its own milestone with goal, non-goals, ac
 
 ## Next implementation target
 
-**M1–M3** are COMPLETE / RUNTIME VERIFIED.  
-**M4** is IMPLEMENTATION COMPLETE — RUNTIME VERIFIED pending Joe’s timer proof.
+**M1–M3** COMPLETE / RUNTIME VERIFIED.  
+**Pressure V0 pack (M4+M5+M6)** IMPLEMENTATION COMPLETE — one RimWorld boot checklist pending Joe.
 
-Do **not** begin M5 (Pursuit V0) until Joe asks / approves after M4 runtime proof.
+Do **not** begin M7 (Pursuit Incident) until Joe asks / approves after Pressure V0 runtime proof.

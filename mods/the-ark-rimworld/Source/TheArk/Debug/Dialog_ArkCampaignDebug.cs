@@ -21,7 +21,7 @@ namespace TheArk.Debug
         private string bufferTier;
         private string bufferPursuit;
 
-        public override Vector2 InitialSize => new Vector2(460f, 520f);
+        public override Vector2 InitialSize => new Vector2(480f, 560f);
 
         public Dialog_ArkCampaignDebug()
         {
@@ -53,15 +53,16 @@ namespace TheArk.Debug
             listing.Begin(inRect);
 
             listing.Label("DEVELOPMENT / DEBUG ONLY — not player UI.");
-            listing.Label("Reads ArkCampaignGameComponent. Writes only via Apply / fixture / landing.");
+            listing.Label("Pressure V0: M4 timer + M5 Pursuit/day landed + M6 band letters.");
             listing.GapLine();
 
             listing.Label("Live: " + ArkCampaignDebugOps.FormatState(campaign));
             listing.Label(
-                "Landing timer (M4): " +
+                "Landing timer: " +
                 (campaign.LandingSessionActive
                     ? $"{campaign.LandingSessionTicks} ticks (~{ArkCampaignGameComponent.FormatTicksAsDays(campaign.LandingSessionTicks)}d) — running"
-                    : "inactive (runs only while landing session is active)"));
+                    : "inactive"));
+            listing.Label($"Pursuit band: {ArkPursuit.BandLabel(campaign.PursuitBand)} ({ArkPursuit.BandRangeLabel(campaign.PursuitBand)})");
             listing.Gap(6f);
 
             listing.CheckboxLabeled("CampaignActive", ref draftActive);
@@ -100,9 +101,15 @@ namespace TheArk.Debug
                 PullFromCampaign();
             }
 
-            if (listing.ButtonText("Advance Landing Timer +1 Day (M4)"))
+            if (listing.ButtonText("Advance Landing Timer +1 Day (M4/M5)"))
             {
                 ArkCampaignDebugOps.AdvanceLandingTimerOneDay(campaign);
+                PullFromCampaign();
+            }
+
+            if (listing.ButtonText("Jump Pursuit To Next Band (M6)"))
+            {
+                ArkCampaignDebugOps.JumpPursuitToNextBand(campaign);
                 PullFromCampaign();
             }
 

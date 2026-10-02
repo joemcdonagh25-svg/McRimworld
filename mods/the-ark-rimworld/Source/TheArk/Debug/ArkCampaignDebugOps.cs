@@ -42,7 +42,7 @@ namespace TheArk.Debug
 
         public static void SetPursuit(ArkCampaignGameComponent campaign, int value)
         {
-            campaign.Pursuit = value;
+            campaign.SetPursuit(value, "Dev.SetPursuit", notifyBand: true);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace TheArk.Debug
             SetCampaignDay(campaign, FixtureCampaignDay);
             SetLandingNumber(campaign, FixtureLandingNumber);
             SetArkTier(campaign, FixtureArkTier);
-            SetPursuit(campaign, FixturePursuit);
+            campaign.SetPursuit(FixturePursuit, "Dev.M1Fixture", notifyBand: true);
             Log.Message("[The Ark] [DEV] Applied M1 persistence fixture: " + FormatState(campaign));
         }
 
@@ -79,17 +79,44 @@ namespace TheArk.Debug
             return campaign.EndLandingSession("Dev.EndLandingSession");
         }
 
-        /// <summary>M4 proof helper: add one RimWorld day to the landing timer while session active.</summary>
+        /// <summary>M4/M5 proof: add one RimWorld day to the landing timer (also grants +1 Pursuit while landed).</summary>
         public static bool AdvanceLandingTimerOneDay(ArkCampaignGameComponent campaign)
         {
             return campaign.AddLandingSessionTicks(GenDate.TicksPerDay, "Dev.AdvanceLandingTimerOneDay");
+        }
+
+        /// <summary>M6 proof: jump Pursuit to the entry value of each band in order for letter checks.</summary>
+        public static void JumpPursuitToNextBand(ArkCampaignGameComponent campaign)
+        {
+            ArkPursuit.Band current = campaign.PursuitBand;
+            int target;
+            switch (current)
+            {
+                case ArkPursuit.Band.Quiet:
+                    target = 21;
+                    break;
+                case ArkPursuit.Band.Noticed:
+                    target = 41;
+                    break;
+                case ArkPursuit.Band.Hunted:
+                    target = 61;
+                    break;
+                case ArkPursuit.Band.Besieged:
+                    target = 81;
+                    break;
+                default:
+                    target = 0;
+                    break;
+            }
+
+            campaign.SetPursuit(target, "Dev.JumpPursuitToNextBand", notifyBand: true);
         }
 
         public static string FormatState(ArkCampaignGameComponent campaign)
         {
             return
                 $"Active={campaign.CampaignActive}, Day={campaign.CampaignDay}, " +
-                $"Landing={campaign.LandingNumber}, Tier={campaign.ArkTier}, Pursuit={campaign.Pursuit}, " +
+                $"Landing={campaign.LandingNumber}, Tier={campaign.ArkTier}, {ArkPursuit.Format(campaign.Pursuit)}, " +
                 $"LandingSession={campaign.LandingSessionActive}, SessionMapId={campaign.LandingSessionMapId}, " +
                 $"TimerTicks={campaign.LandingSessionTicks} (~{ArkCampaignGameComponent.FormatTicksAsDays(campaign.LandingSessionTicks)}d)";
         }
