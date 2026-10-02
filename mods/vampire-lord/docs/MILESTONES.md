@@ -280,14 +280,36 @@ Prefer the fixture loop in `docs/PLAYTEST_FIXTURE.md` after the first New Game.
 
 ---
 
+## M5 — Campaign UI V0
+
+**PLANNING:** yes (Joe confirmed UI, 2026-10-02)  
+**IMPLEMENTATION COMPLETE:** yes  
+**RUNTIME VERIFIED:** no
+
+### Goal
+Always-on Blood / Wave / Threat readout so the keep is playable without Dev Mode logs.
+
+### Shipped
+- Bottom-left HUD via `GameComponentOnGUI` (no Harmony)
+- Shows Blood + next tithe, upcoming wave/type, threat, prep/inbound ETA
+- Default ON; Dev Mode **Toggle Campaign HUD**
+
+### Manual runtime test (Joe)
+1. Load `VL_prep` (or New Game → Vampire Lord)
+2. Confirm bottom-left **Black Keep** strip with Blood / Wave / Threat
+3. **Trigger Wave** / wait — status line updates (prep → inbound)
+4. Toggle HUD off/on in Dev Mode
+
+---
+
 ## M4+ — still parked
 
 | Candidate | Fantasy |
 |-----------|---------|
 | Approach Lanes V0 | Raids prefer a cleared south road into the gate |
-| Campaign UI panel | Always-on Blood / Wave / Threat readout |
 | Prisoners & Tithe jobs | Capture → extract → stock the keep |
 | Dark Boons | Permanent powers bought with blood |
+
 ---
 
 ## Ideology settle polish (shipped 2026-10-01)
@@ -311,4 +333,4 @@ Kill `Page_ChooseIdeoPreset.PostOpen` NRE on Vampire Lord settle without Harmony
 
 ## Planning note
 
-M3 Blood Tithe and M4 Fortification **RUNTIME VERIFIED** await Joe’s checklists. Ideology settle polish shipped; settle retest pending. No M5+ until Joe picks a parked card.
+M3–M5 **RUNTIME VERIFIED** await Joe’s live sessions. No next pack until Joe picks a parked card (lanes / prisoners / boons).

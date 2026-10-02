@@ -5,7 +5,8 @@ Gothic keep tower-defence campaign for RimWorld 1.6.
 **M1 status:** IMPLEMENTATION COMPLETE — RUNTIME VERIFIED (Joe live session, 2026-10-01).  
 **M2 status:** IMPLEMENTATION COMPLETE — RUNTIME VERIFIED (Joe live session, 2026-10-01).  
 **M3 status:** IMPLEMENTATION COMPLETE — RUNTIME VERIFIED pending (Blood Tithe V0).  
-**M4 status:** IMPLEMENTATION COMPLETE — RUNTIME VERIFIED pending (Keep Fortification V0).
+**M4 status:** IMPLEMENTATION COMPLETE — RUNTIME VERIFIED pending (Keep Fortification V0).  
+**M5 status:** IMPLEMENTATION COMPLETE — RUNTIME VERIFIED pending (Campaign UI HUD).
 
 Requires **Biotech** (Sanguophage Vampire Lord).
 
@@ -27,7 +28,6 @@ After the campaign starts, the Wave Director:
 - Outside map revealed (not a fog void)
 - Starter food, medicine, materials, rifles, hemogen packs
 - Wave Director **auto-starts** (no Dev Mode required)
-- Black Keep flavour letters / start dialog
 
 ### M3 — Blood Tithe V0
 - Keep Blood Reserve (starts at 40 when campaign activates)
@@ -39,6 +39,10 @@ After the campaign starts, the Wave Director:
 - Spend **15 blood** between waves on sandbags at the south gate (Accept letter)
 - 1 package per prep window; blocked after the advance warning
 - Dev Mode: **Offer Fortify**, **Force Fortify Now**, **Show Fortify State**
+
+### M5 — Campaign UI V0
+- Always-on bottom-left HUD: Blood, tithe due, Wave, Threat, prep/inbound ETA
+- Default ON; Dev Mode **Toggle Campaign HUD**
 
 ## Enable
 

@@ -4,6 +4,19 @@ Newest entries first.
 
 ---
 
+## 2026-10-02 — M5 Campaign UI HUD
+
+### What shipped
+- Always-on bottom-left HUD: Blood (+ tithe), Wave/type, Threat, prep/inbound ETA.
+- Drawn via `GameComponentOnGUI` (no Harmony). Default ON; **Toggle Campaign HUD** debug.
+- DLL rebuild.
+
+### Operator notes
+1. Pull + restart → load `VL_prep`.
+2. Confirm **Black Keep** strip bottom-left; status updates with Trigger Wave / natural schedule.
+
+---
+
 ## 2026-10-02 — Less-fussy playtest defaults
 
 ### What shipped

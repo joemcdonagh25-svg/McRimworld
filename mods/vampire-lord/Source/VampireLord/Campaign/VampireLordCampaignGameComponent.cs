@@ -42,6 +42,7 @@ namespace VampireLord.Campaign
         private bool autoFortifyPlaytest = true;
         private bool playtestPace = true;
         private bool playtestQuietLetters = true;
+        private bool showCampaignHud = true;
 
         public bool CampaignActive
         {
@@ -194,6 +195,13 @@ namespace VampireLord.Campaign
             set => playtestQuietLetters = value;
         }
 
+        /// <summary>Always-on Blood / Wave / Threat HUD. Default ON.</summary>
+        public bool ShowCampaignHud
+        {
+            get => showCampaignHud;
+            set => showCampaignHud = value;
+        }
+
         public float EffectiveDaysBetweenWaves =>
             playtestPace ? VampireLordTuning.PlaytestDaysBetweenWaves : VampireLordTuning.DaysBetweenWaves;
 
@@ -262,6 +270,12 @@ namespace VampireLord.Campaign
             Scribe_Values.Look(ref autoFortifyPlaytest, "vlAutoFortifyPlaytest", true);
             Scribe_Values.Look(ref playtestPace, "vlPlaytestPace", true);
             Scribe_Values.Look(ref playtestQuietLetters, "vlPlaytestQuietLetters", true);
+            Scribe_Values.Look(ref showCampaignHud, "vlShowCampaignHud", true);
+        }
+
+        public override void GameComponentOnGUI()
+        {
+            VampireLordCampaignHud.Draw(this);
         }
 
         public override void StartedNewGame()
