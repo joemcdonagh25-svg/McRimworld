@@ -200,7 +200,7 @@ Reliably determine when the Ark has landed and establish a landing session.
 
 ## M4 — Landing Timer
 
-**Status:** IMPLEMENTATION COMPLETE — **RUNTIME VERIFIED** pending Pressure V0 pack test
+**Status:** COMPLETE — **RUNTIME VERIFIED** (Joe, 2026-10-02; Pressure V0 proof PASS — timerStartZero, timerDay, timerCleared)
 
 ### Goal
 
@@ -242,7 +242,7 @@ Track elapsed time since landing.
 
 ## M5 — Pursuit V0
 
-**Status:** IMPLEMENTATION COMPLETE — **RUNTIME VERIFIED** pending Pressure V0 pack test
+**Status:** COMPLETE — **RUNTIME VERIFIED** (Joe, 2026-10-02; Pressure V0 proof PASS — pursuitGrew, pursuitKept)
 
 ### Goal
 
@@ -279,7 +279,7 @@ Dev Mode → **Run Pressure V0 Proof** → paste `Pressure V0 proof PASS`.
 
 ## M6 — Pursuit Feedback
 
-**Status:** IMPLEMENTATION COMPLETE — **RUNTIME VERIFIED** pending Pressure V0 pack test
+**Status:** COMPLETE — **RUNTIME VERIFIED** (Joe, 2026-10-02; Pressure V0 proof PASS — harbinger / band walk to HARBINGER 81)
 
 ### Goal
 
@@ -462,7 +462,6 @@ Each future slice must be broken into its own milestone with goal, non-goals, ac
 
 ## Next implementation target
 
-**M1–M3** COMPLETE / RUNTIME VERIFIED.  
-**Pressure V0 pack (M4+M5+M6)** IMPLEMENTATION COMPLETE — one RimWorld boot checklist pending Joe.
+**M1–M6** COMPLETE / RUNTIME VERIFIED (Joe; Pressure V0 one-click proof 2026-10-02).
 
-Do **not** begin M7 (Pursuit Incident) until Joe asks / approves after Pressure V0 runtime proof.
+Do **not** begin M7 (Pursuit Incident) until Joe asks / approves.

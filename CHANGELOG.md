@@ -4,16 +4,25 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
-<<<<<<< HEAD
-## 2026-10-02 — Vampire Lord less-fussy playtest defaults
+## 2026-10-02 — The Ark Pressure V0 RUNTIME VERIFIED (Joe Player.log)
 
 ### What shipped
-- AutoFortify + fast pace + quiet letters ON by default; no game-start dialog; pack-paced VL agent rule.
-- Branch: `cursor/vampire-lord-less-fussy-c5ad`.
+- Docs only: mark Pressure V0 pack (M4 Landing Timer + M5 Pursuit V0 + M6 band letters) **RUNTIME VERIFIED** from Joe’s live one-click proof.
+- Also clears leftover merge conflict markers in this parent changelog from the #28 / #29 merge order.
+- Branch: `cursor/ark-pressure-v0-runtime-verified-5195`.
+
+### What we learned
+- Log: `[The Ark] [DEV] Pressure V0 proof PASS: session=True, timerStartZero=True, timerDay=True, pursuitGrew=True, harbinger=True, timerCleared=True, pursuitKept=True, LandingNumber=1, Pursuit=81 (HARBINGER 81–100)`
+- New Game still shows known Ideology ChooseIdeoPreset / Anomaly / History noise; does not block Pressure V0 proof.
 
 ### Operator notes
-- Pull, restart, one New Game → save `VL_prep` → iterate with Trigger Wave.
-=======
+- No M7 (Pursuit Incident) until Joe asks.
+
+### Next steps
+- Stop; Joe chooses next Ark milestone when ready.
+
+---
+
 ## 2026-10-02 — The Ark Pressure V0 pack (M4+M5+M6)
 
 ### What shipped
@@ -24,8 +33,18 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 - Pull → restart once → New Game → The Ark → Dev Mode → **Run Pressure V0 Proof** → paste `Pressure V0 proof PASS`.
 
 ### Next steps
-- Joe one-click verify; no M7 until asked.
->>>>>>> cursor/ark-pressure-v0-5195
+- Done: Joe RUNTIME VERIFIED via one-click proof (see entry above).
+
+---
+
+## 2026-10-02 — Vampire Lord less-fussy playtest defaults
+
+### What shipped
+- AutoFortify + fast pace + quiet letters ON by default; no game-start dialog; pack-paced VL agent rule.
+- Branch: `cursor/vampire-lord-less-fussy-c5ad`.
+
+### Operator notes
+- Pull, restart, one New Game → save `VL_prep` → iterate with Trigger Wave.
 
 ---
 

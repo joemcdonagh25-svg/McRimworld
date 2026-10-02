@@ -4,6 +4,24 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-02 — Pressure V0 (M4+M5+M6) RUNTIME VERIFIED (Joe Player.log)
+
+### What shipped
+- Docs only: mark M4 Landing Timer, M5 Pursuit V0, and M6 Pursuit Feedback **RUNTIME VERIFIED** from Joe’s live **Run Pressure V0 Proof**.
+
+### What we learned
+- Log: `[The Ark] [DEV] Pressure V0 proof PASS: session=True, timerStartZero=True, timerDay=True, pursuitGrew=True, harbinger=True, timerCleared=True, pursuitKept=True, LandingNumber=1, Pursuit=81 (HARBINGER 81–100)`
+- Supporting steps in the same session: Landing session STARTED → timer ~1.00d / Pursuit 1 → band walk NOTICED→HUNTED→BESIEGED→HARBINGER → Landing session ENDED with Pursuit kept at 81.
+- New Game still shows known Ideology ChooseIdeoPreset / Anomaly / History noise; does not block Pressure V0 proof.
+
+### Operator notes
+- No M7 Pursuit Incident until Joe asks.
+
+### Next steps
+- Stop; Joe chooses next Ark milestone when ready.
+
+---
+
 ## 2026-10-02 — Pressure V0 pack (M4 + M5 + M6)
 
 ### What shipped
@@ -31,7 +49,7 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 4. Paste the log line starting with `Pressure V0 proof PASS` (or FAIL)
 
 ### Next steps
-- Joe RUNTIME VERIFIED via one-click proof; no M7 until asked.
+- Done: Joe RUNTIME VERIFIED via one-click proof (see entry above).
 
 ---
 
@@ -61,7 +79,7 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 4. Optional: save/load mid-session; End Session clears timer
 
 ### Next steps
-- Joe RUNTIME VERIFIED; no M5 until asked.
+- Done: covered by Pressure V0 RUNTIME VERIFIED (2026-10-02).
 
 ---
 
