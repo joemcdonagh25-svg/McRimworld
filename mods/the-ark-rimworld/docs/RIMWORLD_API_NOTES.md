@@ -259,6 +259,19 @@ Use this template:
 
 ---
 
+### 2026-10-02 — M5/M6 Pursuit growth + band letters (Pressure V0)
+
+- **Goal:** Pursuit rises with landed time; player sees QUIET→HARBINGER via letters.
+- **Evidence:** Extends M3/M4 session owner; `Find.LetterStack.ReceiveLetter` (same pattern as Vampire Lord).
+- **API / design:**
+  - Growth: +1 Pursuit per `GenDate.TicksPerDay` while `LandingSessionActive`; clamp 0–100
+  - Bands: 0–20 Quiet, 21–40 Noticed, 41–60 Hunted, 61–80 Besieged, 81–100 Harbinger (`GAME_DESIGN.md`)
+  - `LetterDefOf` Neutral / Negative / ThreatSmall / ThreatBig by band
+  - Scribe: `arkLandingPursuitDaysApplied`, `arkLastNotifiedPursuitBand`
+- **Decision for The Ark:** No Harmony. No MainTab for V0. Letters on band change only (baseline sync on new/load). Incidents deferred to M7.
+- **Runtime status:** Pending Joe Pressure V0 pack checklist.
+- **Related milestone:** M5 / M6
+
 ### 2026-10-01 — M4 Landing Timer (session ticks)
 
 - **Goal:** Elapsed time since landing, only while landing session active; visible in Dev Mode; no durable-field corruption.

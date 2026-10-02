@@ -200,7 +200,7 @@ Reliably determine when the Ark has landed and establish a landing session.
 
 ## M4 — Landing Timer
 
-**Status:** IMPLEMENTATION COMPLETE — **RUNTIME VERIFIED** pending Joe’s in-game proof
+**Status:** IMPLEMENTATION COMPLETE — **RUNTIME VERIFIED** pending Pressure V0 pack test
 
 ### Goal
 

@@ -4,6 +4,40 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-02 — Pressure V0 pack (M4 + M5 + M6)
+
+### What shipped
+- **M4** Landing Timer (already on branch): session ticks while landed.
+- **M5** Pursuit V0: +1 Pursuit per whole landed day while session active; clamp 0–100; durable across End Session.
+- **M6** Pursuit band letters: QUIET → NOTICED → HUNTED → BESIEGED → HARBINGER on threshold cross.
+- Dev: Advance Landing Timer +1 Day, Jump Pursuit To Next Band.
+- Rebuild `Assemblies/TheArk.dll`.
+- Branch: `cursor/ark-pressure-v0-5195` (includes M4).
+
+### What we learned
+- Batching M4–M6 into one playtest pack matches Joe’s slow RimWorld boot cost.
+- Pursuit growth uses session day counter (`arkLandingPursuitDaysApplied`) so save/load does not double-grant.
+
+### Key paths
+- `Source/TheArk/Campaign/ArkPursuit.cs`
+- `Source/TheArk/Campaign/ArkPursuitLetters.cs`
+- `Source/TheArk/Campaign/ArkCampaignGameComponent.cs`
+- `Source/TheArk/Debug/*`
+
+### Operator notes — ONE RimWorld boot checklist
+1. `git pull` → restart once
+2. New Game → **The Ark** → Dev Mode on
+3. **Simulate Landing** → expect session STARTED, TimerTicks=0
+4. **Advance Landing Timer +1 Day** → Timer ~1.00d and Pursuit +1
+5. Repeat Advance or **Jump Pursuit To Next Band** → letter for new band (NOTICED / HUNTED / …)
+6. Optional: End Landing Session → timer clears; Pursuit value remains
+7. Paste log lines / say which letters you saw
+
+### Next steps
+- Joe RUNTIME VERIFIED for the pack; no M7 until asked.
+
+---
+
 ## 2026-10-01 — M4 Landing Timer V0
 
 ### What shipped

@@ -4,6 +4,20 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-02 — The Ark Pressure V0 pack (M4+M5+M6)
+
+### What shipped
+- One playtest pack: Landing Timer + Pursuit-from-landed-days + band letters; DLL rebuild.
+- Branch: `cursor/ark-pressure-v0-5195` (supersedes standalone M4 PR scope).
+
+### Operator notes
+- One RimWorld boot: Simulate Landing → Advance +1 Day → Jump Pursuit bands → confirm letters.
+
+### Next steps
+- Merge; Joe pack runtime verify; no M7 until asked.
+
+---
+
 ## 2026-10-01 — The Ark M4 Landing Timer V0
 
 ### What shipped
