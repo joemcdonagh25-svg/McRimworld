@@ -112,6 +112,76 @@ namespace TheArk.Debug
             campaign.SetPursuit(target, "Dev.JumpPursuitToNextBand", notifyBand: true);
         }
 
+        /// <summary>
+        /// One-click Pressure V0 proof (M4+M5+M6). Prefer this over stepping individual debug actions.
+        /// Logs a single PASS/FAIL line Joe can paste.
+        /// </summary>
+        public static bool RunPressureV0Proof(ArkCampaignGameComponent campaign)
+        {
+            Log.Message("[The Ark] [DEV] Pressure V0 proof START.");
+
+            SetCampaignActive(campaign, true);
+            campaign.SetPursuit(0, "Dev.PressureV0Proof.ResetPursuit", notifyBand: false);
+
+            if (campaign.LandingSessionActive)
+            {
+                EndLandingSession(campaign);
+            }
+
+            if (!SimulateLanding(campaign))
+            {
+                Log.Error("[The Ark] [DEV] Pressure V0 proof FAIL: Simulate Landing did not start a session.");
+                return false;
+            }
+
+            bool sessionOk = campaign.LandingSessionActive;
+            bool timerZeroOk = campaign.LandingSessionTicks == 0;
+            int landingAfterStart = campaign.LandingNumber;
+
+            if (!AdvanceLandingTimerOneDay(campaign))
+            {
+                Log.Error("[The Ark] [DEV] Pressure V0 proof FAIL: could not advance landing timer.");
+                return false;
+            }
+
+            bool timerDayOk = campaign.LandingSessionTicks >= GenDate.TicksPerDay;
+            bool pursuitGrewOk = campaign.Pursuit >= 1;
+
+            // Walk every band once so letters fire without Joe clicking repeatedly.
+            int[] bandEntries = { 21, 41, 61, 81 };
+            foreach (int entry in bandEntries)
+            {
+                campaign.SetPursuit(entry, "Dev.PressureV0Proof.BandWalk", notifyBand: true);
+            }
+
+            bool harbingerOk = campaign.PursuitBand == ArkPursuit.Band.Harbinger;
+
+            EndLandingSession(campaign);
+            bool timerClearedOk = !campaign.LandingSessionActive && campaign.LandingSessionTicks == 0;
+            bool pursuitKeptOk = campaign.Pursuit >= 81;
+
+            bool pass = sessionOk && timerZeroOk && timerDayOk && pursuitGrewOk && harbingerOk
+                && timerClearedOk && pursuitKeptOk && landingAfterStart > 0;
+
+            string summary =
+                $"[The Ark] [DEV] Pressure V0 proof {(pass ? "PASS" : "FAIL")}: " +
+                $"session={sessionOk}, timerStartZero={timerZeroOk}, timerDay={timerDayOk}, " +
+                $"pursuitGrew={pursuitGrewOk}, harbinger={harbingerOk}, " +
+                $"timerCleared={timerClearedOk}, pursuitKept={pursuitKeptOk}, " +
+                $"LandingNumber={campaign.LandingNumber}, {ArkPursuit.Format(campaign.Pursuit)}";
+
+            if (pass)
+            {
+                Log.Message(summary);
+            }
+            else
+            {
+                Log.Error(summary);
+            }
+
+            return pass;
+        }
+
         public static string FormatState(ArkCampaignGameComponent campaign)
         {
             return

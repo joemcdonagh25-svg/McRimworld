@@ -11,6 +11,22 @@ namespace TheArk.Debug
     {
         [DebugAction(
             category = "The Ark (DEV)",
+            name = "Run Pressure V0 Proof",
+            allowedGameStates = AllowedGameStates.PlayingOnMap,
+            displayPriority = 1000)]
+        private static void RunPressureV0Proof()
+        {
+            if (!ArkCampaignDebugOps.TryGet(out ArkCampaignGameComponent campaign))
+            {
+                Log.Error("[The Ark] [DEV] No ArkCampaignGameComponent on Current.Game.");
+                return;
+            }
+
+            ArkCampaignDebugOps.RunPressureV0Proof(campaign);
+        }
+
+        [DebugAction(
+            category = "The Ark (DEV)",
             name = "Open Campaign Debug",
             allowedGameStates = AllowedGameStates.PlayingOnMap)]
         private static void OpenCampaignDebug()

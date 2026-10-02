@@ -24,17 +24,14 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 - `Source/TheArk/Campaign/ArkCampaignGameComponent.cs`
 - `Source/TheArk/Debug/*`
 
-### Operator notes — ONE RimWorld boot checklist
-1. `git pull` → restart once
-2. New Game → **The Ark** → Dev Mode on
-3. **Simulate Landing** → expect session STARTED, TimerTicks=0
-4. **Advance Landing Timer +1 Day** → Timer ~1.00d and Pursuit +1
-5. Repeat Advance or **Jump Pursuit To Next Band** → letter for new band (NOTICED / HUNTED / …)
-6. Optional: End Landing Session → timer clears; Pursuit value remains
-7. Paste log lines / say which letters you saw
+### Operator notes — ONE click after one boot
+1. Merge/pull → restart once
+2. New Game → **The Ark** → Dev Mode
+3. Dev Actions → **The Ark (DEV)** → **Run Pressure V0 Proof**
+4. Paste the log line starting with `Pressure V0 proof PASS` (or FAIL)
 
 ### Next steps
-- Joe RUNTIME VERIFIED for the pack; no M7 until asked.
+- Joe RUNTIME VERIFIED via one-click proof; no M7 until asked.
 
 ---
 

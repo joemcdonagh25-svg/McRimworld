@@ -53,7 +53,15 @@ namespace TheArk.Debug
             listing.Begin(inRect);
 
             listing.Label("DEVELOPMENT / DEBUG ONLY — not player UI.");
-            listing.Label("Pressure V0: M4 timer + M5 Pursuit/day landed + M6 band letters.");
+            listing.Label("Prefer one-click: Run Pressure V0 Proof (also in Dev Actions).");
+            listing.GapLine();
+
+            if (listing.ButtonText("Run Pressure V0 Proof (M4+M5+M6)"))
+            {
+                ArkCampaignDebugOps.RunPressureV0Proof(campaign);
+                PullFromCampaign();
+            }
+
             listing.GapLine();
 
             listing.Label("Live: " + ArkCampaignDebugOps.FormatState(campaign));

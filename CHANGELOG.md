@@ -11,10 +11,10 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 - Branch: `cursor/ark-pressure-v0-5195` (supersedes standalone M4 PR scope).
 
 ### Operator notes
-- One RimWorld boot: Simulate Landing → Advance +1 Day → Jump Pursuit bands → confirm letters.
+- One RimWorld boot → Dev Mode → **Run Pressure V0 Proof** → paste `Pressure V0 proof PASS`.
 
 ### Next steps
-- Merge; Joe pack runtime verify; no M7 until asked.
+- Merge; Joe one-click verify; no M7 until asked.
 
 ---
 
