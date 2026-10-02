@@ -4,6 +4,25 @@ Newest entries first.
 
 ---
 
+## 2026-10-02 — Fix: GetSituations(PlayerColony) goodwill NRE
+
+### What shipped
+- Faction hygiene after player-home ensure: strip self / player→player relations that make vanilla `GoodwillSituationManager.GetSituations(PlayerColony)` NRE on `RecalculateAll`.
+- If Settlement is already player-owned but `IsPlayerHome` is still false, call `Notify_MyMapSettled`.
+- Logs IsPlayer faction count when ≠ 1.
+- DLL rebuild.
+
+### Key paths
+- `Source/VampireLord/Scenario/VampireLordFactionHygiene.cs`
+- `Source/VampireLord/Scenario/VampireLordPlayerHome.cs`
+- `Assemblies/VampireLord.dll`
+
+### Operator notes
+1. Pull + restart → New Game → Vampire Lord (or load `VL_prep`).
+2. Log should show `Faction hygiene (...): removed N bad relation(s)` and **no** repeating `Called GetSituations() for faction PlayerColony`.
+
+---
+
 ## 2026-10-02 — M5 Campaign UI HUD
 
 ### What shipped

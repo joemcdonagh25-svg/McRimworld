@@ -28,6 +28,7 @@ namespace VampireLord.Scenario
                 Log.Message(
                     $"{LogPrefix} Keep map already player home ({phase}): " +
                     $"Parent={DescribeParent(map.Parent)}.");
+                VampireLordFactionHygiene.TryRepair(phase);
                 return;
             }
 
@@ -49,6 +50,12 @@ namespace VampireLord.Scenario
                     {
                         settlement.SetFaction(player);
                     }
+
+                    // Settlement + player faction can still report !IsPlayerHome until settle bookkeeping runs.
+                    if (!map.IsPlayerHome)
+                    {
+                        settlement.Notify_MyMapSettled(map);
+                    }
                 }
                 else
                 {
@@ -61,6 +68,11 @@ namespace VampireLord.Scenario
                     map.Parent.SetFaction(player);
                 }
 
+                if (!map.IsPlayerHome && map.Parent != null)
+                {
+                    map.Parent.Notify_MyMapSettled(map);
+                }
+
                 Log.Message(
                     $"{LogPrefix} Ensured player home ({phase}): before={before}; " +
                     $"after={DescribeMap(map)}.");
@@ -69,6 +81,8 @@ namespace VampireLord.Scenario
             {
                 Log.Warning($"{LogPrefix} Ensure player home ({phase}) failed: {e.Message}");
             }
+
+            VampireLordFactionHygiene.TryRepair(phase);
         }
 
         private static Map ResolveKeepMap()
