@@ -21,7 +21,7 @@ namespace TheArk.Debug
         private string bufferTier;
         private string bufferPursuit;
 
-        public override Vector2 InitialSize => new Vector2(420f, 360f);
+        public override Vector2 InitialSize => new Vector2(440f, 460f);
 
         public Dialog_ArkCampaignDebug()
         {
@@ -53,7 +53,7 @@ namespace TheArk.Debug
             listing.Begin(inRect);
 
             listing.Label("DEVELOPMENT / DEBUG ONLY — not player UI.");
-            listing.Label("Reads ArkCampaignGameComponent. Writes only via Apply / fixture.");
+            listing.Label("Reads ArkCampaignGameComponent. Writes only via Apply / fixture / landing.");
             listing.GapLine();
 
             listing.Label("Live: " + ArkCampaignDebugOps.FormatState(campaign));
@@ -80,6 +80,18 @@ namespace TheArk.Debug
             if (listing.ButtonText("Apply M1 persistence fixture"))
             {
                 ArkCampaignDebugOps.ApplyPersistenceFixture(campaign);
+                PullFromCampaign();
+            }
+
+            if (listing.ButtonText("Simulate Landing (M3)"))
+            {
+                ArkCampaignDebugOps.SimulateLanding(campaign);
+                PullFromCampaign();
+            }
+
+            if (listing.ButtonText("End Landing Session (M3)"))
+            {
+                ArkCampaignDebugOps.EndLandingSession(campaign);
                 PullFromCampaign();
             }
 

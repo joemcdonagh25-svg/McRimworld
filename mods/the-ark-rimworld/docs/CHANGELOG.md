@@ -4,6 +4,53 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — M3 Landing Detection RUNTIME VERIFIED (Joe Player.log)
+
+### What shipped
+- Docs only: mark M3 **RUNTIME VERIFIED** from Joe’s live Simulate Landing.
+
+### What we learned
+- Log: `[The Ark] Landing session STARTED (Dev.SimulateLanding): mapId=0, LandingNumber=1, Session=True`
+- New Game start still shows known Ideology/Anomaly/History noise; does not block M3 proof.
+
+### Operator notes
+- No M4 Landing Timer until Joe asks.
+
+### Next steps
+- Stop; Joe chooses next Ark milestone when ready.
+
+---
+
+## 2026-10-01 — M3 Landing Detection V0
+
+### What shipped
+- Landing session on `ArkCampaignGameComponent`: begin once → `LandingNumber++`; ignore while session active.
+- Detection without Harmony: Odyssey travel edge + `wasSpawnedViaGravShipLanding` poll; `ScenPart.PostGravshipLanded`.
+- Dev Mode: **Simulate Landing**, **End Landing Session**; debug UI + state strings include session fields.
+- Rebuild `Assemblies/TheArk.dll`.
+
+### What we learned
+- `WorldComponent_GravshipController.IsGravshipTravelling` + map flag are usable without patching `InitiateLanding`.
+- Surface playtest still needs Dev Simulate for proof until a real gravship New Game / hop exists.
+
+### Key paths
+- `Source/TheArk/Campaign/ArkCampaignGameComponent.cs`
+- `Source/TheArk/Scenario/ScenPart_ArkPlaytestSetup.cs`
+- `Source/TheArk/Debug/ArkCampaignDebugOps.cs`
+- `Source/TheArk/Debug/ArkCampaignDebugActions.cs`
+- `docs/RIMWORLD_API_NOTES.md`
+
+### Operator notes
+1. Pull / merge → restart
+2. New Game → The Ark (or load campaign save)
+3. Dev Mode → The Ark (DEV) → **Simulate Landing**
+4. Expect `Landing session STARTED` and LandingNumber +1; second Simulate ignored until **End Landing Session**
+
+### Next steps
+- Done: Joe RUNTIME VERIFIED via Simulate Landing (see entry above).
+
+---
+
 ## 2026-10-01 — M1 + M2 RUNTIME VERIFIED (Joe Player.log)
 
 ### What shipped

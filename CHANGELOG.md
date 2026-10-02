@@ -43,6 +43,52 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-01 — The Ark M3 Landing Detection RUNTIME VERIFIED
+
+### What shipped
+- Docs: Joe’s Player.log proves Simulate Landing → `Landing session STARTED`, LandingNumber=1, Session=True.
+- Branch: `cursor/ark-m3-runtime-verified-5195`.
+
+### Operator notes
+- No M4 until Joe asks.
+
+### Next steps
+- Stop; Joe chooses next Ark milestone when ready.
+
+---
+
+## 2026-10-01 — Project-wide RimWorld engineering Cursor rule
+
+### What shipped
+- Added always-on Cursor rule for RimWorld mod engineering: PLAN → IMPLEMENT → REVIEW → FIX → VERIFY, lifecycle/persistence/scope discipline, model selection policy.
+- Path: `.cursor/rules/rimworld-engineering.mdc` (`alwaysApply: true`).
+- Branch: `cursor/rimworld-engineering-rule-be44`.
+
+### What we learned
+- Repo had no `.cursor/rules` yet; this is the first project-wide agent contract for multi-agent / human maintenance.
+
+### Operator notes
+- Rule applies to all agents in this workspace once merged/pulled; no mod DLL rebuild required.
+
+### Next steps
+- Use the rule on subsequent Ark / Vampire Lord work.
+
+---
+
+## 2026-10-01 — The Ark M3 Landing Detection V0
+
+### What shipped
+- Landing session + LandingNumber increment; Odyssey poll detection; Dev Simulate Landing / End Session; DLL rebuild.
+- Branch: `cursor/ark-m3-landing-detection-5195`.
+
+### Operator notes
+- Pull → New Game → The Ark → Dev Mode → Simulate Landing (second call ignored while session active).
+
+### Next steps
+- Done (Joe RUNTIME VERIFIED via Simulate Landing).
+
+---
+
 ## 2026-10-01 — The Ark M1 + M2 RUNTIME VERIFIED
 
 ### What shipped

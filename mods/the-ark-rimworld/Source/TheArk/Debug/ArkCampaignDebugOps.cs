@@ -46,6 +46,7 @@ namespace TheArk.Debug
 
         /// <summary>
         /// M1 persistence proof fixture: Active=true, Day=47, Landing=6, Tier=2, Pursuit=73.
+        /// Does not open a landing session.
         /// </summary>
         public static void ApplyPersistenceFixture(ArkCampaignGameComponent campaign)
         {
@@ -57,11 +58,32 @@ namespace TheArk.Debug
             Log.Message("[The Ark] [DEV] Applied M1 persistence fixture: " + FormatState(campaign));
         }
 
+        /// <summary>
+        /// M3 proof without a real gravship hop: ensure campaign active, then begin landing session.
+        /// </summary>
+        public static bool SimulateLanding(ArkCampaignGameComponent campaign)
+        {
+            if (!campaign.CampaignActive)
+            {
+                SetCampaignActive(campaign, true);
+                Log.Message("[The Ark] [DEV] Simulate Landing: campaign was inactive — activated.");
+            }
+
+            Map map = Find.CurrentMap ?? Find.AnyPlayerHomeMap;
+            return campaign.TryBeginLandingSession(map, "Dev.SimulateLanding", allowRecountSameMap: true);
+        }
+
+        public static bool EndLandingSession(ArkCampaignGameComponent campaign)
+        {
+            return campaign.EndLandingSession("Dev.EndLandingSession");
+        }
+
         public static string FormatState(ArkCampaignGameComponent campaign)
         {
             return
                 $"Active={campaign.CampaignActive}, Day={campaign.CampaignDay}, " +
-                $"Landing={campaign.LandingNumber}, Tier={campaign.ArkTier}, Pursuit={campaign.Pursuit}";
+                $"Landing={campaign.LandingNumber}, Tier={campaign.ArkTier}, Pursuit={campaign.Pursuit}, " +
+                $"LandingSession={campaign.LandingSessionActive}, SessionMapId={campaign.LandingSessionMapId}";
         }
 
         public static void LogState(string context, ArkCampaignGameComponent campaign)
