@@ -100,8 +100,9 @@
         </li>
         <li Class="ScenPart_StartingThing_Defined">
           <def>StartingThing_Defined</def>
-          <thingDef>MeleeWeapon_Gladius</thingDef>
+          <thingDef>MeleeWeapon_LongSword</thingDef>
           <stuff>Steel</stuff>
+          <quality>Masterwork</quality>
           <count>1</count>
         </li>
         <li Class="ScenPart_StartingThing_Defined">
