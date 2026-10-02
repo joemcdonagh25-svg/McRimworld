@@ -211,13 +211,79 @@ Survive the wave → harvest blood → stock the keep → face the next host hun
 
 ---
 
-## M4+ — FUTURE (not planned yet)
+## M4 — Keep Fortification V0
 
-Each needs its own milestone card before coding.
+**PLANNING:** yes (Joe confirmed Keep Fortification, 2026-10-01)  
+**IMPLEMENTATION COMPLETE:** yes  
+**RUNTIME VERIFIED:** no
+
+### Goal
+
+Spend Keep Blood Reserve between waves to reinforce the south gate with sandbags — blood sink that changes the keep before the next host.
+
+### Player fantasy (one sentence)
+
+Harvest blood from the host → spend it on the walls before the next warning → hold the gate.
+
+### Decisions locked in V0
+
+- Currency: Keep Blood Reserve (15 per package)
+- When: prep window only (`WavePending && !WarningIssued`); blocked after advance warning
+- What: player-owned sandbag flanks south of the open gate (center path left open)
+- How: Accept letter + Dev Mode (**Offer Fortify**, **Force Fortify Now**, **Show Fortify State**)
+- Cap: 1 package per prep window
+- No Harmony
+
+### In scope (shipped)
+
+- `VampireLordFortify` purchase / placement / prep-window gate
+- `VampireLordKeepLayout` gate memory from playtest courtyard
+- Choice letter `VampireLord_FortifyOffer`
+- Offer on campaign activate + after each wave schedules the next
+- Scribed fortify purchase / last-place fields
+- Debug actions
+
+### Non-goals (deferred)
+
+- Full castle rebuild / wall upgrades / turrets
+- Approach-lane raid pathing
+- Dark Boons / prisoner extraction
+- Custom architect tab / always-on UI panel
+
+### Acceptance (implementation)
+
+- [x] Blood can be spent between waves on a keep fortification
+- [x] Fortification appears at/near the south gate as player-owned cover
+- [x] Cap / window rule (1× per prep window; blocked after warning)
+- [x] Letter + debug make the offer obvious
+- [x] Compiles; changelogs updated
+- [x] Manual runtime checklist for Joe
+
+### Manual runtime test (Joe)
+
+Prefer the fixture loop in `docs/PLAYTEST_FIXTURE.md` after the first New Game.
+
+1. Pull + restart → New Game → Vampire Lord → **Ensure Prep Fixture** → save `VL_prep`
+2. Letter path: wait for **Blood for the Walls** (letter stack) **or** turn **Auto-Fortify Playtest** ON
+3. Accept / auto → reserve −15; sandbags south of gate; log `Fortified gate`
+4. **Show Fortify State** — purchases 1/1; second buy blocked until next prep window
+5. **Trigger Warning Now** → fortify blocked; **Force Fortify Now** still works for debug
+6. Later iterations: load `VL_prep` instead of New Game
+
+### Key paths
+
+- `Source/VampireLord/Campaign/VampireLordFortify.cs`
+- `Source/VampireLord/Campaign/ChoiceLetter_VampireLordFortify.cs`
+- `Source/VampireLord/Scenario/VampireLordKeepLayout.cs`
+- `Defs/Letters/VampireLordLetters.xml`
+- `Assemblies/VampireLord.dll`
+
+---
+
+## M4+ — still parked
 
 | Candidate | Fantasy |
 |-----------|---------|
-| Keep Fortification V0 | Between waves, spend blood/materials to reinforce walls / add sandbags |
 | Approach Lanes V0 | Raids prefer a cleared south road into the gate |
 | Campaign UI panel | Always-on Blood / Wave / Threat readout |
 | Prisoners & Tithe jobs | Capture → extract → stock the keep |
@@ -245,4 +311,4 @@ Kill `Page_ChooseIdeoPreset.PostOpen` NRE on Vampire Lord settle without Harmony
 
 ## Planning note
 
-M3 Blood Tithe implementation is complete; RUNTIME VERIFIED awaits Joe's checklist. No M4+ until Joe picks a card.
+M3 Blood Tithe and M4 Fortification **RUNTIME VERIFIED** await Joe’s checklists. Ideology settle polish shipped; settle retest pending. No M5+ until Joe picks a parked card.

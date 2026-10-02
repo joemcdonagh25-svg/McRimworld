@@ -54,7 +54,7 @@ Ship a recognised RimWorld 1.6 mod that loads and initialises.
 
 ## M1 — Persistent Campaign Foundation
 
-**Status:** IMPLEMENTATION COMPLETE — **RUNTIME VERIFIED** pending manual RimWorld save/load
+**Status:** COMPLETE — **RUNTIME VERIFIED** (Joe, 2026-10-01; fixture save/quit/load matched Day=47, Landing=6, Tier=2, Pursuit=73)
 
 ### Goal
 
@@ -87,7 +87,8 @@ Establish the smallest authoritative persistent Ark campaign state.
 - Access: `TheArk.Campaign.ArkCampaign.TryGet` / `Get`
 - Scribe labels: `arkCampaignActive`, `arkCampaignDay`, `arkLandingNumber`, `arkTier`, `arkPursuit`
 - Build: succeeds with 0 errors (IMPLEMENTATION COMPLETE)
-- In-game save/load proof: not yet claimed (RUNTIME VERIFIED pending)
+- In-game New Game start: confirmed (scenario list, ideo harden, 3 colonists reassigned, campaign Active=True)
+- In-game save/load proof: **RUNTIME VERIFIED** — fixture Applied then LoadedGame matched Active=True, Day=47, Landing=6, Tier=2, Pursuit=73
 
 ### Manual test
 
@@ -106,7 +107,7 @@ Establish the smallest authoritative persistent Ark campaign state.
 
 ## M2 — Campaign Debug UI
 
-**Status:** IMPLEMENTATION COMPLETE — **RUNTIME VERIFIED** pending Joe’s RimWorld save/load proof (also completes M1 runtime verification)
+**Status:** COMPLETE — **RUNTIME VERIFIED** (Joe, 2026-10-01; New Game start + M1 fixture save/quit/load)
 
 ### Goal
 
@@ -152,7 +153,7 @@ Expose M1 state through a minimal development / debug interface.
 
 ## M3 — Landing Detection
 
-**Status:** PLANNED
+**Status:** COMPLETE — **RUNTIME VERIFIED** (Joe, 2026-10-01; Dev Mode Simulate Landing → LandingNumber=1, Session=True)
 
 ### Goal
 
@@ -162,6 +163,8 @@ Reliably determine when the Ark has landed and establish a landing session.
 
 - Pursuit growth
 - Full expedition content
+- Landing timer (M4)
+- Departure teardown beyond End Session debug (M8)
 
 ### Acceptance criteria
 
@@ -169,16 +172,29 @@ Reliably determine when the Ark has landed and establish a landing session.
 - Landing session begins exactly once per confirmed landing (no spam / double-fire under normal use)
 - Landing number (or equivalent) updates according to design for this milestone
 
+### Implementation notes
+
+- Authoritative owner remains `ArkCampaignGameComponent`
+- Session fields (scribed): `LandingSessionActive`, `LandingSessionMapId`, `lastCountedLandingMapId`
+- On confirm: session on + `LandingNumber++` (ignored if session already active)
+- Detection (no Harmony): poll Odyssey `IsGravshipTravelling` edge + `Map.wasSpawnedViaGravShipLanding`; also `ScenPart.PostGravshipLanded`
+- Dev Mode: **Simulate Landing** / **End Landing Session** (surface playtest proof without a real hop)
+
 ### Manual test
 
-1. Land the gravship under Odyssey-compatible conditions.
-2. Confirm landing session starts (log and/or debug UI).
-3. Confirm no duplicate session creation without departure / re-land as designed.
+1. New Game → **The Ark** (campaign active).
+2. Dev Mode → **The Ark (DEV)** → **Simulate Landing**.
+3. Log: `Landing session STARTED` + LandingNumber up + `LandingSession=True`.
+4. Simulate Landing again → ignored (session already active).
+5. Optional: End Landing Session → Simulate again → LandingNumber up again.
+6. Save / load mid-session → session + LandingNumber persist.
+7. On success: mark M3 **RUNTIME VERIFIED**. *(Done via Simulate Landing; real Odyssey hop still optional later.)*
 
 ### Likely technical risks
 
 - Odyssey API discovery; false positives from caravan / map transitions
 - Multiplayer or multiple-map edge cases (note; may be out of scope)
+- Real gravship hop still UNVERIFIED until Joe lands with Odyssey (Simulate Landing proof accepted for V0)
 
 ---
 
@@ -426,6 +442,6 @@ Each future slice must be broken into its own milestone with goal, non-goals, ac
 
 ## Next implementation target
 
-**M2** is IMPLEMENTATION COMPLETE (RUNTIME VERIFIED pending Joe’s fixture save/load test — that test also proves M1).
+**M1–M3** are COMPLETE / RUNTIME VERIFIED (Joe, 2026-10-01).
 
-Do **not** begin M3 (Landing Detection) until Joe asks / approves after the M1+M2 runtime proof.
+Do **not** begin M4 (Landing Timer) until Joe asks / approves.

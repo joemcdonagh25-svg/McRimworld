@@ -152,6 +152,86 @@ namespace VampireLord.Debug
             VampireLordBloodTithe.ForceLowBlood(campaign);
         }
 
+        [DebugAction(
+            category = "Vampire Lord",
+            name = "Show Fortify State",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void ShowFortifyState()
+        {
+            if (!TryGet(out VampireLordCampaignGameComponent campaign))
+            {
+                return;
+            }
+
+            Log.Message("[VampireLord] Fortify state:\n" + VampireLordFortify.FormatState(campaign));
+        }
+
+        [DebugAction(
+            category = "Vampire Lord",
+            name = "Offer Fortify",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void OfferFortify()
+        {
+            if (!TryGet(out VampireLordCampaignGameComponent campaign))
+            {
+                return;
+            }
+
+            VampireLordFortify.TrySendOfferLetter(campaign);
+        }
+
+        [DebugAction(
+            category = "Vampire Lord",
+            name = "Force Fortify Now",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void ForceFortifyNow()
+        {
+            if (!TryGet(out VampireLordCampaignGameComponent campaign))
+            {
+                return;
+            }
+
+            VampireLordFortify.TryPurchase(campaign, forced: true, reason: "debug");
+        }
+
+        [DebugAction(
+            category = "Vampire Lord",
+            name = "Toggle Auto-Fortify Playtest",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void ToggleAutoFortifyPlaytest()
+        {
+            if (!TryGet(out VampireLordCampaignGameComponent campaign))
+            {
+                return;
+            }
+
+            VampireLordPlaytest.ToggleAutoFortify(campaign);
+        }
+
+        [DebugAction(
+            category = "Vampire Lord",
+            name = "Ensure Prep Fixture",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void EnsurePrepFixture()
+        {
+            if (!TryGet(out VampireLordCampaignGameComponent campaign))
+            {
+                return;
+            }
+
+            VampireLordPlaytest.EnsurePrepFixture(campaign);
+        }
+
+        [DebugAction(
+            category = "Vampire Lord",
+            name = "Print Fixture Workflow",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void PrintFixtureWorkflow()
+        {
+            VampireLordCampaign.TryGet(out VampireLordCampaignGameComponent campaign);
+            Log.Message(VampireLordPlaytest.FormatFixtureChecklist(campaign));
+        }
+
         private static bool TryGet(out VampireLordCampaignGameComponent campaign)
         {
             if (VampireLordCampaign.TryGet(out campaign))

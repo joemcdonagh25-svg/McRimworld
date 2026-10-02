@@ -4,21 +4,116 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
-## 2026-10-01 — Vampire Lord Ideology settle polish
+## 2026-10-02 — Vampire Lord Ideology settle polish (merge)
 
 ### What shipped
 - Vampire Lord scenario subclasses `Scenario` to replace `Page_ChooseIdeoPreset` with an auto-classic ideo page (harden `allowedCultures`, skip broken UI). No Harmony.
 - Branch: `cursor/vampire-lord-ideo-settle-c5ad`.
 
-### What we learned
-- Early ideo generate was not enough — vanilla ChooseIdeoPreset still opens after site select and NREs on null `allowedCultures`.
-- `GetFirstConfigPage` is virtual; scenario XML `Class=` is the clean skip path.
-
 ### Operator notes
 - Pull, restart, New Game → Vampire Lord with Ideology on; confirm no ChooseIdeoPreset NRE and AutoIdeoPage log line.
 
+---
+
+## 2026-10-02 — Vampire Lord fixture-save playtest workflow
+
+### What shipped
+- `VL_prep` workflow docs + Dev Mode Ensure Prep Fixture / Auto-Fortify Playtest toggle.
+- Branch: `cursor/vampire-lord-m4-fortify-c5ad` (updates PR #24).
+
+### Operator notes
+- One New Game to make `VL_prep`; then load that save for fortify/wave iteration.
+
+---
+
+## 2026-10-01 — Vampire Lord fortify offer letter fix
+
+### What shipped
+- Delayed fortify Accept letter; fix LetterDef sound; clarify letter stack vs Quests.
+- Same branch: `cursor/vampire-lord-m4-fortify-c5ad`.
+
+### Operator notes
+- Pull/restart; look for **Blood for the Walls** in the letter stack (not Quests).
+
+---
+
+## 2026-10-01 — Vampire Lord M4 Keep Fortification V0
+
+### What shipped
+- Spend Blood Tithe between waves on gate sandbags (Accept letter + debug). No Harmony.
+- Branch: `cursor/vampire-lord-m4-fortify-c5ad`.
+
+### What we learned
+- Prep-window gate (`!WarningIssued`) is enough to time the offer without a custom UI.
+
+### Operator notes
+- Pull, restart, New Game → Vampire Lord; accept **Blood for the Walls** or use **Force Fortify Now**.
+
 ### Next steps
-- Joe settle retest; Blood Tithe / player-home RUNTIME VERIFIED when ready.
+- Joe RUNTIME VERIFIED; then pick next parked card when ready.
+
+---
+
+## 2026-10-01 — The Ark M3 Landing Detection RUNTIME VERIFIED
+
+### What shipped
+- Docs: Joe’s Player.log proves Simulate Landing → `Landing session STARTED`, LandingNumber=1, Session=True.
+- Branch: `cursor/ark-m3-runtime-verified-5195`.
+
+### Operator notes
+- No M4 until Joe asks.
+
+### Next steps
+- Stop; Joe chooses next Ark milestone when ready.
+
+---
+
+## 2026-10-01 — Project-wide RimWorld engineering Cursor rule
+
+### What shipped
+- Added always-on Cursor rule for RimWorld mod engineering: PLAN → IMPLEMENT → REVIEW → FIX → VERIFY, lifecycle/persistence/scope discipline, model selection policy.
+- Path: `.cursor/rules/rimworld-engineering.mdc` (`alwaysApply: true`).
+- Branch: `cursor/rimworld-engineering-rule-be44`.
+
+### What we learned
+- Repo had no `.cursor/rules` yet; this is the first project-wide agent contract for multi-agent / human maintenance.
+
+### Operator notes
+- Rule applies to all agents in this workspace once merged/pulled; no mod DLL rebuild required.
+
+### Next steps
+- Use the rule on subsequent Ark / Vampire Lord work.
+
+---
+
+## 2026-10-01 — The Ark M3 Landing Detection V0
+
+### What shipped
+- Landing session + LandingNumber increment; Odyssey poll detection; Dev Simulate Landing / End Session; DLL rebuild.
+- Branch: `cursor/ark-m3-landing-detection-5195`.
+
+### Operator notes
+- Pull → New Game → The Ark → Dev Mode → Simulate Landing (second call ignored while session active).
+
+### Next steps
+- Done (Joe RUNTIME VERIFIED via Simulate Landing).
+
+---
+
+## 2026-10-01 — The Ark M1 + M2 RUNTIME VERIFIED
+
+### What shipped
+- Docs: Joe’s Player.log proves M1 fixture persist across save/quit/load (`Active=True, Day=47, Landing=6, Tier=2, Pursuit=73` Applied and LoadedGame).
+- Branch: `cursor/ark-newgame-runtime-confirmed-5195`.
+
+### What we learned
+- Campaign GameComponent persistence works on Joe’s install despite Ideology settle/load noise.
+
+### Operator notes
+- No M3 Landing Detection until Joe asks.
+
+### Next steps
+- Stop; Joe chooses next Ark milestone when ready.
 
 ---
 
@@ -41,7 +136,7 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 - Pull → restart → New Game → The Ark. Ideo NRE may still log; crew should be colonists and campaign active.
 
 ### Next steps
-- Joe confirm playable start + M1 fixture save/load.
+- Done for New Game start (Joe confirmed). Fixture save/load still pending.
 
 ---
 

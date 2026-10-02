@@ -210,6 +210,7 @@ namespace VampireLord.Scenario
 
             lastGateCenter = gateCenter;
             s_lastGateCenter = gateCenter;
+            VampireLordKeepLayout.Remember(map, exterior, gateCenter);
 
             foreach (IntVec3 cell in exterior.EdgeCells)
             {
@@ -290,6 +291,7 @@ namespace VampireLord.Scenario
             {
                 lastCourtyard = s_lastCourtyard;
                 lastGateCenter = s_lastGateCenter;
+                VampireLordKeepLayout.Remember(map, lastCourtyard, lastGateCenter);
             }
         }
 

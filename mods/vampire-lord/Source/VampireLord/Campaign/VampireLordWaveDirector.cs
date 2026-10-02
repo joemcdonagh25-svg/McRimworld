@@ -21,6 +21,7 @@ namespace VampireLord.Campaign
             VampireLordBloodTithe.ResetSessionCredits();
             VampireLordBloodTithe.EnsureStartingReserve(campaign);
             ScheduleNextWave(campaign);
+            VampireLordFortify.NotifyPrepWindowOpened(campaign);
             Log.Message(
                 $"[VampireLord] Campaign activated. Blood Reserve={campaign.BloodReserve}.");
         }
@@ -193,6 +194,7 @@ namespace VampireLord.Campaign
                 $"Blood Reserve={campaign.BloodReserve}.");
 
             ScheduleNextWave(campaign);
+            VampireLordFortify.NotifyPrepWindowOpened(campaign);
         }
 
         public static float RaidPointsFor(int threatLevel)
@@ -268,6 +270,9 @@ namespace VampireLord.Campaign
             sb.AppendLine($"WaveBloodCostNext={VampireLordBloodTithe.WaveBloodCost(campaign)}");
             sb.AppendLine($"LastWaveBloodStarved={campaign.LastWaveBloodStarved}");
             sb.AppendLine($"LastWaveBloodSpent={campaign.LastWaveBloodSpent}/{campaign.LastWaveBloodCost}");
+            sb.AppendLine($"FortifyPrepWindow={VampireLordFortify.IsPrepWindow(campaign)}");
+            sb.AppendLine($"FortifyPurchasesThisWindow={campaign.FortifyPurchasesThisWindow}/{VampireLordTuning.FortifyMaxPerPrepWindow}");
+            sb.AppendLine($"LastFortifyWaveNumber={campaign.LastFortifyWaveNumber}");
             return sb.ToString().TrimEnd();
         }
 

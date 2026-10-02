@@ -28,6 +28,18 @@ namespace TheArk.Scenario
             TryActivateCampaign();
         }
 
+        public override void PostGravshipLanded(Map map)
+        {
+            base.PostGravshipLanded(map);
+            if (!ArkCampaign.TryGet(out ArkCampaignGameComponent campaign))
+            {
+                Log.Warning($"{LogPrefix} PostGravshipLanded: no campaign component.");
+                return;
+            }
+
+            campaign.TryBeginLandingSession(map, "ScenPart.PostGravshipLanded");
+        }
+
         public override string Summary(RimWorld.Scenario scen)
         {
             return "Activates Ark campaign state for playtest; ensures player ideo/colonists when Ideology is on.";
