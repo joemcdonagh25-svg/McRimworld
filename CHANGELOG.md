@@ -4,6 +4,7 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+<<<<<<< HEAD
 ## 2026-10-02 — Vampire Lord less-fussy playtest defaults
 
 ### What shipped
@@ -12,6 +13,19 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ### Operator notes
 - Pull, restart, one New Game → save `VL_prep` → iterate with Trigger Wave.
+=======
+## 2026-10-02 — The Ark Pressure V0 pack (M4+M5+M6)
+
+### What shipped
+- One playtest pack: Landing Timer + Pursuit-from-landed-days + band letters; one-click **Run Pressure V0 Proof**; DLL rebuild.
+- Branch: `cursor/ark-pressure-v0-5195` → merged into `main`.
+
+### Operator notes
+- Pull → restart once → New Game → The Ark → Dev Mode → **Run Pressure V0 Proof** → paste `Pressure V0 proof PASS`.
+
+### Next steps
+- Joe one-click verify; no M7 until asked.
+>>>>>>> cursor/ark-pressure-v0-5195
 
 ---
 

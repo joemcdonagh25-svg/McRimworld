@@ -259,6 +259,31 @@ Use this template:
 
 ---
 
+### 2026-10-02 — M5/M6 Pursuit growth + band letters (Pressure V0)
+
+- **Goal:** Pursuit rises with landed time; player sees QUIET→HARBINGER via letters.
+- **Evidence:** Extends M3/M4 session owner; `Find.LetterStack.ReceiveLetter` (same pattern as Vampire Lord).
+- **API / design:**
+  - Growth: +1 Pursuit per `GenDate.TicksPerDay` while `LandingSessionActive`; clamp 0–100
+  - Bands: 0–20 Quiet, 21–40 Noticed, 41–60 Hunted, 61–80 Besieged, 81–100 Harbinger (`GAME_DESIGN.md`)
+  - `LetterDefOf` Neutral / Negative / ThreatSmall / ThreatBig by band
+  - Scribe: `arkLandingPursuitDaysApplied`, `arkLastNotifiedPursuitBand`
+- **Decision for The Ark:** No Harmony. No MainTab for V0. Letters on band change only (baseline sync on new/load). Incidents deferred to M7.
+- **Runtime status:** Pending Joe Pressure V0 pack checklist.
+- **Related milestone:** M5 / M6
+
+### 2026-10-01 — M4 Landing Timer (session ticks)
+
+- **Goal:** Elapsed time since landing, only while landing session active; visible in Dev Mode; no durable-field corruption.
+- **Evidence:** Extends M3 session owner; `GameComponent.GameComponentTick` + `GenDate.TicksPerDay`.
+- **API:**
+  - `Verse.GameComponent.GameComponentTick` — increment `landingSessionTicks` while session active
+  - `RimWorld.GenDate.TicksPerDay` — day formatting / +1 day debug advance
+  - Scribe: `arkLandingSessionTicks` (`int`, default 0)
+- **Decision for The Ark:** Persist accumulated session ticks (reset on begin/end). Do not write `CampaignDay`. Pursuit growth deferred to M5.
+- **Runtime status:** UNVERIFIED until Joe’s Simulate Landing + timer advance / save-load check.
+- **Related milestone:** M4
+
 ### 2026-10-01 — M3 Landing Detection (no Harmony)
 
 - **Goal:** Detect Ark landing once, open a temporary landing session, increment durable `LandingNumber`.

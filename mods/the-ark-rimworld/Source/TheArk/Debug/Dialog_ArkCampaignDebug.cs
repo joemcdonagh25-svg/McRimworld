@@ -21,7 +21,7 @@ namespace TheArk.Debug
         private string bufferTier;
         private string bufferPursuit;
 
-        public override Vector2 InitialSize => new Vector2(440f, 460f);
+        public override Vector2 InitialSize => new Vector2(480f, 560f);
 
         public Dialog_ArkCampaignDebug()
         {
@@ -53,10 +53,24 @@ namespace TheArk.Debug
             listing.Begin(inRect);
 
             listing.Label("DEVELOPMENT / DEBUG ONLY — not player UI.");
-            listing.Label("Reads ArkCampaignGameComponent. Writes only via Apply / fixture / landing.");
+            listing.Label("Prefer one-click: Run Pressure V0 Proof (also in Dev Actions).");
+            listing.GapLine();
+
+            if (listing.ButtonText("Run Pressure V0 Proof (M4+M5+M6)"))
+            {
+                ArkCampaignDebugOps.RunPressureV0Proof(campaign);
+                PullFromCampaign();
+            }
+
             listing.GapLine();
 
             listing.Label("Live: " + ArkCampaignDebugOps.FormatState(campaign));
+            listing.Label(
+                "Landing timer: " +
+                (campaign.LandingSessionActive
+                    ? $"{campaign.LandingSessionTicks} ticks (~{ArkCampaignGameComponent.FormatTicksAsDays(campaign.LandingSessionTicks)}d) — running"
+                    : "inactive"));
+            listing.Label($"Pursuit band: {ArkPursuit.BandLabel(campaign.PursuitBand)} ({ArkPursuit.BandRangeLabel(campaign.PursuitBand)})");
             listing.Gap(6f);
 
             listing.CheckboxLabeled("CampaignActive", ref draftActive);
@@ -92,6 +106,18 @@ namespace TheArk.Debug
             if (listing.ButtonText("End Landing Session (M3)"))
             {
                 ArkCampaignDebugOps.EndLandingSession(campaign);
+                PullFromCampaign();
+            }
+
+            if (listing.ButtonText("Advance Landing Timer +1 Day (M4/M5)"))
+            {
+                ArkCampaignDebugOps.AdvanceLandingTimerOneDay(campaign);
+                PullFromCampaign();
+            }
+
+            if (listing.ButtonText("Jump Pursuit To Next Band (M6)"))
+            {
+                ArkCampaignDebugOps.JumpPursuitToNextBand(campaign);
                 PullFromCampaign();
             }
 

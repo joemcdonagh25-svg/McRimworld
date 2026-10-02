@@ -200,7 +200,7 @@ Reliably determine when the Ark has landed and establish a landing session.
 
 ## M4 — Landing Timer
 
-**Status:** PLANNED
+**Status:** IMPLEMENTATION COMPLETE — **RUNTIME VERIFIED** pending Pressure V0 pack test
 
 ### Goal
 
@@ -217,11 +217,21 @@ Track elapsed time since landing.
 - Timer value is visible via debug UI (or equivalent verified readout)
 - Timer does not corrupt durable campaign fields
 
+### Implementation notes
+
+- Session field `landingSessionTicks` (scribe `arkLandingSessionTicks`) on `ArkCampaignGameComponent`
+- Increments every `GameComponentTick` while `LandingSessionActive`
+- Resets to 0 on session start and session end — does **not** write `CampaignDay` / other durable fields
+- Persistence: accumulated ticks survive save/load mid-session
+- Dev: **Advance Landing Timer +1 Day**; debug UI shows ticks + days
+
 ### Manual test
 
-1. Land; note timer start.
-2. Advance time; confirm timer increases.
-3. Save / load while landed; confirm timer behaviour matches documented persistence choice.
+1. Simulate Landing; note TimerTicks=0 / ~0.00d.
+2. Unpause briefly **or** Dev → **Advance Landing Timer +1 Day**; confirm timer increases.
+3. Save / load while session active; confirm TimerTicks matches (or continues from saved value).
+4. End Landing Session; timer clears to 0.
+5. On success: mark M4 **RUNTIME VERIFIED**.
 
 ### Likely technical risks
 
@@ -232,7 +242,7 @@ Track elapsed time since landing.
 
 ## M5 — Pursuit V0
 
-**Status:** PLANNED
+**Status:** IMPLEMENTATION COMPLETE — **RUNTIME VERIFIED** pending Pressure V0 pack test
 
 ### Goal
 
@@ -249,11 +259,16 @@ Increase Pursuit based on time since landing.
 - Pursuit clamps or saturates within 0–100 as designed
 - No additional drivers required for V0
 
+### Implementation notes
+
+- Rate: **+1 Pursuit per whole landed day** (`GenDate.TicksPerDay`) while landing session active
+- Clamp 0–100 via `ArkPursuit`
+- Durable `arkPursuit` persists across End Session; growth stops when not landed
+- Session field `arkLandingPursuitDaysApplied` prevents double-grant after save/load
+
 ### Manual test
 
-1. Land with Pursuit at a known value.
-2. Wait / advance time.
-3. Confirm Pursuit increases only while landed (per design).
+Dev Mode → **Run Pressure V0 Proof** → paste `Pressure V0 proof PASS`.
 
 ### Likely technical risks
 
@@ -264,7 +279,7 @@ Increase Pursuit based on time since landing.
 
 ## M6 — Pursuit Feedback
 
-**Status:** PLANNED
+**Status:** IMPLEMENTATION COMPLETE — **RUNTIME VERIFIED** pending Pressure V0 pack test
 
 ### Goal
 
@@ -281,10 +296,15 @@ Provide clear player-facing Pursuit state (QUIET → HARBINGER bands).
 - Band thresholds match design (0–20 Quiet, etc.)
 - Feedback updates when Pursuit crosses thresholds
 
+### Implementation notes
+
+- Bands: QUIET 0–20, NOTICED 21–40, HUNTED 41–60, BESIEGED 61–80, HARBINGER 81–100
+- Letter on band change (`ArkPursuitLetters`); baseline synced on new/load (no re-spam)
+- Dev: **Jump Pursuit To Next Band**
+
 ### Manual test
 
-1. Set or grow Pursuit across thresholds.
-2. Confirm player-facing feedback changes at each band.
+Dev Mode → **Run Pressure V0 Proof** → paste `Pressure V0 proof PASS`.
 
 ### Likely technical risks
 
@@ -442,6 +462,7 @@ Each future slice must be broken into its own milestone with goal, non-goals, ac
 
 ## Next implementation target
 
-**M1–M3** are COMPLETE / RUNTIME VERIFIED (Joe, 2026-10-01).
+**M1–M3** COMPLETE / RUNTIME VERIFIED.  
+**Pressure V0 pack (M4+M5+M6)** IMPLEMENTATION COMPLETE — one RimWorld boot checklist pending Joe.
 
-Do **not** begin M4 (Landing Timer) until Joe asks / approves.
+Do **not** begin M7 (Pursuit Incident) until Joe asks / approves after Pressure V0 runtime proof.

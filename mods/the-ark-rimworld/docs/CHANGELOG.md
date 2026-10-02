@@ -4,6 +4,67 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-02 — Pressure V0 pack (M4 + M5 + M6)
+
+### What shipped
+- **M4** Landing Timer (already on branch): session ticks while landed.
+- **M5** Pursuit V0: +1 Pursuit per whole landed day while session active; clamp 0–100; durable across End Session.
+- **M6** Pursuit band letters: QUIET → NOTICED → HUNTED → BESIEGED → HARBINGER on threshold cross.
+- Dev: **Run Pressure V0 Proof** one-click (plus finer actions if needed).
+- Rebuild `Assemblies/TheArk.dll`.
+- Branch: `cursor/ark-pressure-v0-5195` (includes M4).
+
+### What we learned
+- Batching M4–M6 into one playtest pack matches Joe’s slow RimWorld boot cost.
+- Pursuit growth uses session day counter (`arkLandingPursuitDaysApplied`) so save/load does not double-grant.
+
+### Key paths
+- `Source/TheArk/Campaign/ArkPursuit.cs`
+- `Source/TheArk/Campaign/ArkPursuitLetters.cs`
+- `Source/TheArk/Campaign/ArkCampaignGameComponent.cs`
+- `Source/TheArk/Debug/*`
+
+### Operator notes — ONE click after one boot
+1. Merge/pull → restart once
+2. New Game → **The Ark** → Dev Mode
+3. Dev Actions → **The Ark (DEV)** → **Run Pressure V0 Proof**
+4. Paste the log line starting with `Pressure V0 proof PASS` (or FAIL)
+
+### Next steps
+- Joe RUNTIME VERIFIED via one-click proof; no M7 until asked.
+
+---
+
+## 2026-10-01 — M4 Landing Timer V0
+
+### What shipped
+- Session-only `landingSessionTicks` on `ArkCampaignGameComponent` (scribe `arkLandingSessionTicks`).
+- Timer increments every game tick while landing session active; resets on session start/end.
+- Does not mutate durable `CampaignDay` / LandingNumber / Pursuit.
+- Dev Mode: **Advance Landing Timer +1 Day**; debug UI + state strings show ticks and days.
+- Rebuild `Assemblies/TheArk.dll`.
+
+### What we learned
+- Accumulated ticks (not absolute start tick) is the clearest save/load story for a session timer.
+- `GameComponentTick` must run the timer when session is active (previously early-returned and skipped all work).
+
+### Key paths
+- `Source/TheArk/Campaign/ArkCampaignGameComponent.cs`
+- `Source/TheArk/Debug/ArkCampaignDebugOps.cs`
+- `Source/TheArk/Debug/ArkCampaignDebugActions.cs`
+- `Source/TheArk/Debug/Dialog_ArkCampaignDebug.cs`
+
+### Operator notes
+1. Pull / merge → restart
+2. New Game → The Ark → Simulate Landing
+3. Unpause **or** Advance Landing Timer +1 Day → TimerTicks / ~days increase
+4. Optional: save/load mid-session; End Session clears timer
+
+### Next steps
+- Joe RUNTIME VERIFIED; no M5 until asked.
+
+---
+
 ## 2026-10-01 — M3 Landing Detection RUNTIME VERIFIED (Joe Player.log)
 
 ### What shipped

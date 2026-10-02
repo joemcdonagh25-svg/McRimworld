@@ -6,7 +6,7 @@ namespace TheArk.Campaign
 {
     /// <summary>
     /// Authoritative persistent Ark campaign state for the current game save.
-    /// M3: landing detection opens a temporary landing session and increments LandingNumber once.
+    /// M3 session + LandingNumber; M4 landing timer; M5 Pursuit-from-time; M6 band letters.
     /// </summary>
     public class ArkCampaignGameComponent : GameComponent
     {
@@ -25,6 +25,15 @@ namespace TheArk.Campaign
         private int landingSessionMapId = -1;
         // Prevents wasSpawnedViaGravShipLanding from re-firing after End Session on the same map.
         private int lastCountedLandingMapId = -1;
+
+        // M4: elapsed ticks while landing session is active (session-scoped; reset on end).
+        private int landingSessionTicks = 0;
+
+        // M5: how many whole landed days have already granted Pursuit this session (reset on end).
+        private int landingPursuitDaysApplied = 0;
+
+        // M6: last band we notified (-1 = none). Scribed so load does not re-spam letters.
+        private int lastNotifiedPursuitBand = -1;
 
         // Runtime-only edge detect for Odyssey travel → land (not scribed).
         private bool prevGravshipTravelling;
@@ -53,15 +62,18 @@ namespace TheArk.Campaign
             set => arkTier = value;
         }
 
-        public int Pursuit
-        {
-            get => pursuit;
-            set => pursuit = value;
-        }
+        public int Pursuit => pursuit;
+
+        public ArkPursuit.Band PursuitBand => ArkPursuit.BandFor(pursuit);
 
         public bool LandingSessionActive => landingSessionActive;
 
         public int LandingSessionMapId => landingSessionMapId;
+
+        public int LandingSessionTicks => landingSessionTicks;
+
+        /// <summary>Elapsed landing time in whole days (floor). Session-scoped — not CampaignDay.</summary>
+        public int LandingSessionDaysWhole => landingSessionTicks / GenDate.TicksPerDay;
 
         /// <summary>
         /// Required by <see cref="Game.FillComponents"/> — Activator passes the current <see cref="Game"/>.
@@ -80,25 +92,38 @@ namespace TheArk.Campaign
             Scribe_Values.Look(ref landingSessionActive, "arkLandingSessionActive", false);
             Scribe_Values.Look(ref landingSessionMapId, "arkLandingSessionMapId", -1);
             Scribe_Values.Look(ref lastCountedLandingMapId, "arkLastCountedLandingMapId", -1);
+            Scribe_Values.Look(ref landingSessionTicks, "arkLandingSessionTicks", 0);
+            Scribe_Values.Look(ref landingPursuitDaysApplied, "arkLandingPursuitDaysApplied", 0);
+            Scribe_Values.Look(ref lastNotifiedPursuitBand, "arkLastNotifiedPursuitBand", -1);
         }
 
         public override void StartedNewGame()
         {
             TryActivateFromPlaytestScenario("StartedNewGame");
             SyncGravshipTravelWatch();
+            SyncPursuitBandBaseline();
             LogCampaignState("StartedNewGame");
         }
 
         public override void LoadedGame()
         {
             SyncGravshipTravelWatch();
+            SyncPursuitBandBaseline();
             LogCampaignState("LoadedGame");
         }
 
         public override void GameComponentTick()
         {
-            if (!campaignActive || landingSessionActive)
+            if (!campaignActive)
             {
+                return;
+            }
+
+            // M4/M5: timer + Pursuit-from-time only while a landing session is active.
+            if (landingSessionActive)
+            {
+                landingSessionTicks++;
+                ApplyPursuitForLandedDays();
                 return;
             }
 
@@ -110,14 +135,31 @@ namespace TheArk.Campaign
             TryDetectGravshipLanding();
         }
 
+        /// <summary>Clamp and set Pursuit; optionally fire M6 band letter when the band changes.</summary>
+        public void SetPursuit(int value, string reason, bool notifyBand = true)
+        {
+            int clamped = ArkPursuit.Clamp(value);
+            if (clamped == pursuit)
+            {
+                return;
+            }
+
+            int previous = pursuit;
+            pursuit = clamped;
+            Log.Message(
+                $"[The Ark] Pursuit set ({reason}): {previous} → {pursuit} " +
+                $"({ArkPursuit.BandLabel(ArkPursuit.BandFor(pursuit))})");
+
+            if (notifyBand)
+            {
+                MaybeNotifyPursuitBand();
+            }
+        }
+
         /// <summary>
         /// Begin a landing session and increment LandingNumber once.
         /// Ignores when campaign inactive or a session is already active (no spam).
         /// </summary>
-        /// <param name="allowRecountSameMap">
-        /// True for Dev Simulate / travel-ended edges. False for map-flag polling so ending a
-        /// session on the same gravship map does not immediately re-count.
-        /// </param>
         public bool TryBeginLandingSession(Map map, string reason, bool allowRecountSameMap = false)
         {
             if (!campaignActive)
@@ -146,17 +188,19 @@ namespace TheArk.Campaign
             landingSessionActive = true;
             landingSessionMapId = mapId;
             lastCountedLandingMapId = mapId;
+            landingSessionTicks = 0;
+            landingPursuitDaysApplied = 0;
             landingNumber++;
 
             Log.Message(
                 $"[The Ark] Landing session STARTED ({reason}): " +
-                $"mapId={landingSessionMapId}, LandingNumber={landingNumber}, Session=True");
+                $"mapId={landingSessionMapId}, LandingNumber={landingNumber}, Session=True, TimerTicks=0");
             return true;
         }
 
         /// <summary>
-        /// End the temporary landing session without changing durable LandingNumber.
-        /// M8 will call this (or equivalent) on real departure; Dev Mode can call it for re-test.
+        /// End the temporary landing session without changing durable LandingNumber / Pursuit.
+        /// Clears the session timer (M4). M8 will call this on real departure.
         /// </summary>
         public bool EndLandingSession(string reason)
         {
@@ -167,12 +211,46 @@ namespace TheArk.Campaign
             }
 
             int endedMapId = landingSessionMapId;
+            int endedTicks = landingSessionTicks;
             landingSessionActive = false;
             landingSessionMapId = -1;
+            landingSessionTicks = 0;
+            landingPursuitDaysApplied = 0;
 
             Log.Message(
                 $"[The Ark] Landing session ENDED ({reason}): " +
-                $"wasMapId={endedMapId}, LandingNumber={landingNumber}, Session=False");
+                $"wasMapId={endedMapId}, LandingNumber={landingNumber}, Session=False, " +
+                $"TimerWasTicks={endedTicks} (~{FormatTicksAsDays(endedTicks)}d), " +
+                $"{ArkPursuit.Format(pursuit)}");
+            return true;
+        }
+
+        /// <summary>Dev/test helper: add ticks to the landing timer while a session is active.</summary>
+        public bool AddLandingSessionTicks(int ticks, string reason)
+        {
+            if (!landingSessionActive)
+            {
+                Log.Warning($"[The Ark] Add landing timer ignored ({reason}): no active session.");
+                return false;
+            }
+
+            if (ticks == 0)
+            {
+                return true;
+            }
+
+            landingSessionTicks += ticks;
+            if (landingSessionTicks < 0)
+            {
+                landingSessionTicks = 0;
+            }
+
+            ApplyPursuitForLandedDays();
+
+            Log.Message(
+                $"[The Ark] Landing timer adjusted ({reason}): " +
+                $"delta={ticks}, TimerTicks={landingSessionTicks} (~{FormatTicksAsDays(landingSessionTicks)}d), " +
+                $"{ArkPursuit.Format(pursuit)}");
             return true;
         }
 
@@ -193,6 +271,44 @@ namespace TheArk.Campaign
                 campaignActive = true;
                 Log.Message($"[The Ark] Campaign activated from playtest scenario ({context}).");
             }
+        }
+
+        /// <summary>M5: +1 Pursuit per whole landed day this session, clamp 0–100.</summary>
+        private void ApplyPursuitForLandedDays()
+        {
+            int days = LandingSessionDaysWhole;
+            while (landingPursuitDaysApplied < days)
+            {
+                landingPursuitDaysApplied++;
+                if (pursuit >= ArkPursuit.Max)
+                {
+                    continue;
+                }
+
+                SetPursuit(pursuit + ArkPursuit.PursuitPerLandedDay, "LandedDay", notifyBand: true);
+            }
+        }
+
+        private void MaybeNotifyPursuitBand()
+        {
+            ArkPursuit.Band band = ArkPursuit.BandFor(pursuit);
+            int bandInt = (int)band;
+            if (lastNotifiedPursuitBand == bandInt)
+            {
+                return;
+            }
+
+            ArkPursuit.Band? previous = lastNotifiedPursuitBand >= 0
+                ? (ArkPursuit.Band)lastNotifiedPursuitBand
+                : (ArkPursuit.Band?)null;
+            lastNotifiedPursuitBand = bandInt;
+            ArkPursuitLetters.SendBandChanged(pursuit, band, previous);
+        }
+
+        /// <summary>Baseline band after new/load so we do not re-letter the current band.</summary>
+        private void SyncPursuitBandBaseline()
+        {
+            lastNotifiedPursuitBand = (int)ArkPursuit.BandFor(pursuit);
         }
 
         private void TryDetectGravshipLanding()
@@ -221,7 +337,6 @@ namespace TheArk.Campaign
                 return;
             }
 
-            // Missed travel edge (e.g. loaded mid-settle): count once when a player map carries the flag.
             if (!travelling && flaggedMap != null)
             {
                 TryBeginLandingSession(flaggedMap, "wasSpawnedViaGravShipLanding", allowRecountSameMap: false);
@@ -268,8 +383,15 @@ namespace TheArk.Campaign
         {
             Log.Message(
                 $"[The Ark] Campaign state ({context}): " +
-                $"Active={campaignActive}, Day={campaignDay}, Landing={landingNumber}, Tier={arkTier}, Pursuit={pursuit}, " +
-                $"LandingSession={landingSessionActive}, SessionMapId={landingSessionMapId}");
+                $"Active={campaignActive}, Day={campaignDay}, Landing={landingNumber}, Tier={arkTier}, " +
+                $"{ArkPursuit.Format(pursuit)}, " +
+                $"LandingSession={landingSessionActive}, SessionMapId={landingSessionMapId}, " +
+                $"TimerTicks={landingSessionTicks} (~{FormatTicksAsDays(landingSessionTicks)}d)");
+        }
+
+        public static string FormatTicksAsDays(int ticks)
+        {
+            return (ticks / (float)GenDate.TicksPerDay).ToString("0.00");
         }
     }
 }
