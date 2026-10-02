@@ -4,6 +4,17 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-02 — Vampire Lord GetSituations(PlayerColony) goodwill fix
+
+### What shipped
+- Strip illegal player→player / self faction relations after keep home ensure; settle bookkeeping via `Notify_MyMapSettled` when needed.
+- Branch: `cursor/vampire-lord-getsituations-fix-c5ad`.
+
+### Operator notes
+- Pull, restart, New Game → Vampire Lord — Player.log should stop spamming `Called GetSituations() for faction PlayerColony`.
+
+---
+
 ## 2026-10-02 — Vampire Lord M5 Campaign UI HUD
 
 ### What shipped
