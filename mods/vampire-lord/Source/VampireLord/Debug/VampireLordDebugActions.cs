@@ -210,6 +210,34 @@ namespace VampireLord.Debug
 
         [DebugAction(
             category = "Vampire Lord",
+            name = "Toggle Playtest Pace",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void TogglePlaytestPace()
+        {
+            if (!TryGet(out VampireLordCampaignGameComponent campaign))
+            {
+                return;
+            }
+
+            VampireLordPlaytest.TogglePlaytestPace(campaign);
+        }
+
+        [DebugAction(
+            category = "Vampire Lord",
+            name = "Toggle Quiet Letters",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void ToggleQuietLetters()
+        {
+            if (!TryGet(out VampireLordCampaignGameComponent campaign))
+            {
+                return;
+            }
+
+            VampireLordPlaytest.ToggleQuietLetters(campaign);
+        }
+
+        [DebugAction(
+            category = "Vampire Lord",
             name = "Ensure Prep Fixture",
             allowedGameStates = AllowedGameStates.PlayingOnMap)]
         private static void EnsurePrepFixture()

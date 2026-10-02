@@ -5,11 +5,17 @@ namespace VampireLord.Campaign
     /// </summary>
     public static class VampireLordTuning
     {
-        /// <summary>In-game days between a completed wave and the next wave's arrival.</summary>
+        /// <summary>In-game days between a completed wave and the next wave's arrival (normal pace).</summary>
         public const float DaysBetweenWaves = 3f;
 
-        /// <summary>In-game days between the advance warning letter and the raid.</summary>
+        /// <summary>In-game days between the advance warning letter and the raid (normal pace).</summary>
         public const float WarningLeadDays = 1f;
+
+        /// <summary>Playtest pace: days between waves (faster iteration).</summary>
+        public const float PlaytestDaysBetweenWaves = 1f;
+
+        /// <summary>Playtest pace: warning lead before the raid.</summary>
+        public const float PlaytestWarningLeadDays = 0.25f;
 
         /// <summary>How often the campaign component evaluates schedule state.</summary>
         public const int ScheduleCheckIntervalTicks = 250;
@@ -70,9 +76,9 @@ namespace VampireLord.Campaign
         public const int FortifyMaxPerPrepWindow = 1;
 
         /// <summary>
-        /// Delay before the fortify Accept letter after a prep window opens.
-        /// Avoids losing the letter during PostGameStart / map settle churn.
+        /// Delay before fortify delivery after a prep window opens.
+        /// Short on purpose — playtest defaults auto-place sandbags.
         /// </summary>
-        public const int FortifyOfferDelayTicks = 90;
+        public const int FortifyOfferDelayTicks = 30;
     }
 }

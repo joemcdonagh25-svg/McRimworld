@@ -93,9 +93,15 @@ namespace VampireLord.Campaign
         public static void NotifyWaveHarvest(VampireLordCampaignGameComponent campaign)
         {
             int gained = campaign.BloodGainedSinceWave;
-            if (gained > 0)
+            if (gained > 0 && !campaign.PlaytestQuietLetters)
             {
                 VampireLordLetters.SendBloodHarvestLetter(campaign, gained);
+            }
+            else if (gained > 0)
+            {
+                Log.Message(
+                    $"[VampireLord] Harvest quiet: +{gained} blood since last wave " +
+                    $"(Reserve={campaign.BloodReserve}).");
             }
 
             campaign.BloodGainedSinceWave = 0;

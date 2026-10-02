@@ -4,6 +4,21 @@ Newest entries first.
 
 ---
 
+## 2026-10-02 — Less-fussy playtest defaults
+
+### What shipped
+- Campaign start defaults ON: **AutoFortify**, **Playtest Pace** (~1d waves / 0.25d warning), **Quiet Letters**.
+- Removed scenario GameStartDialog (one less New Game click).
+- Debug toggles for Pace / Quiet; Ensure Prep Fixture reapplies defaults.
+- Cursor rule `vampire-lord-pace.mdc`: pack-sized VL work, fewer confirms.
+- DLL rebuild.
+
+### Operator notes
+1. Pull + restart → New Game once → save `VL_prep`.
+2. Later: load `VL_prep` → **Trigger Wave**. Sandbags auto-place; fewer letters.
+
+---
+
 ## 2026-10-02 — Ideology settle polish (skip ChooseIdeoPreset NRE)
 
 ### What shipped

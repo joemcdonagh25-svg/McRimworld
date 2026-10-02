@@ -6,8 +6,7 @@ using Verse;
 namespace VampireLord.Campaign
 {
     /// <summary>
-    /// Faster playtest helpers: fixture-save workflow + optional auto-fortify
-    /// so Joe does not click Accept letters while iterating.
+    /// Faster, less-fussy playtest defaults: fixture save, auto-fortify, fast pace, quiet letters.
     /// </summary>
     public static class VampireLordPlaytest
     {
@@ -15,7 +14,7 @@ namespace VampireLord.Campaign
 
         /// <summary>
         /// Put the campaign back into a between-wave prep window with enough blood to fortify.
-        /// Intended for the VL_prep fixture save — not a player-facing feature.
+        /// Also reapplies less-fussy playtest defaults.
         /// </summary>
         public static void EnsurePrepFixture(VampireLordCampaignGameComponent campaign)
         {
@@ -24,9 +23,12 @@ namespace VampireLord.Campaign
                 return;
             }
 
+            ApplyLessFussyDefaults(campaign);
+
             if (!campaign.CampaignActive)
             {
                 VampireLordWaveDirector.ActivateCampaign(campaign);
+                // Activate already applied defaults + scheduled prep; still top up below.
             }
 
             VampireLordBloodTithe.EnsureStartingReserve(campaign);
@@ -41,8 +43,8 @@ namespace VampireLord.Campaign
             VampireLordPlayerHome.TryEnsure("PrepFixture");
 
             int now = Find.TickManager.TicksGame;
-            int between = (int)(VampireLordTuning.DaysBetweenWaves * GenDate.TicksPerDay);
-            int lead = (int)(VampireLordTuning.WarningLeadDays * GenDate.TicksPerDay);
+            int between = (int)(campaign.EffectiveDaysBetweenWaves * GenDate.TicksPerDay);
+            int lead = (int)(campaign.EffectiveWarningLeadDays * GenDate.TicksPerDay);
 
             campaign.WavePending = true;
             campaign.WarningIssued = false;
@@ -58,8 +60,20 @@ namespace VampireLord.Campaign
 
             Log.Message(
                 $"{LogPrefix} Prep fixture ready. Blood={campaign.BloodReserve}, " +
-                $"AutoFortify={campaign.AutoFortifyPlaytest}. " +
-                "Save this game as VL_prep and reload it for fast iteration.");
+                $"AutoFortify={campaign.AutoFortifyPlaytest}, Pace={campaign.PlaytestPace}, " +
+                $"Quiet={campaign.PlaytestQuietLetters}. Save as VL_prep.");
+        }
+
+        public static void ApplyLessFussyDefaults(VampireLordCampaignGameComponent campaign)
+        {
+            if (campaign == null)
+            {
+                return;
+            }
+
+            campaign.AutoFortifyPlaytest = true;
+            campaign.PlaytestPace = true;
+            campaign.PlaytestQuietLetters = true;
         }
 
         public static void SetAutoFortify(VampireLordCampaignGameComponent campaign, bool enabled)
@@ -71,10 +85,8 @@ namespace VampireLord.Campaign
 
             campaign.AutoFortifyPlaytest = enabled;
             Log.Message(
-                $"{LogPrefix} Auto-Fortify Playtest {(enabled ? "ON" : "OFF")}. " +
-                (enabled
-                    ? "Prep windows will place sandbags automatically (no Accept letter)."
-                    : "Prep windows will send the Blood for the Walls letter again."));
+                $"{LogPrefix} Auto-Fortify {(enabled ? "ON" : "OFF")} " +
+                (enabled ? "(no Accept letter)." : "(Accept letter returns)."));
         }
 
         public static void ToggleAutoFortify(VampireLordCampaignGameComponent campaign)
@@ -87,34 +99,59 @@ namespace VampireLord.Campaign
             SetAutoFortify(campaign, !campaign.AutoFortifyPlaytest);
         }
 
+        public static void TogglePlaytestPace(VampireLordCampaignGameComponent campaign)
+        {
+            if (campaign == null)
+            {
+                return;
+            }
+
+            campaign.PlaytestPace = !campaign.PlaytestPace;
+            Log.Message(
+                $"{LogPrefix} Playtest Pace {(campaign.PlaytestPace ? "ON" : "OFF")} " +
+                $"({campaign.EffectiveDaysBetweenWaves:0.##}d between waves, " +
+                $"{campaign.EffectiveWarningLeadDays:0.##}d warning).");
+        }
+
+        public static void ToggleQuietLetters(VampireLordCampaignGameComponent campaign)
+        {
+            if (campaign == null)
+            {
+                return;
+            }
+
+            campaign.PlaytestQuietLetters = !campaign.PlaytestQuietLetters;
+            Log.Message(
+                $"{LogPrefix} Quiet Letters {(campaign.PlaytestQuietLetters ? "ON" : "OFF")} " +
+                "(harvest/fortify-complete suppressed when ON; warnings+tithe always stay).");
+        }
+
         public static string FormatFixtureChecklist(VampireLordCampaignGameComponent campaign)
         {
             var sb = new StringBuilder();
-            sb.AppendLine("=== Vampire Lord fixture-save workflow ===");
-            sb.AppendLine("ONCE:");
-            sb.AppendLine("  1. New Game → Vampire Lord → let the keep load");
-            sb.AppendLine("  2. Dev Mode → Vampire Lord → Ensure Prep Fixture");
-            sb.AppendLine("  3. (Optional) Toggle Auto-Fortify Playtest ON");
-            sb.AppendLine("  4. Save game as VL_prep");
+            sb.AppendLine("=== Vampire Lord — less-fussy playtest ===");
+            sb.AppendLine("Defaults ON at campaign start: AutoFortify, fast Pace (1d waves), Quiet letters.");
             sb.AppendLine();
-            sb.AppendLine("EACH CODE CHANGE:");
-            sb.AppendLine("  1. Pull / rebuild DLL → restart RimWorld");
-            sb.AppendLine("  2. Load VL_prep (skip New Game)");
-            sb.AppendLine("  3. Use Force Fortify / Trigger Wave / Add Blood as needed");
-            sb.AppendLine("  4. If prep window is messy → Ensure Prep Fixture again, re-save VL_prep");
+            sb.AppendLine("ONCE:");
+            sb.AppendLine("  New Game → Vampire Lord → wait for keep → save VL_prep");
+            sb.AppendLine("  (or Dev Mode → Ensure Prep Fixture → save VL_prep)");
+            sb.AppendLine();
+            sb.AppendLine("EACH CHANGE:");
+            sb.AppendLine("  Restart → load VL_prep → Trigger Wave / Force Fortify as needed");
             sb.AppendLine();
             sb.AppendLine("CURRENT:");
             if (campaign == null)
             {
-                sb.AppendLine("  (no campaign component)");
+                sb.AppendLine("  (no campaign)");
             }
             else
             {
-                sb.AppendLine($"  CampaignActive={campaign.CampaignActive}");
-                sb.AppendLine($"  AutoFortifyPlaytest={campaign.AutoFortifyPlaytest}");
-                sb.AppendLine($"  BloodReserve={campaign.BloodReserve}");
+                sb.AppendLine($"  Active={campaign.CampaignActive}");
+                sb.AppendLine($"  AutoFortify={campaign.AutoFortifyPlaytest}");
+                sb.AppendLine($"  Pace={campaign.PlaytestPace} ({campaign.EffectiveDaysBetweenWaves:0.##}d)");
+                sb.AppendLine($"  QuietLetters={campaign.PlaytestQuietLetters}");
+                sb.AppendLine($"  Blood={campaign.BloodReserve}");
                 sb.AppendLine($"  PrepWindow={VampireLordFortify.IsPrepWindow(campaign)}");
-                sb.AppendLine($"  FortifyPurchases={campaign.FortifyPurchasesThisWindow}");
             }
 
             return sb.ToString().TrimEnd();

@@ -38,7 +38,10 @@ namespace VampireLord.Campaign
         private int lastFortifyPlacedCount;
         private int fortifyOfferDueTick = -1;
         private bool fortifyOfferSentThisWindow;
-        private bool autoFortifyPlaytest;
+        // Playtest defaults ON — less letter clicking / waiting while iterating.
+        private bool autoFortifyPlaytest = true;
+        private bool playtestPace = true;
+        private bool playtestQuietLetters = true;
 
         public bool CampaignActive
         {
@@ -169,12 +172,33 @@ namespace VampireLord.Campaign
 
         /// <summary>
         /// Playtest QoL: when true, prep windows auto-place gate sandbags instead of sending the Accept letter.
+        /// Default ON for Vampire Lord campaign.
         /// </summary>
         public bool AutoFortifyPlaytest
         {
             get => autoFortifyPlaytest;
             set => autoFortifyPlaytest = value;
         }
+
+        /// <summary>Faster wave schedule for iteration. Default ON.</summary>
+        public bool PlaytestPace
+        {
+            get => playtestPace;
+            set => playtestPace = value;
+        }
+
+        /// <summary>Skip non-essential letters (harvest / fortify complete). Warnings + tithe stay. Default ON.</summary>
+        public bool PlaytestQuietLetters
+        {
+            get => playtestQuietLetters;
+            set => playtestQuietLetters = value;
+        }
+
+        public float EffectiveDaysBetweenWaves =>
+            playtestPace ? VampireLordTuning.PlaytestDaysBetweenWaves : VampireLordTuning.DaysBetweenWaves;
+
+        public float EffectiveWarningLeadDays =>
+            playtestPace ? VampireLordTuning.PlaytestWarningLeadDays : VampireLordTuning.WarningLeadDays;
 
         /// <summary>1-based number of the currently pending / next wave.</summary>
         public int UpcomingWaveNumber => waveNumber + 1;
@@ -235,7 +259,9 @@ namespace VampireLord.Campaign
             Scribe_Values.Look(ref lastFortifyPlacedCount, "vlLastFortifyPlacedCount", 0);
             Scribe_Values.Look(ref fortifyOfferDueTick, "vlFortifyOfferDueTick", -1);
             Scribe_Values.Look(ref fortifyOfferSentThisWindow, "vlFortifyOfferSentThisWindow", false);
-            Scribe_Values.Look(ref autoFortifyPlaytest, "vlAutoFortifyPlaytest", false);
+            Scribe_Values.Look(ref autoFortifyPlaytest, "vlAutoFortifyPlaytest", true);
+            Scribe_Values.Look(ref playtestPace, "vlPlaytestPace", true);
+            Scribe_Values.Look(ref playtestQuietLetters, "vlPlaytestQuietLetters", true);
         }
 
         public override void StartedNewGame()

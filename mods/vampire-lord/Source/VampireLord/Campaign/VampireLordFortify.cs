@@ -251,7 +251,11 @@ namespace VampireLord.Campaign
             campaign.LastFortifyPlacedCount = placed;
             campaign.LastFortifyWaveNumber = campaign.WaveNumber;
 
-            VampireLordLetters.SendFortifyComplete(campaign, placed);
+            if (!campaign.PlaytestQuietLetters)
+            {
+                VampireLordLetters.SendFortifyComplete(campaign, placed);
+            }
+
             Log.Message(
                 $"{LogPrefix} Fortified gate ({reason}): placed {placed} sandbags at {gate}. " +
                 $"Reserve={campaign.BloodReserve}, PurchasesThisWindow={campaign.FortifyPurchasesThisWindow}.");
