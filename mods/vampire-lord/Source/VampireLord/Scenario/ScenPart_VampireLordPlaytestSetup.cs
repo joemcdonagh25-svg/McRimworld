@@ -48,6 +48,7 @@ namespace VampireLord.Scenario
             base.PostGameStart();
             TryEnsurePlayerIdeo();
             TryEnsureStartingPawnsAreColonists();
+            TryEquipVampireLordLongsword();
             // Keep must be a real player Settlement — Camp/non-home parents feel like a caravan.
             VampireLordPlayerHome.TryEnsure("PostGameStart");
             // Belt-and-suspenders: if fog was reapplied after PostMapGenerate, clear it once pawns exist.
@@ -140,6 +141,128 @@ namespace VampireLord.Scenario
             if (fixedCount > 0)
             {
                 Log.Message($"{LogPrefix} Reassigned {fixedCount} humanlike pawn(s) to player faction.");
+            }
+        }
+
+        /// <summary>
+        /// Scenario lists a masterwork longsword as a starting thing; put it in the Vampire Lord's hand
+        /// so New Game is fight-ready without scavenging the keep floor.
+        /// </summary>
+        private static void TryEquipVampireLordLongsword()
+        {
+            Map map = Find.CurrentMap ?? Find.AnyPlayerHomeMap;
+            if (map?.mapPawns == null)
+            {
+                return;
+            }
+
+            ThingDef swordDef = DefDatabase<ThingDef>.GetNamedSilentFail("MeleeWeapon_LongSword");
+            if (swordDef == null)
+            {
+                Log.Warning($"{LogPrefix} Longsword equip skipped: MeleeWeapon_LongSword missing.");
+                return;
+            }
+
+            Pawn lord = PickVampireLord(map);
+            if (lord?.equipment == null)
+            {
+                Log.Warning($"{LogPrefix} Longsword equip skipped: no Vampire Lord pawn.");
+                return;
+            }
+
+            if (lord.equipment.Primary != null && lord.equipment.Primary.def == swordDef)
+            {
+                EnsureMasterworkQuality(lord.equipment.Primary);
+                return;
+            }
+
+            ThingWithComps sword = FindLooseLongsword(map, swordDef) ?? MakeMasterworkLongsword(swordDef);
+            if (sword == null)
+            {
+                return;
+            }
+
+            if (sword.Spawned)
+            {
+                sword.DeSpawn();
+            }
+
+            if (lord.equipment.Primary != null)
+            {
+                lord.equipment.TryDropEquipment(lord.equipment.Primary, out _, lord.Position, false);
+            }
+
+            lord.equipment.AddEquipment(sword);
+            Log.Message($"{LogPrefix} Equipped masterwork longsword on {lord.LabelShort}.");
+        }
+
+        private static Pawn PickVampireLord(Map map)
+        {
+            Pawn sanguophage = null;
+            Pawn fallback = null;
+            foreach (Pawn pawn in map.mapPawns.FreeColonistsSpawned)
+            {
+                if (pawn == null)
+                {
+                    continue;
+                }
+
+                fallback ??= pawn;
+                if (pawn.genes?.Xenotype != null && pawn.genes.Xenotype == XenotypeDefOf.Sanguophage)
+                {
+                    sanguophage = pawn;
+                    break;
+                }
+            }
+
+            return sanguophage ?? fallback;
+        }
+
+        private static ThingWithComps FindLooseLongsword(Map map, ThingDef swordDef)
+        {
+            List<Thing> things = map.listerThings?.ThingsOfDef(swordDef);
+            if (things == null)
+            {
+                return null;
+            }
+
+            for (int i = 0; i < things.Count; i++)
+            {
+                if (things[i] is ThingWithComps twc && twc.Spawned && !twc.IsForbidden(Faction.OfPlayer))
+                {
+                    EnsureMasterworkQuality(twc);
+                    return twc;
+                }
+            }
+
+            return null;
+        }
+
+        private static ThingWithComps MakeMasterworkLongsword(ThingDef swordDef)
+        {
+            ThingDef stuff = swordDef.MadeFromStuff ? ThingDefOf.Steel : null;
+            Thing made = ThingMaker.MakeThing(swordDef, stuff);
+            if (made is not ThingWithComps sword)
+            {
+                made?.Destroy(DestroyMode.Vanish);
+                return null;
+            }
+
+            EnsureMasterworkQuality(sword);
+            return sword;
+        }
+
+        private static void EnsureMasterworkQuality(Thing thing)
+        {
+            CompQuality quality = thing?.TryGetComp<CompQuality>();
+            if (quality == null)
+            {
+                return;
+            }
+
+            if (quality.Quality < QualityCategory.Masterwork)
+            {
+                quality.SetQuality(QualityCategory.Masterwork, ArtGenerationContext.Outsider);
             }
         }
 

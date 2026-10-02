@@ -26,7 +26,7 @@ After the campaign starts, the Wave Director:
 - 1 Vampire Lord (Sanguophage) + 2 thralls (Baseliner)
 - Simple granite walled courtyard + open south gate at player start
 - Outside map revealed (not a fog void)
-- Starter food, medicine, materials, rifles, hemogen packs
+- Starter food, medicine, materials, rifles, masterwork longsword, hemogen packs
 - Wave Director **auto-starts** (no Dev Mode required)
 
 ### M3 — Blood Tithe V0

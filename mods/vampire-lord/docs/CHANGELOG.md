@@ -4,6 +4,24 @@ Newest entries first.
 
 ---
 
+## 2026-10-02 — Masterwork longsword start gear
+
+### What shipped
+- Vampire Lord scenario starting melee is a **masterwork steel longsword** (replaces the steel gladius).
+- Playtest setup equips it on the Vampire Lord (Sanguophage) at `PostGameStart` so New Game is fight-ready.
+- DLL rebuild.
+
+### Key paths
+- `Defs/Scenarios/VampireLordScenario.xml`
+- `Source/VampireLord/Scenario/ScenPart_VampireLordPlaytestSetup.cs`
+- `Assemblies/VampireLord.dll`
+
+### Operator notes
+1. Pull + restart → New Game → Vampire Lord.
+2. Confirm the Vampire Lord is holding a masterwork longsword (log: `Equipped masterwork longsword on …`).
+
+---
+
 ## 2026-10-02 — M5 Campaign UI HUD
 
 ### What shipped

@@ -4,6 +4,17 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-02 — Vampire Lord masterwork longsword start gear
+
+### What shipped
+- Vampire Lord scenario starts with a **masterwork steel longsword** (replaces gladius), equipped on the Sanguophage at game start.
+- Branch: `cursor/vampire-lord-masterwork-longsword-c5ad`.
+
+### Operator notes
+- Pull, restart, New Game → Vampire Lord — Lord should be holding a masterwork longsword.
+
+---
+
 ## 2026-10-02 — Vampire Lord M5 Campaign UI HUD
 
 ### What shipped
