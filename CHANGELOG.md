@@ -4,6 +4,28 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-05 — Colony Time V0 (Load Game playtime)
+
+### What shipped
+- New mod `mods/colony-time/`: read-only Load Game extras — real playtime + colony age per save, sort control, metadata cache.
+- Junction helper `mods/colony-time/tools/junction-colony-time.ps1` so it appears in the RimWorld Mods list.
+- Branch: `cursor/colony-time-v0-25e9`.
+
+### What we learned
+- Harmony targets confirmed from RimWorld 1.6.4871 refs: `Dialog_FileList.DoWindowContents` / `DrawDateAndVersion`, `Dialog_SaveFileList.ReloadFiles`.
+- `realPlayTimeInteracting` is seconds; `ticksGame` uses 60k ticks/day and 60 days/year.
+- Not in the mod list ⇒ usually wrong git branch and/or missing `Mods\colony-time` junction (same class of issue as early Ark installs).
+
+### Operator notes
+1. `git checkout cursor/colony-time-v0-25e9` (not on `main` yet)
+2. Run `mods\colony-time\tools\junction-colony-time.ps1`
+3. Enable Harmony, then Colony Time; restart; open Load Game
+
+### Next steps
+- Joe runtime-verifies Load Game UI; no campaign grouping until asked.
+
+---
+
 ## 2026-10-02 — Vampire Lord M5 Campaign UI HUD
 
 ### What shipped
