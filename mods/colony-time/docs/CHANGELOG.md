@@ -4,6 +4,16 @@ Newest entries first.
 
 ---
 
+## 2026-10-05 — Load Game label readability
+
+### What shipped
+- Taller save rows (72px), wider meta column, brighter Played/Colony color, Small font for those two lines.
+
+### Operator notes
+- `git pull` on `cursor/colony-time-v0-25e9` (junction already points at the folder) → restart RimWorld → open Load Game.
+
+---
+
 ## 2026-10-05 — Install helper (mod list visibility)
 
 ### What shipped

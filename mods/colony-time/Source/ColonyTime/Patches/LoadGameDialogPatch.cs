@@ -30,7 +30,7 @@ namespace ColonyTime.Patches
         private static int lastResortGeneration = -1;
 
         private const float SortBarHeight = 28f;
-        private const float EnhancedRowHeight = 58f;
+        private const float EnhancedRowHeight = 72f;
         private const float VanillaRowHeight = 40f;
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace ColonyTime.Patches
             {
                 ColonyTimeLog.Warning(
                     "DoWindowContents transpiler found no " + VanillaRowHeight +
-                    "f entry-height constants — using side labels instead of taller rows.");
+                    "f entry-height constants - using side labels instead of taller rows.");
             }
 
             return list;
@@ -229,7 +229,11 @@ namespace ColonyTime.Patches
     [HarmonyPatch(typeof(Dialog_FileList), nameof(Dialog_FileList.DrawDateAndVersion))]
     internal static class Dialog_FileList_DrawDateAndVersion_Patch
     {
-        private const float ExtraInfoWidth = 120f;
+        private const float ExtraInfoWidth = 150f;
+
+        // Brighter than vanilla UnimportantTextColor (50% alpha) so Played/Colony stay readable.
+        private static readonly Color MetaLabelColor = new Color(0.92f, 0.92f, 0.78f, 1f);
+        private static readonly Color DateColor = new Color(1f, 1f, 1f, 0.7f);
 
         /// <summary>
         /// When row height was successfully increased, replace the date/version block
@@ -262,26 +266,29 @@ namespace ColonyTime.Patches
             drawRect.width += ExtraInfoWidth;
 
             Widgets.BeginGroup(drawRect);
+
+            // Top: date + version (vanilla-style Tiny).
             Text.Font = GameFont.Tiny;
             Text.Anchor = TextAnchor.UpperLeft;
 
-            float line = drawRect.height / 4f;
-            float y = 1f;
-
-            GUI.color = SaveFileInfo.UnimportantTextColor;
-            Widgets.Label(new Rect(0f, y, drawRect.width, line), sfi.LastWriteTime.ToString("g"));
-            y += line;
+            float topLine = 16f;
+            GUI.color = DateColor;
+            Widgets.Label(new Rect(0f, 1f, drawRect.width, topLine), sfi.LastWriteTime.ToString("g"));
 
             GUI.color = sfi.VersionColor;
-            Rect versionRect = new Rect(0f, y, drawRect.width, line);
+            Rect versionRect = new Rect(0f, topLine, drawRect.width, topLine);
             Widgets.Label(versionRect, sfi.GameVersion);
             TooltipHandler.TipRegion(versionRect, sfi.CompatibilityTip);
-            y += line;
 
-            GUI.color = SaveFileInfo.UnimportantTextColor;
-            Widgets.Label(new Rect(0f, y, drawRect.width, line), SaveTimeFormatter.FormatPlayedLine(meta.RealPlayTimeSeconds));
-            y += line;
-            Widgets.Label(new Rect(0f, y, drawRect.width, line), SaveTimeFormatter.FormatColonyLine(meta.TicksGame));
+            // Bottom: Played / Colony in Small + brighter color for readability.
+            Text.Font = GameFont.Small;
+            Text.Anchor = TextAnchor.UpperLeft;
+            GUI.color = MetaLabelColor;
+
+            float metaY = topLine * 2f + 2f;
+            float metaLine = (drawRect.height - metaY) / 2f;
+            Widgets.Label(new Rect(0f, metaY, drawRect.width, metaLine), SaveTimeFormatter.FormatPlayedLine(meta.RealPlayTimeSeconds));
+            Widgets.Label(new Rect(0f, metaY + metaLine, drawRect.width, metaLine), SaveTimeFormatter.FormatColonyLine(meta.TicksGame));
 
             GUI.color = Color.white;
             Text.Anchor = TextAnchor.UpperLeft;
@@ -293,11 +300,11 @@ namespace ColonyTime.Patches
             Rect side = new Rect(rect.x - ExtraInfoWidth, rect.y, ExtraInfoWidth - 4f, rect.height);
             Widgets.BeginGroup(side);
             Text.Font = GameFont.Tiny;
-            Text.Anchor = TextAnchor.UpperRight;
-            GUI.color = SaveFileInfo.UnimportantTextColor;
+            Text.Anchor = TextAnchor.MiddleRight;
+            GUI.color = MetaLabelColor;
 
             float half = side.height / 2f;
-            Widgets.Label(new Rect(0f, 2f, side.width, half), SaveTimeFormatter.FormatPlayedLine(meta.RealPlayTimeSeconds));
+            Widgets.Label(new Rect(0f, 0f, side.width, half), SaveTimeFormatter.FormatPlayedLine(meta.RealPlayTimeSeconds));
             Widgets.Label(new Rect(0f, half, side.width, half), SaveTimeFormatter.FormatColonyLine(meta.TicksGame));
 
             GUI.color = Color.white;
