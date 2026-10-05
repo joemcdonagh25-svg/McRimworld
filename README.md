@@ -11,6 +11,7 @@ McRimworld/
   mods/
     the-ark-rimworld/   # The Ark (git subtree from joemcdonagh25-svg/the-ark-rimworld)
     vampire-lord/       # Vampire Lord (M1 Wave Director)
+    colony-time/        # Colony Time (Load Game playtime / colony age)
 ```
 
 ## Mods
@@ -19,6 +20,7 @@ McRimworld/
 |--------|---------|--------|
 | `mods/the-ark-rimworld/` | `joemcdonagh.theark` | RimWorld 1.6 — M1–M6 **RUNTIME VERIFIED** (Pressure V0 one-click proof); no M7 until Joe asks |
 | `mods/vampire-lord/` | `joemcdonagh.vampirelord` | RimWorld 1.6 — M1 + M2 RUNTIME VERIFIED; M3 Blood Tithe implemented (runtime pending) |
+| `mods/colony-time/` | `joemcdonagh.colonytime` | RimWorld 1.6 — V0 IMPLEMENTATION COMPLETE (Load Game playtime/age); runtime pending |
 
 ### The Ark
 
@@ -65,11 +67,22 @@ Gothic keep tower-defence campaign. Defend the keep. Read the warning. Prepare t
 
 - Never force-push either repo; preserve history.
 
+### Colony Time
+
+Read-only Load Game utility: shows real playtime and colony age per save, with optional sorting.
+
+- Package: `joemcdonagh.colonytime`
+- Requires **Harmony** (`brrainz.harmony`)
+- Junction/copy `mods/colony-time/` into your RimWorld `Mods` folder
+- Docs: `mods/colony-time/docs/`
+
 ## Build
 
 ```bash
 dotnet build ./mods/the-ark-rimworld/Source/TheArk/TheArk.csproj
 dotnet build ./mods/vampire-lord/Source/VampireLord/VampireLord.csproj
+dotnet build ./mods/colony-time/Source/ColonyTime/ColonyTime.csproj
+dotnet test ./mods/colony-time/Source/ColonyTime.Tests/ColonyTime.Tests.csproj
 ```
 
 Point RimWorld at the mod folder under `mods/` (or copy/symlink/junction into your RimWorld `Mods` folder) for in-game testing.

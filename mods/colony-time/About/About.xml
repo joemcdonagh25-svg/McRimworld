@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Colony Time</name>
+  <author>Joe McDonagh</author>
+  <packageId>joemcdonagh.colonytime</packageId>
+
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/workshop/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+
+  <loadAfter>
+    <li>brrainz.harmony</li>
+  </loadAfter>
+
+  <description>
+Shows real playtime and colony age for each save directly on RimWorld's Load Game screen.
+
+Read-only. Safe to add or remove. Does not alter save files or write colony state.
+  </description>
+</ModMetaData>
