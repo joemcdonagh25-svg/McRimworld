@@ -4,6 +4,22 @@ Newest entries first.
 
 ---
 
+## 2026-10-05 — Install helper (mod list visibility)
+
+### What shipped
+- `tools/junction-colony-time.ps1` — same Mods-junction pattern as The Ark / Vampire Lord.
+- README install steps: checkout PR branch, then junction `mods/colony-time` into RimWorld `Mods`.
+
+### What we learned
+- Mod missing from the in-game list is almost always “not on disk under RimWorld\Mods” (wrong branch and/or no junction), not a bad About.xml.
+
+### Operator notes
+1. `git checkout cursor/colony-time-v0-25e9`
+2. Run `mods\colony-time\tools\junction-colony-time.ps1`
+3. Confirm `Mods\colony-time\About\About.xml` exists → restart → enable Harmony + Colony Time
+
+---
+
 ## 2026-10-05 — V0 Load Game playtime + colony age
 
 ### What shipped

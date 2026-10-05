@@ -73,7 +73,9 @@ Read-only Load Game utility: shows real playtime and colony age per save, with o
 
 - Package: `joemcdonagh.colonytime`
 - Requires **Harmony** (`brrainz.harmony`)
-- Junction/copy `mods/colony-time/` into your RimWorld `Mods` folder
+- Currently on branch `cursor/colony-time-v0-25e9` (draft PR) — checkout that branch, then junction
+- Windows helper: `mods/colony-time/tools/junction-colony-time.ps1`
+- Junction/copy **`mods/colony-time/`** (folder with `About/` **and** `Assemblies/`) into RimWorld `Mods`
 - Docs: `mods/colony-time/docs/`
 
 ## Build
