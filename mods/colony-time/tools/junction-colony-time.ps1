@@ -17,7 +17,7 @@ if (-not (Test-Path (Join-Path $target "About\About.xml"))) {
     Write-Error @"
 Target missing About.xml: $target
 
-Colony Time is not on main yet — you need the PR branch locally first:
+Colony Time is not on main yet - you need the PR branch locally first:
 
   cd $McRimworldRoot
   git fetch origin
@@ -63,4 +63,4 @@ Write-Host "  2) Open RimWorld -> Mods"
 Write-Host "  3) Enable Harmony (brrainz.harmony), then Colony Time"
 Write-Host "  4) Restart RimWorld"
 Write-Host "  5) Player.log should contain: [Colony Time] Initialized."
-Write-Host "  6) Load Game — each save should show Played / Colony lines"
+Write-Host "  6) Load Game - each save should show Played / Colony lines"
