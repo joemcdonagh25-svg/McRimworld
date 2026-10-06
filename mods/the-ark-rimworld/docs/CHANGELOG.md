@@ -4,6 +4,35 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-06 — ARK: Quicktest DebugActions harness
+
+### What shipped
+- New Dev Mode actions (search **`ARK:`**) for inspect / activate / day / landing / tier / pursuit / presets / save-test snapshot / confirmed RESET.
+- File: `Source/TheArk/Debug/ArkDebugActions.cs` — isolated from production campaign behaviour; no second state cache.
+- Integer Set actions use vanilla `Dialog_Slider`; RESET uses `Dialog_MessageBox.CreateConfirmation`.
+- Rebuild `Assemblies/TheArk.dll`.
+- Branch: `cursor/ark-debug-harness-5195`.
+
+### What we learned
+- Quicktest loop needs copyable SAVE TEST snapshots more than a permanent gameplay UI.
+- Presets are artificial fixtures (Fresh / Early / Mid / High Pursuit), not balance.
+
+### Key paths
+- `Source/TheArk/Debug/ArkDebugActions.cs`
+- `docs/RIMWORLD_API_NOTES.md` (Quicktest harness entry)
+- `docs/MILESTONES.md` (M2 tooling note)
+
+### Operator notes
+1. Pull → restart RimWorld once (Dev Mode on)
+2. Quicktest (or New Game → The Ark)
+3. Debug Actions → search **`ARK:`**
+4. e.g. **Preset — Mid Campaign** → **Log Save/Load Test Snapshot** → save → quit → load → snapshot again and compare
+
+### Next steps
+- Runtime-verify actions appear and mutate state in Quicktest; do not treat this as a new M1 save/load proof unless Joe re-runs that checklist.
+
+---
+
 ## 2026-10-02 — Pressure V0 (M4+M5+M6) RUNTIME VERIFIED (Joe Player.log)
 
 ### What shipped

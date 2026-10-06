@@ -335,6 +335,21 @@ Use this template:
 - **Decision for The Ark:** Scenario-scoped activation of `CampaignActive` in `PostGameStart`. No gravship spawn in this scenario (Odyssey wreckage/start deferred). M1 fixture remains a Dev action.
 - **Related milestone:** M2 / V1.1 playtest convenience
 
+### 2026-10-06 — Ark Quicktest DebugActions harness (`ARK:`)
+
+- **Goal:** Fast, deterministic campaign-state inspect/mutate/preset/reset from Dev Mode / Quicktest without temporary gameplay UI or hand-editing saves.
+- **Evidence:** MetadataLoadContext on `Krafs.Rimworld.Ref` 1.6.4871 — `LudeonTK.DebugActionAttribute`, `Verse.Dialog_Slider`, `Verse.Dialog_MessageBox.CreateConfirmation`.
+- **API:**
+  - `LudeonTK.DebugActionAttribute` (`name`, `category`, `allowedGameStates`, `displayPriority`)
+  - `LudeonTK.AllowedGameStates.PlayingOnMap`
+  - `Verse.Dialog_Slider(string, int from, int to, Action<int>, int curValue)` — developer integer entry for Set Day / Landing / Tier / Pursuit
+  - `Verse.Dialog_MessageBox.CreateConfirmation(TaggedString, Action, bool destructive, string title, …)` — RESET confirm
+  - Access: `TheArk.Campaign.ArkCampaign.TryGet` only (no second cache)
+- **Behaviour notes:** Actions live in `Source/TheArk/Debug/ArkDebugActions.cs`, category **The Ark (DEV)**, names prefixed **`ARK:`** for search. Development/testing only — no gameplay dependency. Slider upper bounds for Day/Landing/Tier are UI convenience only; Pursuit uses existing `ArkPursuit.Min`/`Max`. Presets are artificial fixtures, not balance. Save/load snapshot action only logs; does not automate save/load.
+- **Decision for The Ark:** Keep harness isolated from `ArkCampaignGameComponent` (component must not reference debug). Coexists with older `ArkCampaignDebugActions` / dialog / proof actions.
+- **Runtime status:** Compile-checked; **in-RimWorld appearance/behaviour UNVERIFIED** until Quicktest pass.
+- **Related milestone:** M2 tooling / developer workflow (does **not** by itself re-prove save/load)
+
 ### 2026-10-01 — M2 / V1.1 Campaign Debug UI (Dev Mode)
 
 - **Goal:** Inspect and deliberately edit the five M1 campaign fields in-game without a second state owner; enable M1 save/load proof.
