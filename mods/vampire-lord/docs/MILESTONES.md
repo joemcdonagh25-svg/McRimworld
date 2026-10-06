@@ -302,6 +302,24 @@ Always-on Blood / Wave / Threat readout so the keep is playable without Dev Mode
 
 ---
 
+## Developer tooling — VL: Quicktest harness (2026-10-06)
+
+**IMPLEMENTATION COMPLETE:** yes  
+**RUNTIME VERIFIED:** no
+
+### Goal
+Enter useful Vampire Lord combat/campaign states in seconds via Dev Mode Debug Actions (`VL:`), without inventing a second campaign state machine.
+
+### Shipped
+- `VampireLordDebugActions` / `Helpers` / `Presets`
+- Production waves via `TriggerWaveNow`; keep blood / fortify / keep courtyard repair; Biotech hemogen + deathrest need; time via `DebugSetTicksGame`
+- Presets: Fresh Lord / Early / Mid / Last Stand / Near Defeat
+
+### Manual runtime checklist
+See agent final report / `docs/PLAYTEST_FIXTURE.md` — do not mark RUNTIME VERIFIED until Joe runs RimWorld.
+
+---
+
 ## M4+ — still parked
 
 | Candidate | Fantasy |

@@ -4,6 +4,27 @@ Newest entries first.
 
 ---
 
+## 2026-10-06 — VL: Quicktest debug harness
+
+### What shipped
+- Dev Mode DebugActions searchable as **`VL:`** (Print State / Pawn State, time, waves, threat, keep repair, hemogen, deathrest need, presets, reset, save snapshot).
+- Helpers + presets call production Wave Director / Blood Tithe / Fortify / KeepLayout — no duplicate campaign state.
+- DLL rebuild. Docs: `PLAYTEST_FIXTURE.md`, API notes, README.
+
+### Operator notes
+1. Pull + restart → Quicktest or load `VL_prep` → Dev Mode → Debug Actions → search `VL:`.
+2. Try **Preset — Last Stand**, then **Log Save Test Snapshot** → save/load → snapshot again.
+3. Runtime checklist is in the PR / agent report (not marked verified here).
+
+### Key paths
+- `Source/VampireLord/Debug/VampireLordDebugActions.cs`
+- `Source/VampireLord/Debug/VampireLordDebugHelpers.cs`
+- `Source/VampireLord/Debug/VampireLordDebugPresets.cs`
+- `Assemblies/VampireLord.dll`
+- `docs/PLAYTEST_FIXTURE.md`
+
+---
+
 ## 2026-10-02 — M5 Campaign UI HUD
 
 ### What shipped

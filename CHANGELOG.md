@@ -4,6 +4,17 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-06 — Vampire Lord VL: Quicktest debug harness
+
+### What shipped
+- Developer DebugActions prefixed **`VL:`** for Quicktest: state dumps, time, production waves, threat, keep repair, hemogen/deathrest, siege presets, reset, save snapshot.
+- Branch: `cursor/vampire-lord-debug-harness-c5ad`.
+
+### Operator notes
+- Pull, restart, Quicktest → Dev Mode → search `VL:` → **Preset — Last Stand**.
+
+---
+
 ## 2026-10-06 — The Ark Quicktest DebugActions harness (`ARK:`)
 
 ### What shipped

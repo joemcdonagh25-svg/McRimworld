@@ -139,6 +139,20 @@ Target: RimWorld **1.6** via `Krafs.Rimworld.Ref` 1.6.4871 (Cloud/CI) or local S
 - **Runtime status:** Menu visibility **UNVERIFIED** until Dev mode test.
 - **Related milestone:** M1
 
+### 2026-10-06 — VL: Quicktest debug harness
+
+- **Goal:** Enter useful Vampire Lord combat/campaign states in seconds via Debug Actions search `VL:`.
+- **Evidence:** Metadata inspection of `Krafs.Rimworld.Ref` 1.6.4871; compile against existing campaign APIs.
+- **API (verified present):**
+  - `Verse.TickManager.DebugSetTicksGame(int)` + `RimWorld.GenLocalDate.HourOfDay(Map)` / `GenDate.TicksPerHour`
+  - `RimWorld.Gene_Hemogen` : `Gene_Resource` (`Value` / `Max`) via `Pawn_GeneTracker.GetFirstGeneOfType<T>()`
+  - `RimWorld.Need_Deathrest` (`CurLevel`, `Deathresting`)
+  - `Verse.HealthUtility.HealNonPermanentInjuriesAndRestoreLegs`
+  - `LudeonTK.Dialog_DebugOptionListLister.ShowSimpleDebugMenu`
+- **Decision for Vampire Lord:** Expand `VampireLordDebugActions` + helpers/presets. Names prefixed `VL:`. Waves always call `VampireLordWaveDirector.TriggerWaveNow` (production path). No Harmony. No second campaign state.
+- **Runtime status:** Actions compile; live RimWorld Quicktest **UNVERIFIED**.
+- **Related milestone:** playtest tooling (cross-cutting M1–M5)
+
 ---
 
 ### 2026-10-01 — Scenario + ScenPart playtest setup (M2)
