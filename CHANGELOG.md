@@ -15,6 +15,20 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-06 — The Ark Quicktest DebugActions harness (`ARK:`)
+
+### What shipped
+- Dev-only DebugActions to inspect/mutate Ark campaign state from Quicktest (presets + save-test snapshot + RESET).
+- Branch: `cursor/ark-debug-harness-5195`.
+
+### Operator notes
+- Pull → restart → Quicktest → Dev Actions → search **`ARK:`**.
+
+### Next steps
+- Joe runtime-verify in RimWorld; merge when ready.
+
+---
+
 ## 2026-10-02 — Vampire Lord M5 Campaign UI HUD
 
 ### What shipped
