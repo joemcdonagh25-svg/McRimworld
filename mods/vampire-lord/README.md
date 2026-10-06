@@ -51,9 +51,13 @@ After the campaign starts, the Wave Director:
 3. **New Game → Vampire Lord** (preferred playtest path).
 
 ### Debug (optional)
-Dev Mode → category **Vampire Lord** → Start / Stop / Trigger Warning / Trigger Wave / Show Campaign State / Blood Tithe / Fortify tools.
+Dev Mode → Debug Actions → search **`VL:`**.
 
-**Fast loop (defaults ON):** AutoFortify + 1-day wave pace + quiet letters. See `docs/PLAYTEST_FIXTURE.md` — save `VL_prep`, load it, **Trigger Wave**.
+Quicktest loop: Build → Launch → Quicktest → search `VL:` → apply a preset → test → **VL: !!! RESET** → repeat.
+
+Key actions: **Print State**, **Midnight**, wave spawns, **Preset — Last Stand**, **Log Save Test Snapshot**. Full list in `docs/PLAYTEST_FIXTURE.md`.
+
+**Fast loop (defaults ON):** AutoFortify + 1-day wave pace + quiet letters. Save `VL_prep` after first New Game.
 
 ## Build
 
