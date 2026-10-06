@@ -131,6 +131,7 @@ Expose M1 state through a minimal development / debug interface.
 - Window: `[DEV] The Ark — Campaign Debug` — draft fields + Apply / Refresh / Fixture
 - Writes via `TheArk.Debug.ArkCampaignDebugOps` into `ArkCampaignGameComponent` only
 - Gate: Dev Mode debug actions + `Prefs.DevMode` / `onlyDrawInDevMode`
+- **Quicktest harness (tooling):** `Source/TheArk/Debug/ArkDebugActions.cs` — search Dev Actions for **`ARK:`** (print / activate / day / landing / tier / pursuit / presets / save-test snapshot / RESET). Dev-only; does not mark save/load proof by itself.
 
 ### Manual test
 
