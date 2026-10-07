@@ -16,6 +16,19 @@ namespace TheArk
 
         private static void LogInstallAndScenarioStatus()
         {
+            // Diagnostics only — never let a listing/ConfigErrors failure take down the entry screen.
+            try
+            {
+                LogInstallAndScenarioStatusInner();
+            }
+            catch (System.Exception e)
+            {
+                Log.Warning("[The Ark] Startup diagnostics failed (ignored): " + e);
+            }
+        }
+
+        private static void LogInstallAndScenarioStatusInner()
+        {
             ModContentPack pack = LoadedModManager.RunningModsListForReading
                 .FirstOrDefault(m => m?.PackageIdPlayerFacing == "joemcdonagh.theark"
                     || m?.PackageId == "joemcdonagh.theark"

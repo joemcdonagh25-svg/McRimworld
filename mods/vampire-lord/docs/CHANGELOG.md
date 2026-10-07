@@ -4,6 +4,17 @@ Newest entries first.
 
 ---
 
+## 2026-10-07 — ASCII debug preset names (black-screen recovery companion)
+
+### What shipped
+- `VL: Preset - ...` DebugAction names use ASCII hyphens (no em-dash).
+- Parent recovery script for resolution-jump black screen: `tools/fix-rimworld-black-screen.ps1`.
+
+### Operator notes
+- Boot black-screen after a resolution jump is Prefs/Unity/HugsLib territory; run the recovery script, then re-enable VL.
+
+---
+
 ## 2026-10-06 — VL: Quicktest debug harness
 
 ### What shipped

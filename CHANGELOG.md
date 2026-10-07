@@ -4,6 +4,32 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-07 — RimWorld black-screen / resolution-jump recovery
+
+### What shipped
+- `tools/fix-rimworld-black-screen.ps1`: kills hung RimWorld, backs up Config, writes safe windowed Prefs (1280×720, Dev Mode off), vanilla-only ModsConfig (drops HugsLib/workshop/our mods for one clean launch), clears Unity HKCU screen registry overrides that ignore Prefs.xml.
+- The Ark bootstrap diagnostics wrapped in try/catch so a listing/ConfigErrors failure cannot take down the entry screen.
+- ASCII-only DebugAction preset names (em-dashes → `-`) in Ark + Vampire Lord harnesses.
+- README pointer for the recovery path.
+- Branch: `cursor/rimworld-black-screen-fix-12d5`.
+
+### What we learned
+- Joe’s failure mode: boots → resolution jump → black screen / crash. Prior Player.log spam was `DevToolStarterOnGUI` / `MusicManagerEntry` / `ScreenshotTaker` NREs on `UIRoot_Entry` (Prefs/UI half-dead), not VL wave code.
+- Prefs showed `fullscreen=True` / `2560x1440`; Steam launch `-windowed 1280x720` briefly worked then Prefs/Unity overwrote back to big fullscreen. Steam Cloud can restore old Prefs after a manual rename.
+- HugsLib + high-res fullscreen is a known black-screen combo; recovery launch strips non-DLC mods so the menu can return.
+
+### Operator notes
+1. Fully quit RimWorld.
+2. `powershell -ExecutionPolicy Bypass -File C:\McRimworld\tools\fix-rimworld-black-screen.ps1`
+3. Steam → RimWorld → disable Cloud sync for this game; set launch options printed by the script; verify game files; beta = none (1.6).
+4. Launch once → expect small windowed **main menu**.
+5. Re-enable Biotech + Vampire Lord / The Ark one at a time.
+
+### Next steps
+- Joe RUNTIME VERIFY: main menu after script. Paste Desktop `rimworld-debug.log` top/errors only if still black.
+
+---
+
 ## 2026-10-06 — Vampire Lord VL: Quicktest debug harness
 
 ### What shipped

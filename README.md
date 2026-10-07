@@ -73,3 +73,16 @@ dotnet build ./mods/vampire-lord/Source/VampireLord/VampireLord.csproj
 ```
 
 Point RimWorld at the mod folder under `mods/` (or copy/symlink/junction into your RimWorld `Mods` folder) for in-game testing.
+
+## If RimWorld boots, jumps resolution, then black-screens
+
+That pattern is almost always **Prefs / Unity fullscreen** (often 2560×1440) killing the main-menu UI — not a Vampire Lord or Ark gameplay bug. HugsLib + high-res fullscreen is a known bad combo.
+
+On the Windows play PC, in PowerShell from this repo:
+
+```powershell
+cd C:\McRimworld
+powershell -ExecutionPolicy Bypass -File .\tools\fix-rimworld-black-screen.ps1
+```
+
+Then follow the printed Steam Cloud / launch-options steps. Success = small windowed main menu.

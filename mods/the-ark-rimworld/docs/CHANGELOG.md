@@ -4,6 +4,18 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-07 — Startup diagnostics hardening + ASCII debug names
+
+### What shipped
+- `TheArkBootstrap` install/scenario diagnostics run inside try/catch (failures log a warning; do not abort entry UI).
+- `ARK: Preset - ...` DebugAction names use ASCII hyphens (no em-dash).
+- Parent recovery script: `tools/fix-rimworld-black-screen.ps1` (Prefs/Unity fullscreen black-screen path).
+
+### Operator notes
+- If RimWorld jumps resolution then black-screens, run the parent recovery script before blaming Ark gameplay code.
+
+---
+
 ## 2026-10-06 — ARK: Quicktest DebugActions harness
 
 ### What shipped
