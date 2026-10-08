@@ -7,13 +7,13 @@ namespace TheArk.Debug
 {
     /// <summary>
     /// Developer-only DebugActions for Quicktest / Dev Mode campaign-state iteration.
-    /// Not a gameplay system. Does not own or cache campaign state — always reads/writes
+    /// Not a gameplay system. Does not own or cache campaign state - always reads/writes
     /// <see cref="ArkCampaignGameComponent"/> via <see cref="ArkCampaign.TryGet"/>.
     /// Search Dev Actions for "ARK:".
     /// </summary>
     public static class ArkDebugActions
     {
-        // Dialog_Slider needs a UI upper bound. These are entry convenience ranges only —
+        // Dialog_Slider needs a UI upper bound. These are entry convenience ranges only -
         // not game-balance caps (except Pursuit, which uses ArkPursuit.Max already in the project).
         private const int CampaignDaySliderMax = 100_000;
         private const int LandingNumberSliderMax = 10_000;
@@ -66,7 +66,7 @@ namespace TheArk.Debug
             campaign.LandingNumber = landing;
             campaign.ArkTier = tier;
             campaign.SetPursuit(pursuit, "Debug.Preset." + presetName, notifyBand: true);
-            Log.Message("[The Ark] Preset applied — " + presetName + ":\n" + FormatFields(campaign));
+            Log.Message("[The Ark] Preset applied - " + presetName + ":\n" + FormatFields(campaign));
         }
 
         private static void PromptInt(
@@ -368,7 +368,7 @@ namespace TheArk.Debug
 
         [DebugAction(
             category = "The Ark (DEV)",
-            name = "ARK: Preset — Fresh Campaign",
+            name = "ARK: Preset - Fresh Campaign",
             allowedGameStates = AllowedGameStates.PlayingOnMap)]
         private static void PresetFreshCampaign()
         {
@@ -377,13 +377,13 @@ namespace TheArk.Debug
                 return;
             }
 
-            // Artificial developer fixture — not balance.
+            // Artificial developer fixture - not balance.
             ApplyPreset(campaign, "Fresh Campaign", true, 0, 0, 0, 0);
         }
 
         [DebugAction(
             category = "The Ark (DEV)",
-            name = "ARK: Preset — Early Campaign",
+            name = "ARK: Preset - Early Campaign",
             allowedGameStates = AllowedGameStates.PlayingOnMap)]
         private static void PresetEarlyCampaign()
         {
@@ -392,13 +392,13 @@ namespace TheArk.Debug
                 return;
             }
 
-            // Artificial developer fixture — not balance.
+            // Artificial developer fixture - not balance.
             ApplyPreset(campaign, "Early Campaign", true, 10, 1, 1, 20);
         }
 
         [DebugAction(
             category = "The Ark (DEV)",
-            name = "ARK: Preset — Mid Campaign",
+            name = "ARK: Preset - Mid Campaign",
             allowedGameStates = AllowedGameStates.PlayingOnMap)]
         private static void PresetMidCampaign()
         {
@@ -407,13 +407,13 @@ namespace TheArk.Debug
                 return;
             }
 
-            // Artificial developer fixture — not balance.
+            // Artificial developer fixture - not balance.
             ApplyPreset(campaign, "Mid Campaign", true, 40, 3, 2, 50);
         }
 
         [DebugAction(
             category = "The Ark (DEV)",
-            name = "ARK: Preset — High Pursuit",
+            name = "ARK: Preset - High Pursuit",
             allowedGameStates = AllowedGameStates.PlayingOnMap)]
         private static void PresetHighPursuit()
         {
@@ -422,7 +422,7 @@ namespace TheArk.Debug
                 return;
             }
 
-            // Artificial developer fixture — not balance.
+            // Artificial developer fixture - not balance.
             ApplyPreset(campaign, "High Pursuit", true, 60, 4, 3, 90);
         }
 

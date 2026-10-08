@@ -73,3 +73,32 @@ dotnet build ./mods/vampire-lord/Source/VampireLord/VampireLord.csproj
 ```
 
 Point RimWorld at the mod folder under `mods/` (or copy/symlink/junction into your RimWorld `Mods` folder) for in-game testing.
+
+## If RimWorld boots, jumps resolution, then black-screens
+
+That pattern is almost always **Prefs / Unity fullscreen** (often 2560×1440) killing the main-menu UI — not a Vampire Lord or Ark gameplay bug. HugsLib + high-res fullscreen is a known bad combo.
+
+On the Windows play PC, in PowerShell from this repo:
+
+```powershell
+cd C:\McRimworld
+powershell -ExecutionPolicy Bypass -File .\tools\fix-rimworld-black-screen.ps1
+```
+
+Then follow the printed Steam Cloud / launch-options steps. Success = small windowed main menu.
+
+### Clean reinstall (keep saves)
+
+If the recovery script + Steam steps still leave a black screen with **only Core** enabled, reinstall. Saves live outside the game folder.
+
+1. Copy this folder somewhere safe (Desktop is fine):  
+   `C:\Users\joe_m\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Saves`
+2. Steam → RimWorld → Properties → Installed Files → **Uninstall**
+3. Delete leftovers if they still exist:  
+   - `C:\Program Files (x86)\Steam\steamapps\common\RimWorld`  
+   - `C:\Users\joe_m\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config`  
+   (Do **not** delete the `Saves` folder you copied.)
+4. Steam → install RimWorld again (Betas = **None**, not 1.0)
+5. Launch once with launch options:  
+   `-windowed -screen-width 1280 -screen-height 720 -force-d3d11`
+6. Success = main menu. Then re-junction/enable Biotech + Vampire Lord / The Ark.

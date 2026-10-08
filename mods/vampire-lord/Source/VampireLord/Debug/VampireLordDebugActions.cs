@@ -9,7 +9,7 @@ namespace VampireLord.Debug
 {
     /// <summary>
     /// Dev Mode / Quicktest harness. Search Debug Actions for <c>VL:</c>.
-    /// Mutates production Vampire Lord systems only — never the reverse.
+    /// Mutates production Vampire Lord systems only - never the reverse.
     /// </summary>
     public static class VampireLordDebugActions
     {
@@ -306,7 +306,7 @@ namespace VampireLord.Debug
         private static void EndCurrentWave()
         {
             // VL advances wave state on raid launch (OnWaveDispatched). There is no separate
-            // "wave victory" production path — clear hostiles so combat can end.
+            // "wave victory" production path - clear hostiles so combat can end.
             if (!VampireLordDebugHelpers.TryGetMap(out Map map))
             {
                 return;
@@ -514,7 +514,7 @@ namespace VampireLord.Debug
 
         // --- Presets (test fixtures) ---
 
-        [DebugAction(category = Cat, name = "VL: Preset — Fresh Lord", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        [DebugAction(category = Cat, name = "VL: Preset - Fresh Lord", allowedGameStates = AllowedGameStates.PlayingOnMap)]
         private static void PresetFreshLord()
         {
             if (!VampireLordDebugHelpers.TryGetCampaign(out VampireLordCampaignGameComponent campaign))
@@ -525,7 +525,7 @@ namespace VampireLord.Debug
             VampireLordDebugPresets.ApplyFreshLord(campaign);
         }
 
-        [DebugAction(category = Cat, name = "VL: Preset — Early Siege", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        [DebugAction(category = Cat, name = "VL: Preset - Early Siege", allowedGameStates = AllowedGameStates.PlayingOnMap)]
         private static void PresetEarlySiege()
         {
             if (!VampireLordDebugHelpers.TryGetCampaign(out VampireLordCampaignGameComponent campaign))
@@ -536,7 +536,7 @@ namespace VampireLord.Debug
             VampireLordDebugPresets.ApplyEarlySiege(campaign);
         }
 
-        [DebugAction(category = Cat, name = "VL: Preset — Mid Siege", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        [DebugAction(category = Cat, name = "VL: Preset - Mid Siege", allowedGameStates = AllowedGameStates.PlayingOnMap)]
         private static void PresetMidSiege()
         {
             if (!VampireLordDebugHelpers.TryGetCampaign(out VampireLordCampaignGameComponent campaign))
@@ -547,7 +547,7 @@ namespace VampireLord.Debug
             VampireLordDebugPresets.ApplyMidSiege(campaign);
         }
 
-        [DebugAction(category = Cat, name = "VL: Preset — Last Stand", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        [DebugAction(category = Cat, name = "VL: Preset - Last Stand", allowedGameStates = AllowedGameStates.PlayingOnMap)]
         private static void PresetLastStand()
         {
             if (!VampireLordDebugHelpers.TryGetCampaign(out VampireLordCampaignGameComponent campaign))
@@ -558,7 +558,7 @@ namespace VampireLord.Debug
             VampireLordDebugPresets.ApplyLastStand(campaign);
         }
 
-        [DebugAction(category = Cat, name = "VL: Preset — Near Defeat", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        [DebugAction(category = Cat, name = "VL: Preset - Near Defeat", allowedGameStates = AllowedGameStates.PlayingOnMap)]
         private static void PresetNearDefeat()
         {
             if (!VampireLordDebugHelpers.TryGetCampaign(out VampireLordCampaignGameComponent campaign))
