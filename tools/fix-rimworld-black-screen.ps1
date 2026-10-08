@@ -201,3 +201,7 @@ Write-Host ''
 Write-Host "Backup kept at: $backupRoot"
 Write-Host 'Saves were not touched.'
 Write-Host ''
+Write-Host 'If it is STILL black after those Steam steps (even with only Core):' -ForegroundColor Yellow
+Write-Host '  Reinstall RimWorld. Saves are separate from the game install.'
+Write-Host '  See README "Clean reinstall (keep saves)" or ask the agent for the checklist.'
+Write-Host ''

@@ -86,3 +86,19 @@ powershell -ExecutionPolicy Bypass -File .\tools\fix-rimworld-black-screen.ps1
 ```
 
 Then follow the printed Steam Cloud / launch-options steps. Success = small windowed main menu.
+
+### Clean reinstall (keep saves)
+
+If the recovery script + Steam steps still leave a black screen with **only Core** enabled, reinstall. Saves live outside the game folder.
+
+1. Copy this folder somewhere safe (Desktop is fine):  
+   `C:\Users\joe_m\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Saves`
+2. Steam → RimWorld → Properties → Installed Files → **Uninstall**
+3. Delete leftovers if they still exist:  
+   - `C:\Program Files (x86)\Steam\steamapps\common\RimWorld`  
+   - `C:\Users\joe_m\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config`  
+   (Do **not** delete the `Saves` folder you copied.)
+4. Steam → install RimWorld again (Betas = **None**, not 1.0)
+5. Launch once with launch options:  
+   `-windowed -screen-width 1280 -screen-height 720 -force-d3d11`
+6. Success = main menu. Then re-junction/enable Biotech + Vampire Lord / The Ark.

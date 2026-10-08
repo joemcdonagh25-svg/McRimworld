@@ -27,6 +27,7 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ### Next steps
 - Joe RUNTIME VERIFY: main menu after script. Paste Desktop `rimworld-debug.log` top/errors only if still black.
+- If still black with only Core: clean reinstall (keep `Saves`) — see README. That path means install/GPU/Unity, not McRimworld gameplay code.
 
 ---
 
