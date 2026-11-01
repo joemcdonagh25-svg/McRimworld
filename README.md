@@ -46,6 +46,10 @@ Gothic keep tower-defence campaign. Defend the keep. Read the warning. Prepare t
 - Design / milestones: `mods/vampire-lord/docs/`
 - Junction/copy `mods/vampire-lord/` into your RimWorld `Mods` folder (the folder that contains `About/` is the mod root)
 
+## Workshop
+
+`workshop/` is a separate, reusable system for turning a ChatGPT-authored experience specification into an installed, playable RimWorld experience (Describe → Build → Play), independent of any one mod. See [`workshop/README.md`](workshop/README.md) and [`docs/WORKSHOP_CONTRACT.md`](docs/WORKSHOP_CONTRACT.md).
+
 ## Working on a mod
 
 - Prefer editing inside `mods/<mod-id>/` in this parent when coordinating multi-mod work.

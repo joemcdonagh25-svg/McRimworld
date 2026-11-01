@@ -1,0 +1,149 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "lantern-village",
+  "version": "0.1.0",
+  "name": "Lantern Village",
+  "summary": "A Grimm-inspired woodland hamlet of five colonists, slowly escalating from folklore dangers to supernatural horror as the forest presses in.",
+  "status": "specified",
+
+  "rimworld": {
+    "version": "1.6",
+    "dlc": {
+      "required": ["Ludeon.RimWorld.Ideology", "Ludeon.RimWorld.Biotech"],
+      "optional": []
+    }
+  },
+
+  "mods": [
+    {
+      "packageId": "neronix17.darkages.beastsandmonsters",
+      "name": "Dark Ages: Beasts and Monsters",
+      "required": true,
+      "source": "workshop",
+      "notes": "Source of folklore/supernatural threats for the escalation arc. Exact packageId/workshopId to be confirmed against the subscribed item before M2."
+    },
+    {
+      "packageId": "dankpyon.medieval.overhaul",
+      "name": "Medieval Overhaul",
+      "required": true,
+      "source": "workshop",
+      "dependsOn": ["neronix17.darkages.beastsandmonsters"],
+      "loadAfter": ["neronix17.darkages.beastsandmonsters"],
+      "notes": "Medieval technology restriction for the hamlet. packageId to be confirmed against the subscribed item."
+    },
+    {
+      "packageId": "gentle.gloomyfurniture",
+      "name": "GloomyFurniture",
+      "required": true,
+      "source": "workshop",
+      "loadAfter": ["dankpyon.medieval.overhaul"],
+      "notes": "Woodland-hamlet set dressing. packageId to be confirmed against the subscribed item."
+    },
+    {
+      "packageId": "cp.realistic.darkness",
+      "name": "Realistic Darkness",
+      "required": true,
+      "source": "workshop",
+      "loadAfter": ["gentle.gloomyfurniture"],
+      "notes": "Drives the slow folklore-to-horror escalation visually. packageId to be confirmed against the subscribed item."
+    },
+    {
+      "packageId": "worldtechlevel.mod",
+      "name": "World Tech Level",
+      "required": true,
+      "source": "workshop",
+      "notes": "Pins the wider world to medieval tech so trade/raids stay in-genre. packageId to be confirmed against the subscribed item."
+    }
+  ],
+
+  "loadOrder": {
+    "sequence": [
+      "neronix17.darkages.beastsandmonsters",
+      "dankpyon.medieval.overhaul",
+      "gentle.gloomyfurniture",
+      "cp.realistic.darkness",
+      "worldtechlevel.mod"
+    ]
+  },
+
+  "scenario": {
+    "desired": {
+      "name": "Lantern Village",
+      "colonistCount": 5,
+      "techLevel": "Medieval",
+      "pitch": "Five settlers carve a hamlet out of the deep wood. What begins as wolves and bad weather becomes something that watches from the treeline."
+    },
+    "implementation": {
+      "status": "specified"
+    }
+  },
+
+  "startingPawns": {
+    "desired": {
+      "count": 5,
+      "backstoryTheme": "woodcutters, a herbalist, a hedge-priest, a trapper, a village elder",
+      "equipment": "medieval hand tools and simple woodland weapons only; no firearms"
+    },
+    "implementation": {
+      "status": "specified"
+    }
+  },
+
+  "world": {
+    "desired": {
+      "biome": "TemperateForest",
+      "hilliness": "LargeHills",
+      "mapSize": 250,
+      "defensePosture": "wooden palisade perimeter"
+    },
+    "implementation": {
+      "status": "specified"
+    }
+  },
+
+  "ideology": {
+    "desired": {
+      "required": true,
+      "memeTheme": "folk/animist precepts fitting a woodland hamlet that quietly fears the forest"
+    },
+    "implementation": {
+      "status": "specified"
+    }
+  },
+
+  "campaign": {
+    "desired": {
+      "arc": "Slow escalation: mundane folklore dangers (wolves, bandits, bad omens) in the early game, rising through uncanny events, to supernatural horror drawn from Dark Ages: Beasts and Monsters in the late game.",
+      "pacing": "escalation should be gradual across in-game months, not a hard milestone switch"
+    },
+    "implementation": {
+      "status": "specified",
+      "notes": "Campaign director/event escalation is M5 scope; not implemented in M1."
+    }
+  },
+
+  "launch": {
+    "desired": {
+      "newGameOnly": true,
+      "supportsResume": true,
+      "saveNamePrefix": "LanternVillage"
+    },
+    "implementation": {
+      "status": "specified",
+      "notes": "One-click start/resume is M4 scope. M1 only validates the manifest and can activate/restore the mod profile."
+    }
+  },
+
+  "verification": {
+    "requiredLogLines": [],
+    "runtimeChecklist": [
+      "workshop.ps1 env reports RimWorld, Steam, and .NET SDK found",
+      "workshop.ps1 validate lantern-village reports which required mods are missing from this machine",
+      "Subscribe to any mods workshop.ps1 reports missing, then re-run validate until it reports OK",
+      "workshop.ps1 activate lantern-village backs up the current ModsConfig.xml and writes a new one with exactly these mods",
+      "workshop.ps1 restore puts the previous ModsConfig.xml back and is confirmed byte-identical to the pre-activate file"
+    ]
+  },
+
+  "notes": "M1 validation fixture only. Mod packageIds above are best-effort guesses from mod names and must be confirmed against the actual Steam Workshop items before this experience is implemented (M2+)."
+}

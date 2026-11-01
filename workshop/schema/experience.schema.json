@@ -1,0 +1,248 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mcrimworld.local/workshop/schema/experience.schema.json",
+  "title": "McRimworld Workshop Experience Specification",
+  "description": "Declarative description of a playable RimWorld experience: identity, dependencies, desired game behaviour, and the verification status of each part. Produced by a ChatGPT design session and consumed by Claude Code / the Workshop launcher.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "id", "version", "name", "rimworld", "mods"],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "1.0.0",
+      "description": "Version of this schema the document was written against."
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "description": "Stable slug for the experience, e.g. 'lantern-village'. Used as the manifest filename and profile name."
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic version of this experience's design, independent of schemaVersion."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "summary": {
+      "type": "string",
+      "description": "One or two sentence pitch of the experience."
+    },
+    "status": {
+      "$ref": "#/$defs/featureStatus",
+      "default": "specified",
+      "description": "Overall status of the experience as a whole."
+    },
+
+    "rimworld": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version"],
+      "properties": {
+        "version": {
+          "type": "string",
+          "description": "Target RimWorld version, e.g. '1.6'."
+        },
+        "dlc": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "required": {
+              "type": "array",
+              "items": { "$ref": "#/$defs/dlcId" },
+              "uniqueItems": true
+            },
+            "optional": {
+              "type": "array",
+              "items": { "$ref": "#/$defs/dlcId" },
+              "uniqueItems": true
+            }
+          }
+        }
+      }
+    },
+
+    "mods": {
+      "type": "array",
+      "description": "Every mod the experience needs, Workshop-subscribed, locally built, or vanilla-adjacent.",
+      "items": { "$ref": "#/$defs/modRequirement" },
+      "minItems": 1
+    },
+
+    "customMods": {
+      "type": "array",
+      "description": "Mods that must be built from source inside this repository (e.g. a sibling of mods/the-ark-rimworld), rather than installed from Workshop.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["packageId", "sourcePath"],
+        "properties": {
+          "packageId": { "type": "string" },
+          "name": { "type": "string" },
+          "sourcePath": {
+            "type": "string",
+            "description": "Path relative to the repository root, e.g. 'mods/vampire-lord'."
+          },
+          "buildProject": {
+            "type": "string",
+            "description": "Path to the .csproj to build, relative to the repository root."
+          },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+
+    "loadOrder": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Experience-level load-order hints layered on top of each mod's own loadAfter/loadBefore.",
+      "properties": {
+        "sequence": {
+          "type": "array",
+          "description": "Explicit, fully-ordered list of packageIds. When present this takes precedence over per-mod constraints for ordering (constraints are still validated).",
+          "items": { "type": "string" }
+        }
+      }
+    },
+
+    "scenario": { "$ref": "#/$defs/behaviourSection" },
+    "startingPawns": { "$ref": "#/$defs/behaviourSection" },
+    "world": { "$ref": "#/$defs/behaviourSection" },
+    "ideology": { "$ref": "#/$defs/behaviourSection" },
+    "campaign": { "$ref": "#/$defs/behaviourSection" },
+
+    "launch": {
+      "allOf": [{ "$ref": "#/$defs/behaviourSection" }],
+      "description": "How the experience is started and resumed. 'desired' fields describe target behaviour (e.g. one-click new game); 'implementation.status' must not claim beyond what M4 has actually delivered.",
+      "properties": {
+        "desired": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "newGameOnly": { "type": "boolean" },
+            "supportsResume": { "type": "boolean" },
+            "saveNamePrefix": { "type": "string" }
+          }
+        }
+      }
+    },
+
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "What must be true for this experience to be considered working, and how each level is checked.",
+      "properties": {
+        "requiredLogLines": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Substrings expected in Player.log when the experience loads correctly."
+        },
+        "runtimeChecklist": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Manual steps a human runs to runtime-verify this experience."
+        },
+        "lastVerifiedAt": {
+          "type": "string",
+          "format": "date",
+          "description": "Date of the last successful runtime verification, if any."
+        }
+      }
+    },
+
+    "notes": { "type": "string" }
+  },
+
+  "$defs": {
+    "featureStatus": {
+      "type": "string",
+      "enum": ["specified", "implemented", "runtime_verified", "blocked"],
+      "description": "specified = described only; implemented = code/config exists; runtime_verified = observed working in a live RimWorld session; blocked = cannot proceed, see notes."
+    },
+
+    "dlcId": {
+      "type": "string",
+      "enum": [
+        "Ludeon.RimWorld.Royalty",
+        "Ludeon.RimWorld.Ideology",
+        "Ludeon.RimWorld.Biotech",
+        "Ludeon.RimWorld.Anomaly",
+        "Ludeon.RimWorld.Odyssey"
+      ]
+    },
+
+    "modRequirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["packageId", "name", "required"],
+      "properties": {
+        "packageId": {
+          "type": "string",
+          "description": "RimWorld packageId as it appears in About.xml / ModsConfig.xml."
+        },
+        "name": { "type": "string" },
+        "workshopId": {
+          "type": "string",
+          "pattern": "^[0-9]+$",
+          "description": "Steam Workshop file id, if sourced from Workshop."
+        },
+        "source": {
+          "type": "string",
+          "enum": ["workshop", "local", "builtin"],
+          "default": "workshop",
+          "description": "workshop = Steam Workshop subscription; local = user-installed outside Workshop; builtin = DLC/core, no separate install."
+        },
+        "required": {
+          "type": "boolean",
+          "description": "False marks an optional/enhancement mod."
+        },
+        "dependsOn": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "packageIds this mod requires to also be active."
+        },
+        "loadAfter": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "loadBefore": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "incompatibleWith": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "notes": { "type": "string" }
+      }
+    },
+
+    "behaviourSection": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Separates desired game behaviour from how (or whether) it has been implemented.",
+      "properties": {
+        "desired": {
+          "type": "object",
+          "description": "Free-form description of the intended behaviour. Structure is section-specific and intentionally loose at M1; later milestones may tighten it.",
+          "additionalProperties": true
+        },
+        "implementation": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": { "$ref": "#/$defs/featureStatus" },
+            "files": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Repository-relative paths implementing this section, once status is implemented or later."
+            },
+            "notes": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}

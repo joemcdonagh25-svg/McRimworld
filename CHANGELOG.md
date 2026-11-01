@@ -4,6 +4,34 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-10-31 — Workshop M1: shared installer, schema and profile system
+
+### What shipped
+- `workshop/schema/experience.schema.json`: the declarative experience-specification contract (identity, RimWorld version/DLC, mods + load order, custom mods, and a `desired`/`implementation` split for scenario/pawns/world/ideology/campaign/launch with a `specified`/`implemented`/`runtime_verified`/`blocked` status vocabulary).
+- `workshop/mcrimworld_workshop/`: dependency-free Python package — `discovery.py` (Steam/RimWorld/Mods/Workshop content/user config/saves/DLC/.NET SDK detection), `profiles.py` (read/write `ModsConfig.xml`, scan installed mods, resolve load order, validate requirements, backup/activate/restore), `manifest.py` + `schema_validate.py` (schema validation with zero third-party dependencies).
+- `workshop/workshop.ps1` + `cli.py`: CLI launcher (`env`, `list`, `inspect`, `validate`, `activate`, `restore`, `launch`).
+- `workshop/experiences/lantern-village.json`: first validation fixture (Grimm-inspired woodland hamlet; mod packageIds are explicitly marked as best-effort guesses pending confirmation).
+- `workshop/tests/`: 25 automated tests, including config backup/restore round-trips.
+- `docs/WORKSHOP_CONTRACT.md`, `docs/WORKSHOP_MILESTONES.md`, `workshop/README.md` (includes scoped Claude Code instructions for this subsystem).
+- Branch: `workshop/m1-foundation`.
+
+### What we learned
+- RimWorld's DLC content lives under `<install>/Data/<Expansion>/`, not directly under the install root — initial discovery logic checked the wrong location and silently reported zero owned DLC even with all five installed.
+- `env`/`list`/`inspect`/`validate` were runtime-verified read-only against Joe's real machine (Steam, RimWorld 1.6, all 5 DLC, 158 saves, .NET 8 SDK all correctly detected; Lantern Village's Workshop mods correctly reported as mostly-missing). `activate`/`restore` are unit-verified against temp directories only — not yet exercised against the real `ModsConfig.xml`.
+- Found a **pre-existing, unrelated** build gap on `origin/main`: neither `TheArk.csproj` nor `VampireLord.csproj` references `UnityEngine.CoreModule`, so `dotnet build` fails on any file using `UnityEngine`/`Rect`/`Vector2` via the NuGet `Krafs.Rimworld.Ref` fallback path. Confirmed on a clean `main` checkout before any Workshop changes; left unfixed per the "don't modify existing mods without explicit justification" rule and flagged in `docs/WORKSHOP_MILESTONES.md` for Joe to decide on.
+
+### Operator notes
+1. `cd C:\McRimworld\workshop && python -m unittest discover -s tests -v` to re-run the test suite.
+2. `.\workshop\workshop.ps1 env` and `.\workshop\workshop.ps1 validate lantern-village` are safe to run anytime (read-only).
+3. `.\workshop\workshop.ps1 activate lantern-village` / `restore` mutate the real `ModsConfig.xml` (after a backup) — not yet run against Joe's live setup in this session.
+
+### Next steps
+- Confirm Lantern Village's guessed mod `packageId`/`workshopId` values against the real Steam Workshop items.
+- Joe RUNTIME VERIFY: `activate` against the real `ModsConfig.xml` once those mods are subscribed, confirm RimWorld's Mods screen matches, then `restore` and confirm it's back to the prior state exactly.
+- Decide whether/when to fix the pre-existing `UnityEngine.CoreModule` reference gap in The Ark / Vampire Lord (unrelated to this work).
+
+---
+
 ## 2026-10-06 — Vampire Lord VL: Quicktest debug harness
 
 ### What shipped
