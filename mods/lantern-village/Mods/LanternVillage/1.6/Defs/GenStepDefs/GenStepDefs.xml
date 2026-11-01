@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <GenStepDef>
+    <defName>LanternHamlet</defName>
+    <genStep Class="LanternVillage.GenStep_LanternHamlet" />
+    <!-- Runs after terrain/roads/rivers/plants (vanilla Terrain/Plants steps are in the
+         ~400-700 range) and before scenario-defined starting-thing scatter so our walls
+         don't block a ScenPart_ScatterThingsNearPlayerStart placement. Not runtime-verified
+         against the exact vanilla ordering in this session. -->
+    <order>800</order>
+  </GenStepDef>
+
+</Defs>

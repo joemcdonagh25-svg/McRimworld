@@ -1,0 +1,8 @@
+<Project>
+  <PropertyGroup>
+    <!-- Override by setting the RimWorldDir environment variable or editing this file locally
+         if RimWorld is installed somewhere other than the default Steam location. -->
+    <RimWorldDir Condition="'$(RimWorldDir)' == ''">C:\Program Files (x86)\Steam\steamapps\common\RimWorld</RimWorldDir>
+    <RimWorldManaged>$(RimWorldDir)\RimWorldWin64_Data\Managed</RimWorldManaged>
+  </PropertyGroup>
+</Project>

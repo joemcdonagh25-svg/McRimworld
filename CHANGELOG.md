@@ -4,6 +4,24 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-11-01 — The Lantern Village added (installer M1–M4 + custom mod)
+
+### What shipped
+- New `mods/lantern-village/`: one-click installer (`Install.ps1`/`Restore.ps1`/`Launch The Lantern Village.bat`), a verified RimWorld 1.6 scenario file (`The Lantern Village.rsc`), and a custom C# support mod (`Mods/LanternVillage`, package `lanternvillage.thelanternvillage`) generating The Hearthbound ideoligion, the five founding colonists' roles, a Hamlet Mode map generator, an auto-resume hook, and a horror phase controller gated behind a disabled feature flag.
+- Every mod packageId and defName was resolved from real local files (About.xml / loaded Defs) or confirmed by reflecting RimWorld's own `Assembly-CSharp.dll` — nothing guessed.
+- 18/18 automated tests pass (`tests/Run-Tests.ps1`).
+
+### Runtime verification
+- Ran the real installer against the live machine config (subscribed GloomyFurniture + Realistic Darkness 1.6 via Steam), confirmed the mod's Harmony patches load cleanly and RimWorld reaches the main menu.
+- Found and isolated (across 4 relaunches) a crash with the full mod list: a bug in **Medieval Overhaul** itself (not this project) — its own "Vanilla Books Expanded" compatibility patch references a `StatDef` that only exists when that mod is installed, which it wasn't. RimWorld's own safety net reset `ModsConfigData` each time with no data loss.
+- Restored the operator's original 23-mod configuration and all saves afterward; nothing was left modified.
+
+### Operator notes
+- Full complete/verified/planned/blocked breakdown: `mods/lantern-village/IMPLEMENTATION_REPORT.md`.
+- Next step in progress: add **Vanilla Books Expanded** (Steam Workshop 2193152410) to the required mod list and retry.
+
+---
+
 ## 2026-10-06 — Vampire Lord VL: Quicktest debug harness
 
 ### What shipped

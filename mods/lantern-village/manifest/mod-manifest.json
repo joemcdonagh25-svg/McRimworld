@@ -1,0 +1,163 @@
+{
+  "manifestVersion": "1.0.0",
+  "scenarioName": "The Lantern Village",
+  "gameVersion": "1.6",
+  "appId": 294100,
+  "requiredDlc": [
+    { "name": "Ideology", "appId": 1392840 },
+    { "name": "Biotech", "appId": 1826140 }
+  ],
+  "excludedDlc": ["Royalty", "Odyssey", "Anomaly"],
+  "optionalFutureDlc": ["Anomaly"],
+  "loadOrder": [
+    {
+      "packageId": "ludeon.rimworld",
+      "name": "Core",
+      "source": "core",
+      "required": true
+    },
+    {
+      "packageId": "ludeon.rimworld.ideology",
+      "name": "Ideology",
+      "source": "dlc",
+      "required": true
+    },
+    {
+      "packageId": "ludeon.rimworld.biotech",
+      "name": "Biotech",
+      "source": "dlc",
+      "required": true
+    },
+    {
+      "packageId": "brrainz.harmony",
+      "name": "Harmony",
+      "source": "workshop",
+      "workshopId": "2009463077",
+      "required": true,
+      "notes": "Dependency for every other mod in this list. Verified present and already active in this machine's ModsConfig.xml."
+    },
+    {
+      "packageId": "OskarPotocki.VanillaFactionsExpanded.Core",
+      "name": "Vanilla Expanded Framework",
+      "source": "workshop",
+      "workshopId": "2023507013",
+      "required": true,
+      "modDependencies": ["brrainz.harmony"],
+      "notes": "Resolved from the mod's own About.xml packageId, not derived from the Workshop title. Verified present locally."
+    },
+    {
+      "packageId": "syrchalis.processor.framework",
+      "name": "[SYR] Processor Framework",
+      "source": "workshop",
+      "workshopId": "3210544395",
+      "required": true,
+      "modDependencies": ["brrainz.harmony"],
+      "notes": "Verified present locally; packageId read from its own About.xml."
+    },
+    {
+      "packageId": "DankPyon.Medieval.Overhaul",
+      "name": "Medieval Overhaul",
+      "source": "workshop",
+      "workshopId": "3219596926",
+      "required": true,
+      "modDependencies": ["brrainz.harmony", "OskarPotocki.VanillaFactionsExpanded.Core", "syrchalis.processor.framework"],
+      "notes": "Verified present locally; provides DankPyon_Palisade (wooden palisade wall def) used by the village generator."
+    },
+    {
+      "packageId": "Van.Beasts",
+      "name": "Dark Ages: Beasts and Monsters",
+      "source": "workshop",
+      "workshopId": "3472275628",
+      "required": true,
+      "modDependencies": ["OskarPotocki.VanillaFactionsExpanded.Core"],
+      "loadAfter": ["DankPyon.Medieval.Overhaul"],
+      "notes": "Verified present locally."
+    },
+    {
+      "packageId": "m00nl1ght.WorldTechLevel",
+      "name": "World Tech Level",
+      "source": "workshop",
+      "workshopId": "3414187030",
+      "required": true,
+      "incompatibleWith": ["ogam.rimedieval", "sickboywi.medieval.vanilla", "mlie.removeindustrialstuff", "mlie.removemedievalstuff", "mlie.removespacerstuff"],
+      "notes": "Verified present locally. Checked incompatibleWith list against the rest of this manifest: no conflicts."
+    },
+    {
+      "packageId": "Solaris.FurnitureBase",
+      "name": "GloomyFurniture",
+      "source": "workshop",
+      "workshopId": "1558635181",
+      "required": true,
+      "notes": "Was not present at discovery time; subscribed via Steam during install and resolved from its real About.xml -- not guessed. Now active on this machine."
+    },
+    {
+      "packageId": "Wemd.RealisticDarkness",
+      "name": "Realistic Darkness 1.6",
+      "source": "workshop",
+      "workshopId": "3512065298",
+      "required": true,
+      "notes": "Was not present at discovery time; subscribed via Steam during install and resolved from its real About.xml -- not guessed. Now active on this machine."
+    }
+  ],
+  "startingSupplies": [
+    { "thingDef": "Pemmican", "count": 600 },
+    { "thingDef": "MedicineHerbal", "count": 20, "sourceNote": "Spec said 'herbal medicine'; verified vanilla defName is MedicineHerbal." },
+    { "thingDef": "WoodLog", "count": 500 },
+    { "thingDef": "Bow_Short", "count": 2 },
+    { "thingDef": "Bow_Recurve", "count": 1 },
+    { "thingDef": "MeleeWeapon_Knife", "stuff": "Steel", "count": 1, "sourceNote": "'steel knife' -> MeleeWeapon_Knife is only stuffable in Metallic categories, so stuff=Steel." },
+    { "thingDef": "MeleeWeapon_Club", "stuff": "WoodLog", "count": 1, "sourceNote": "'wooden club' -> MeleeWeapon_Club stuffCategories include Woody, so stuff=WoodLog." },
+    { "thingDef": "Silver", "count": 150 },
+    { "thingDef": "Muffalo", "count": 2, "scenPart": "ScenPart_StartingAnimal" }
+  ],
+  "scenarioSettings": {
+    "playerFactionDef": "PlayerTribe",
+    "arriveMethod": "Standing",
+    "storytellerDef": "Cassandra",
+    "storytellerLabel": "Cassandra Classic",
+    "difficultyDef": "Rough",
+    "difficultyLabel": "strive to survive",
+    "biome": "TemperateForest",
+    "hilliness": "LargeHills",
+    "mapSize": 275,
+    "startingSeason": "Undecided_NorthernHemisphereSummer_or_configuredPerSite"
+  },
+  "colonists": [
+    { "role": "Elder", "skillFloors": { "Social": 8, "Intellectual": 5, "Medical": 3 } },
+    { "role": "Woodsman", "skillFloors": { "Plants": 8, "Construction": 6 } },
+    { "role": "Hunter", "skillFloors": { "Shooting": 9, "Animals": 6 } },
+    { "role": "Smith", "skillFloors": { "Crafting": 8, "Mining": 5 } },
+    { "role": "Healer", "skillFloors": { "Medical": 8, "Cooking": 6 } }
+  ],
+  "ideology": {
+    "name": "The Hearthbound",
+    "forNewFluidIdeo": true,
+    "forcedMemes": ["Collectivist", "Loyalist"],
+    "verifiedApi": "RimWorld.IdeoGenerator.GenerateIdeo(RimWorld.IdeoGenerationParms) via Harmony prefix patch",
+    "plannedRituals": ["The First Fire", "Harvest Supper", "The Long Night", "Remembering"],
+    "ritualStatus": "Planned. Fluid ideoligions assign rituals dynamically at runtime; there is no verified supported API in this RimWorld build for pre-seeding named rituals on a fluid ideo, so these are not force-generated. See IMPLEMENTATION_REPORT.md."
+  },
+  "horrorDirector": {
+    "enabledByDefault": false,
+    "phases": [
+      { "name": "Foundation", "startDay": 1, "endDay": 30 },
+      { "name": "Folklore threats", "startDay": 31, "endDay": 60 },
+      { "name": "The strange forest", "startDay": 61, "endDay": 90 },
+      { "name": "The darkness awakens", "startDay": 91, "endDay": 120 },
+      { "name": "The last light", "startDay": 121, "endDay": 180 }
+    ],
+    "notes": "Supernatural/darkness incidents stay behind EnableSupernatural=false until tested against this exact mod list."
+  },
+  "discoveredEnvironment": {
+    "steamPath": "C:/Program Files (x86)/Steam",
+    "rimWorldPath": "C:/Program Files (x86)/Steam/steamapps/common/RimWorld",
+    "rimWorldVersion": "1.6.4871 rev590",
+    "modsConfigVersion": "1.6.4871 rev591",
+    "workshopContentPath": "C:/Program Files (x86)/Steam/steamapps/workshop/content/294100",
+    "userConfigDir": "%USERPROFILE%/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios",
+    "existingSavesCount": 184,
+    "existingActiveModsCount": 22,
+    "dotnetSdkVersion": "8.0.422",
+    "buildToolchain": "dotnet SDK net472 + Microsoft.NETFramework.ReferenceAssemblies.net472 NuGet + Lib.Harmony NuGet, referencing RimWorld's own Managed/*.dll via HintPath (no copying). This exact pattern already works on this machine (verified against the user's own existing RimWorldProject mod)."
+  }
+}
