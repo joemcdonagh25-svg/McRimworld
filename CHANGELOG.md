@@ -4,6 +4,20 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-11-01 — The Lantern Village: Medieval Overhaul bug conclusively isolated (not fixed by Vanilla Books Expanded)
+
+### What happened
+- Subscribed and added **Vanilla Books Expanded** (Workshop 2193152410) to try the hypothesized fix for the `MedievalOverhaul.Utility` crash. It did not fix it — crash reproduced identically.
+- Found and fixed two real bugs of this project's own along the way: `Install.ps1`'s mod-copy step silently nested instead of overwrote on a second install (fixed), and `ScenPartDefs.xml` used an invalid `ScenPartCategory` value, `"Special"` (fixed to `"Misc"`).
+- Ran one more isolation test with the most permissive configuration possible — all 5 DLCs + Medieval Overhaul's bare dependencies + Vanilla Books Expanded — and it crashed identically. This rules out DLC choice and Vanilla Books Expanded conclusively: it's a bug in Medieval Overhaul itself (Workshop 3219596926), not fixable from this project.
+- Restored the operator's original RimWorld configuration again afterward.
+
+### Operator notes
+- Full isolation trail: `mods/lantern-village/IMPLEMENTATION_REPORT.md`.
+- Next step, if pursued: report the bug upstream to Medieval Overhaul's current maintainers (EvilEyes/ViralReaction), or drop/replace that mod.
+
+---
+
 ## 2026-11-01 — The Lantern Village added (installer M1–M4 + custom mod)
 
 ### What shipped
