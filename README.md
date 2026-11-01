@@ -11,6 +11,7 @@ McRimworld/
   mods/
     the-ark-rimworld/   # The Ark (git subtree from joemcdonagh25-svg/the-ark-rimworld)
     vampire-lord/       # Vampire Lord (M1 Wave Director)
+    lantern-village/    # The Lantern Village (one-click installer + scenario + mod)
 ```
 
 ## Mods
@@ -19,6 +20,7 @@ McRimworld/
 |--------|---------|--------|
 | `mods/the-ark-rimworld/` | `joemcdonagh.theark` | RimWorld 1.6 — M1–M6 **RUNTIME VERIFIED** (Pressure V0 one-click proof); no M7 until Joe asks |
 | `mods/vampire-lord/` | `joemcdonagh.vampirelord` | RimWorld 1.6 — M1 + M2 RUNTIME VERIFIED; M3 Blood Tithe implemented (runtime pending) |
+| `mods/lantern-village/` | `lanternvillage.thelanternvillage` | RimWorld 1.6 — Installer/scenario/mod M1–M4 **RUNTIME VERIFIED** (main menu reachable, mod loads); blocked on a Medieval Overhaul bug for a full colony start — see mod's own `IMPLEMENTATION_REPORT.md` |
 
 ### The Ark
 
@@ -46,9 +48,22 @@ Gothic keep tower-defence campaign. Defend the keep. Read the warning. Prepare t
 - Design / milestones: `mods/vampire-lord/docs/`
 - Junction/copy `mods/vampire-lord/` into your RimWorld `Mods` folder (the folder that contains `About/` is the mod root)
 
+### The Lantern Village
+
+Grimm-inspired folk horror hamlet: five villagers settle an isolated temperate forest and build a palisaded community against a slow-burn supernatural threat.
+
+- Package: `lanternvillage.thelanternvillage`
+- Requires **Ideology** + **Biotech** (deliberately excludes Royalty/Odyssey/Anomaly)
+- Not a junction-into-Mods project like the others — it's a full one-click **installer**: `mods/lantern-village/Launch The Lantern Village.bat` discovers Steam/RimWorld, resolves/subscribes required Workshop mods, backs up your existing config, activates the profile, builds the mod, installs the scenario, and launches RimWorld. `Restore.ps1` undoes it.
+- Full status, what's runtime-verified vs. planned vs. blocked: `mods/lantern-village/IMPLEMENTATION_REPORT.md`
+- Known blocker: Medieval Overhaul's own "Vanilla Books Expanded" compatibility patch references a `StatDef` that doesn't exist without that mod — crashes play-data loading until Vanilla Books Expanded is added too (in progress)
+- Tests: `mods/lantern-village/tests/Run-Tests.ps1`
+
 ## Workshop
 
 `workshop/` is a separate, reusable system for turning a ChatGPT-authored experience specification into an installed, playable RimWorld experience (Describe → Build → Play), independent of any one mod. See [`workshop/README.md`](workshop/README.md) and [`docs/WORKSHOP_CONTRACT.md`](docs/WORKSHOP_CONTRACT.md).
+
+**Note:** `mods/lantern-village/` (above) and `workshop/` were built in parallel and overlap in scope — the former is a standalone, mod-specific installer; the latter is the generic, manifest-driven system the original Workshop spec called for, validated against its own `workshop/experiences/lantern-village.json` fixture. Reconciling these (e.g. porting `mods/lantern-village/` to be Workshop's first real experience, or keeping both) is an open decision, not yet made.
 
 ## Working on a mod
 
@@ -74,6 +89,7 @@ Gothic keep tower-defence campaign. Defend the keep. Read the warning. Prepare t
 ```bash
 dotnet build ./mods/the-ark-rimworld/Source/TheArk/TheArk.csproj
 dotnet build ./mods/vampire-lord/Source/VampireLord/VampireLord.csproj
+dotnet build "./mods/lantern-village/Mods/LanternVillage/Source/LanternVillage/LanternVillage.csproj"
 ```
 
 Point RimWorld at the mod folder under `mods/` (or copy/symlink/junction into your RimWorld `Mods` folder) for in-game testing.

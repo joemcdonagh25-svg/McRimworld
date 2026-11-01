@@ -1,0 +1,81 @@
+#Requires -Version 5.1
+<#
+  Launch.ps1 -- the one-click experience behind "Launch The Lantern Village.bat".
+
+  1. Verifies RimWorld/mods/versions (fast checks, no changes).
+  2. If not yet installed (or -Reinstall), runs Install.ps1.
+  3. On first run, asks Founding Mode or Hamlet Mode and writes the marker the mod
+     reads at startup.
+  4. On later runs, offers to resume the existing Lantern Village save automatically
+     (via the mod's ResumeHelper) or start fresh.
+  5. Launches RimWorld.
+
+  What this cannot yet do automatically (see IMPLEMENTATION_REPORT.md): click through
+  the in-game "Select scenario" screen for you. RimWorld has no verified, documented
+  command-line flag to pre-select a scenario, so after launch you pick "The Lantern
+  Village" from the custom scenario list once -- everything else (mods, DLC, the
+  scenario file, defaults) is already in place.
+#>
+[CmdletBinding()]
+param(
+    [switch]$Reinstall,
+    [switch]$Restore
+)
+
+$ErrorActionPreference = "Stop"
+$RepoRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+Import-Module (Join-Path $RepoRoot "discovery\Discovery.psm1") -Force
+
+function Write-Step($msg) { Write-Host "`n==> $msg" -ForegroundColor Cyan }
+
+if ($Restore) {
+    & (Join-Path $RepoRoot "Restore.ps1")
+    exit 0
+}
+
+$steamPath = Find-SteamInstall
+$rimWorldInstalls = Find-RimWorldInstall -SteamPath $steamPath
+$rimWorldPath = $rimWorldInstalls[0]
+$userConfigDir = Get-RimWorldUserConfigDir
+$localModsDir = Get-LocalModsDir -RimWorldPath $rimWorldPath
+$savesDir = Get-SavesDir -UserConfigDir $userConfigDir
+
+$modInstalled = Test-Path (Join-Path $localModsDir "LanternVillage\1.6\Assemblies\LanternVillage.dll")
+
+if ($Reinstall -or -not $modInstalled) {
+    Write-Step "First run (or -Reinstall) detected -- running Install.ps1"
+    & (Join-Path $RepoRoot "Install.ps1")
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "Install failed; not launching RimWorld." -ForegroundColor Red
+        exit $LASTEXITCODE
+    }
+}
+
+$existingSave = Join-Path $savesDir "TheLanternVillage.rws"
+$resumeMarker = Join-Path $savesDir "LanternVillageResume.txt"
+$modeMarker = Join-Path $savesDir "LanternVillageMode.txt"
+
+if (Test-Path $existingSave) {
+    Write-Step "Existing Lantern Village save found"
+    $answer = Read-Host "Resume it automatically? [Y/n]"
+    if ($answer -ne "n") {
+        "TheLanternVillage" | Out-File $resumeMarker -Encoding ascii -NoNewline
+        Write-Host "    Will auto-resume 'TheLanternVillage' on launch."
+    } else {
+        Remove-Item $resumeMarker -ErrorAction SilentlyContinue
+    }
+} else {
+    Write-Step "No existing save -- choose a launch mode"
+    Write-Host "    [1] Founding Mode -- five pawns and supplies in an undeveloped clearing"
+    Write-Host "    [2] Hamlet Mode -- a small prebuilt hamlet (hall, cottages, beds, zones)"
+    $choice = Read-Host "Choice [1/2]"
+    $mode = if ($choice -eq "2") { "Hamlet" } else { "Founding" }
+    $mode | Out-File $modeMarker -Encoding ascii -NoNewline
+    Remove-Item $resumeMarker -ErrorAction SilentlyContinue
+    Write-Host "    Mode set to $mode. Pick 'The Lantern Village' from the custom scenario list once RimWorld opens."
+}
+
+Write-Step "Launching RimWorld"
+$exe = Join-Path $rimWorldPath "RimWorldWin64.exe"
+Start-Process -FilePath $exe -WorkingDirectory $rimWorldPath
+Write-Host "RimWorld launching. This window can be closed." -ForegroundColor Green

@@ -1,0 +1,11 @@
+# Build artifacts
+Mods/LanternVillage/Source/LanternVillage/bin/
+Mods/LanternVillage/Source/LanternVillage/obj/
+Mods/LanternVillage/1.6/Assemblies/*.dll
+Mods/LanternVillage/1.6/Assemblies/*.pdb
+
+# Backups contain copies of the user's real RimWorld config -- never commit them
+Backups/*/
+
+# Local overrides
+Directory.Build.props.user

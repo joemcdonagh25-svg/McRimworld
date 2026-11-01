@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <ScenPartDef>
+    <defName>LanternVillageSetup</defName>
+    <label>Lantern Village setup</label>
+    <description>Internal hook that generates The Hearthbound ideoligion and applies the Lantern Village colonist roles. Added automatically by the scenario; not meant to be added by hand in the scenario editor.</description>
+    <category>Special</category>
+  </ScenPartDef>
+
+</Defs>
