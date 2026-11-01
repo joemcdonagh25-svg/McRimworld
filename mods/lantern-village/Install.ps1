@@ -199,8 +199,14 @@ if (-not $WhatIf) {
     New-Item -ItemType Directory -Path $destMod -Force | Out-Null
     foreach ($item in @("About", "LoadFolders.xml", "1.6")) {
         $src = Join-Path $modSource $item
+        $dest = Join-Path $destMod $item
         if (Test-Path $src) {
-            Copy-Item $src (Join-Path $destMod $item) -Recurse -Force
+            # Remove any existing copy first: Copy-Item -Recurse nests the source INSIDE
+            # an already-existing destination directory instead of overwriting its
+            # contents (e.g. produces .../1.6/1.6/Assemblies on a second install). Safe
+            # here because the pre-existing mod folder was already backed up above.
+            if (Test-Path $dest) { Remove-Item $dest -Recurse -Force }
+            Copy-Item $src $dest -Recurse -Force
         }
     }
     Write-Ok "Installed to $destMod"

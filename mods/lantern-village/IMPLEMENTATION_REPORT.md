@@ -45,15 +45,13 @@ Findings:
      excluded) -- still crashes.
 
   Reflecting Medieval Overhaul's own `MedievalOverhaul.Utility` class and reading its
-  `Patches/Vanilla Books Expanded/BookPatches.xml` found the actual root cause: that
-  patch's `PatchOperationFindMod` fallback (used when "Vanilla Books Expanded" is *not*
-  installed) adds a `DankPyon_Library` `RoomRoleDef` whose `relatedStats` includes
-  `ReadingBonus` -- a `StatDef` that is only ever defined by Vanilla Books Expanded
-  itself. Vanilla Books Expanded isn't in this project's required mod list (the spec
-  never named it), so that `StatDef` reference never resolves, and something in
-  `Utility`'s static constructor dereferences the result without a null check. This is
-  a bug in Medieval Overhaul's own compatibility patch, present with or without any of
-  this project's other mods or DLC choices.
+  `Patches/Vanilla Books Expanded/BookPatches.xml` turned up a *plausible* root cause at
+  the time: that patch's `PatchOperationFindMod` fallback (used when "Vanilla Books
+  Expanded" is *not* installed) adds a `DankPyon_Library` `RoomRoleDef` whose
+  `relatedStats` includes `ReadingBonus` -- a `StatDef` only Vanilla Books Expanded
+  defines. **This turned out not to be the actual cause -- see the 2026-11-01 follow-up
+  below**, which disproves it directly and confirms the bug is unrelated to DLC choice
+  or to Vanilla Books Expanded.
 - **The user's original configuration was restored immediately** once this was
   confirmed: `Restore.ps1 -BackupStamp 20261031-185800` (the backup taken right before
   the first real write) put back their original 23-mod `ModsConfig.xml`, their
@@ -69,13 +67,64 @@ Findings:
   fixed it. Any future automated UI testing of this project should launch RimWorld
   windowed from the start.
 
-**Recommended next step**: either (a) also subscribe to and add "Vanilla Books
-Expanded" to the required mod list (untested whether this actually fixes it -- it
-would make the patch's `match` branch run instead of the buggy `nomatch` one, but that
-branch wasn't exercised), or (b) report the bug to Medieval Overhaul's author with the
-exact file/line above, or (c) drop Medieval Overhaul's `BookPatches.xml` compatibility
-patch via a small local patch-disabling mod. None of these were attempted without
-asking first, since each is itself a further change to the user's mod set.
+## Follow-up: Vanilla Books Expanded did not fix it -- conclusively a Medieval Overhaul bug (2026-11-01)
+
+With the user's go-ahead, "Vanilla Books Expanded" (Steam Workshop 2193152410,
+packageId `VanillaExpanded.VBooksE`, confirmed 1.6-compatible, same author family as
+the rest of this manifest) was subscribed and added to the required mod list, placed
+right after Processor Framework and before Medieval Overhaul in load order and in
+`About.xml`'s `loadAfter`.
+
+Along the way, two more real bugs were found and fixed (by actually reinstalling and
+relaunching, not by inspection alone):
+- **A real `Install.ps1` bug**: its mod-copy step used `Copy-Item ... -Recurse -Force`
+  without first removing the destination. On a *second* install, PowerShell nests the
+  source folder inside the already-existing destination instead of overwriting it
+  (producing `.../1.6/1.6/Assemblies/...` and `.../About/About/About.xml`), silently
+  leaving the previous build's assembly in place. Fixed by removing the destination
+  item first (the pre-existing folder is already backed up by that point, so this is
+  safe) -- see `Install.ps1`'s "Installing the mod" step.
+- **A real bug in this project's own `ScenPartDefs.xml`**: `<category>Special</category>`
+  is not a valid `RimWorld.ScenPartCategory` enum value (the valid set is `Undefined`,
+  `Fixed`, `StartingImportant`, `PlayerPawnFilter`, `PlayerPawnModifier`,
+  `GameCondition`, `Rule`, `StartingItem`, `WorldThing`, `Misc`) -- this was guessed
+  rather than verified, exactly the kind of thing this report is supposed to flag.
+  `Player.log` showed `Exception loading def from file ScenPartDefs.xml: ... 'Special'
+  is not a valid value`. Fixed to `Misc`.
+
+After fixing both of those and relaunching with the 13-mod profile (Vanilla Books
+Expanded included), **the `MedievalOverhaul.Utility` `NullReferenceException` still
+occurred, identically**, confirming the earlier `BookPatches.xml`/`ReadingBonus`
+hypothesis was wrong. To find the real boundary, one more isolation run was done: all
+5 DLCs active (Royalty + Ideology + Biotech + Anomaly + Odyssey) + Medieval Overhaul's
+bare dependencies + Vanilla Books Expanded -- the most permissive configuration
+possible. **It crashed identically.**
+
+This is conclusive: the bug is **not** related to this project's DLC exclusions, not
+related to Vanilla Books Expanded, and not fixable by anything in this project's
+control. It reproduces with Medieval Overhaul (Steam Workshop 3219596926, currently
+maintained by EvilEyes and ViralReaction "on behalf of" the original author per its own
+Workshop description) and only its own declared hard dependencies, regardless of what
+else is or isn't active. The most likely explanation is a version mismatch between the
+currently-published Medieval Overhaul build and the currently-published Harmony/Vanilla
+Expanded Framework/Processor Framework builds, or a genuine regression in Medieval
+Overhaul against RimWorld 1.6.4871 -- neither is something this project can fix without
+either an upstream update from Medieval Overhaul's maintainers or pinning different mod
+versions (not attempted; RimWorld's Workshop subscriptions don't offer version pinning
+through the normal UI).
+
+The user's original 23-mod configuration was restored again afterward, using the
+*original* backup folder directly (`C:\lantern-village\Backups\20261031-185800`,
+predating this project's move into `McRimworld/mods/lantern-village/`) rather than
+`Restore.ps1`'s default "most recent backup" behavior -- by this point several
+isolation runs had written their own ad hoc `ModsConfig.xml` backups that don't
+represent the user's real original state. `Restore.ps1 -BackupStamp <folder>` exists
+for exactly this situation and was used directly.
+
+**Recommended next step, if this is worth pursuing further**: report the bug to
+Medieval Overhaul's current maintainers (EvilEyes / ViralReaction) with the exact
+stack trace in this report, since this project's own isolation work already rules out
+everything on this project's side of the boundary.
 
 ## Complete and runtime-verified
 
@@ -188,22 +237,44 @@ below for why, and what it would take).
 ## Blocked
 
 - **Medieval Overhaul crashes play-data loading on this machine, independent of
-  everything else in this project** -- see "Runtime verification results" above for
-  the full isolation trail and root cause (a `ReadingBonus` `StatDef` reference in
-  Medieval Overhaul's own `Vanilla Books Expanded` compatibility patch that is never
-  satisfied because Vanilla Books Expanded isn't installed). Because of this, the full
-  12-mod Lantern Village profile cannot currently stay active on this machine long
-  enough to reach a playable colony -- RimWorld's own safety net resets the mod list to
-  Core + DLC before a scenario can even be selected. World generation, pawn spawning,
-  medieval production and save/reload (the rest of point 12's checklist) could not be
-  exercised downstream of this. Everything else in this project (installer, scenario
-  file, mod compilation, ideology/colonist/hamlet/resume code) is implemented and, where
-  noted above, either runtime-verified or implemented-but-unverified on its own merits
-  -- this blocker is specifically about Medieval Overhaul's own compatibility patch, not
-  about any file in this repository. Unblocking it needs a decision only you can make
-  (subscribe to Vanilla Books Expanded / report upstream / patch around it locally); see
-  the "Recommended next step" above.
+  everything else in this project, and this is now conclusively established.** See
+  "Runtime verification results" and its "Follow-up" section above for the full
+  isolation trail: it reproduces identically with Medieval Overhaul and only its own
+  declared hard dependencies, regardless of DLC selection (tested with none of
+  Royalty/Odyssey/Anomaly, with Royalty alone, and with all five DLCs) and regardless of
+  whether Vanilla Books Expanded is installed (the initial hypothesis -- a missing
+  `ReadingBonus` `StatDef` reference in Medieval Overhaul's own compatibility patch --
+  was tested directly and disproven). Because of this, the Lantern Village mod profile
+  cannot currently stay active on this machine long enough to reach a playable colony --
+  RimWorld's own safety net resets the mod list to Core + DLC before a scenario can even
+  be selected. World generation, pawn spawning, medieval production and save/reload (the
+  rest of point 12's checklist) could not be exercised downstream of this. Everything
+  else in this project (installer, scenario file, mod compilation,
+  ideology/colonist/hamlet/resume code) is implemented and, where noted above, either
+  runtime-verified or implemented-but-unverified on its own merits -- this blocker is
+  specifically a bug in Medieval Overhaul's own code (Steam Workshop 3219596926,
+  currently maintained by EvilEyes/ViralReaction "on behalf of" SirLalaPyon), not about
+  any file in this repository or anything this project chose. Unblocking it needs either
+  an upstream fix from Medieval Overhaul's maintainers or a decision to drop/replace
+  that mod, which is a decision only you can make.
+- Two real bugs in this project's own code were found and fixed while investigating
+  (see the "Follow-up" section): `Install.ps1`'s mod-folder copy step nested instead of
+  overwrote on a second install, and `ScenPartDefs.xml` used an invalid
+  `ScenPartCategory` enum value. Both are fixed and the fixes are in this commit.
 - The user's live RimWorld configuration has been restored to its original state
-  (`Restore.ps1 -BackupStamp 20261031-185800`) and is not currently running the Lantern
-  Village profile. Re-running `Install.ps1` reapplies it in under a minute (all 8
-  Workshop mods are now already resolved).
+  (`C:\lantern-village\Backups\20261031-185800`, the backup from the very first
+  real install, restored directly since later ad hoc isolation runs had overwritten
+  `Restore.ps1`'s "most recent backup" default with non-representative snapshots) and is
+  not currently running the Lantern Village profile. Re-running `Install.ps1` reapplies
+  it in under a minute (all 9 Workshop mods, including Vanilla Books Expanded, are now
+  already resolved on this machine) but will hit the Medieval Overhaul crash again until
+  that bug is fixed upstream.
+- A save-count discrepancy was noticed during testing (top-level `Saves/` count moved
+  between 184, 158, 159 and 152 across this session) and investigated: none of this
+  project's scripts write to or delete from the `Saves` directory, and the apparent
+  "missing" saves are accounted for by a pre-existing `Saves/Archive/` subfolder already
+  containing this user's own dev-test saves (`VL_Prep`, `ark test`, etc., referenced in
+  this repo's own `CHANGELOG.md` from unrelated prior work) -- consistent with RimWorld
+  1.6's own automatic save-archiving behavior running on normal startup, not anything
+  this project did. Flagged here for transparency rather than silently ignored; not
+  independently proven beyond this circumstantial evidence.

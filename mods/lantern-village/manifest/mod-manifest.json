@@ -55,6 +55,15 @@
       "notes": "Verified present locally; packageId read from its own About.xml."
     },
     {
+      "packageId": "VanillaExpanded.VBooksE",
+      "name": "Vanilla Books Expanded",
+      "source": "workshop",
+      "workshopId": "2193152410",
+      "required": true,
+      "modDependencies": ["brrainz.harmony", "OskarPotocki.VanillaFactionsExpanded.Core"],
+      "notes": "Added to work around a Medieval Overhaul bug: Medieval Overhaul's own Patches/Vanilla Books Expanded/BookPatches.xml adds a DankPyon_Library RoomRoleDef with a relatedStats entry (ReadingBonus, a StatDef only Vanilla Books Expanded defines) ONLY when Vanilla Books Expanded is NOT detected -- that fallback branch is what crashed MedievalOverhaul.Utility's static constructor. Installing the real mod makes Medieval Overhaul's PatchOperationFindMod take its normal match branch instead."
+    },
+    {
       "packageId": "DankPyon.Medieval.Overhaul",
       "name": "Medieval Overhaul",
       "source": "workshop",
