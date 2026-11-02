@@ -96,6 +96,48 @@ namespace LanternVillage
             return results.OrderByDescending(c => c.Score).Take(maxResults).ToList();
         }
 
+        /// <summary>
+        /// Same scan as ScoreTile, but without the hard TemperateForest requirement --
+        /// just avoids water and prefers hills/mild temperature. Used only as a fallback
+        /// when no temperate forest tile turns up within the scan limit (e.g. a world
+        /// seed with little temperate forest coverage), so automatic selection always
+        /// finds *something* playable rather than leaving the player stuck.
+        /// </summary>
+        public static List<Candidate> FindBestTilesRelaxed(int maxTilesToScan, int maxResults)
+        {
+            var results = new List<Candidate>();
+            WorldGrid grid = Find.WorldGrid;
+            if (grid == null)
+            {
+                return results;
+            }
+
+            int scanned = 0;
+            foreach (Tile tile in grid.Tiles)
+            {
+                if (scanned >= maxTilesToScan)
+                {
+                    break;
+                }
+                scanned++;
+
+                if (tile == null || tile.WaterCovered)
+                {
+                    continue;
+                }
+
+                float score = 0f;
+                if (tile.hilliness == Hilliness.LargeHills) score += 5f;
+                else if (tile.hilliness == Hilliness.SmallHills) score += 2f;
+                if (tile.temperature >= 5f && tile.temperature <= 22f) score += 3f;
+                if (tile.IsCoastal) score += 1f;
+
+                results.Add(new Candidate { Tile = tile, Score = score });
+            }
+
+            return results.OrderByDescending(c => c.Score).Take(maxResults).ToList();
+        }
+
         [DebugAction("Lantern Village", "Find best hamlet tile (scan 2000)", requiresIdeology: true, requiresBiotech: true)]
         public static void DebugFindBestTile()
         {
