@@ -83,7 +83,7 @@ Write-Step "Resolving required mods"
 $resolvedMods = @()
 $blockedMods = @()
 foreach ($entry in $manifest.loadOrder) {
-    if ($entry.source -in @("core", "dlc")) {
+    if ($entry.source -in @("core", "dlc", "local")) {
         $resolvedMods += [PSCustomObject]@{ PackageId = $entry.packageId; Name = $entry.name; Source = $entry.source }
         continue
     }
@@ -127,8 +127,6 @@ if ($blockedMods.Count -gt 0) {
         exit 2
     }
 }
-
-$resolvedMods += [PSCustomObject]@{ PackageId = "lanternvillage.thelanternvillage"; Name = "The Lantern Village"; Source = "local" }
 
 # ---------------------------------------------------------------------------
 Write-Step "Backing up existing configuration"

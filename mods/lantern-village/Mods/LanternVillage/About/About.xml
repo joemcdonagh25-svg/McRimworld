@@ -33,8 +33,18 @@
     <li>OskarPotocki.VanillaFactionsExpanded.Core</li>
     <li>syrchalis.processor.framework</li>
     <li>VanillaExpanded.VBooksE</li>
-    <li>DankPyon.Medieval.Overhaul</li>
-    <li>Van.Beasts</li>
-    <li>m00nl1ght.WorldTechLevel</li>
   </loadAfter>
+  <!--
+    Deliberately loads BEFORE Medieval Overhaul (and so before Dark Ages: Beasts and
+    Monsters / World Tech Level, which themselves load after it): this mod's own Mod
+    class constructor applies a Harmony finalizer patch guarding a real bug in
+    MedievalOverhaul.MedievalOverhaulSettings's constructor (see
+    CompatPatch_MedievalOverhaul.cs), and that patch has to be in place before
+    RimWorld constructs Medieval Overhaul's own Mod class, not after. Mod class
+    construction for every active mod happens in one early pass, well before
+    StaticConstructorOnStartup code, which runs too late for this.
+  -->
+  <loadBefore>
+    <li>DankPyon.Medieval.Overhaul</li>
+  </loadBefore>
 </ModMetaData>

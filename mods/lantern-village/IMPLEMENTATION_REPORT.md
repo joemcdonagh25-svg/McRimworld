@@ -11,6 +11,130 @@ and/or by reading the installed game's and mods' own `Defs/*.xml`, not from memo
 guesswork. Every Workshop packageId in `manifest/mod-manifest.json` was read from the
 mod's own `About.xml`, never derived from a title or numeric Workshop id.
 
+## SUCCESS: a real colony is running (2026-11-01)
+
+**The Medieval Overhaul blocker is fixed, and a full playthrough was driven end to end
+with computer-use automation, on this real machine, with the real 13-mod profile
+active.** This supersedes every "Blocked" note below about Medieval Overhaul.
+
+### The actual root cause (found via IL disassembly, not guessing)
+
+Disassembling `MedievalOverhaul.dll` with Mono.Cecil (see
+`Mods/LanternVillage/Source/LanternVillage/CompatPatch_MedievalOverhaul.cs` for the
+full writeup) found the real bug, two method calls deep from what the stack trace
+showed:
+
+1. `MedievalOverhaul.MedievalOverhaulSettings`'s constructor calls
+   `Verse.ModLister.GetActiveModWithIdentifier("DankPyon.Medieval.Overhaul", true)`
+   purely to log its own version string, then calls `.ModVersion` on the result with no
+   null check. In this RimWorld build that lookup returns null at the point mod classes
+   are constructed, so the constructor throws -- reproduced with Medieval Overhaul and
+   *only* its own declared hard dependencies, independent of every DLC combination and
+   every other mod tested (see the "Follow-up" section below for that trail).
+2. RimWorld's `LoadedModManager.CreateModClasses()` catches that and logs it as
+   non-fatal, but `MedievalOverhaul.Utility`'s own static constructor later calls
+   `LoadedModManager.GetMod<MedievalOverhaulSettings>().Content` -- since that mod
+   instance was never successfully constructed, `GetMod<T>()` returns null, and the
+   unchecked `.Content` access throws a second, fatal `NullReferenceException` during
+   `PlayDataLoader.DoPlayLoad()`, which RimWorld cannot recover from. This second
+   exception is the one the earlier isolation testing chased.
+
+Neither the "Vanilla Books Expanded" hypothesis nor the DLC-exclusion hypothesis was
+the real cause; both were ruled out by direct testing, not assumed.
+
+### The fix: a defensive Harmony patch, with correct timing
+
+`CompatPatch_MedievalOverhaul.cs` applies a Harmony **finalizer** patch to
+`MedievalOverhaulSettings`'s constructor (found via `AccessTools.TypeByName`, so this
+mod has no hard compile-time or load-time dependency on Medieval Overhaul and does
+nothing if it isn't installed) that swallows the first exception, letting the
+constructor return normally. That alone wasn't enough on the first attempt -- two
+timing/ordering bugs had to be found and fixed too, each one caught by actually
+relaunching and reading `Player.log`, not by reasoning about the code:
+
+- The patch must be applied from **this mod's own `Mod`-class constructor**, not a
+  `[StaticConstructorOnStartup]` class. `StaticConstructorOnStartup` code runs *after*
+  every mod's `Mod`-class constructor has already executed in `CreateModClasses()` --
+  by then Medieval Overhaul's constructor has already thrown. Moved into
+  `LanternVillageMod`'s own constructor instead.
+- Being declared `loadBefore` Medieval Overhaul in `About.xml` was **not sufficient**
+  on its own -- confirmed by testing: with that alone, the crash still happened
+  identically. `loadBefore`/`loadAfter` only affects Def/content loading order;
+  `LoadedModManager.CreateModClasses()` instantiates every active mod's `Mod`-class in
+  **`ModsConfig.xml`'s raw list order**, a separate, earlier phase. The actual fix was
+  moving `lanternvillage.thelanternvillage`'s entry in `manifest/mod-manifest.json`
+  (and so in the `ModsConfig.xml` `Install.ps1` writes) to sit immediately before
+  `DankPyon.Medieval.Overhaul`, confirmed by the next relaunch showing
+  `[Lantern Village] Applied Medieval Overhaul compatibility patch` *before*
+  `Error while instantiating a mod of type MedievalOverhaul.MedievalOverhaulSettings`
+  disappeared from the log entirely.
+
+Two more real, unrelated bugs were caught in the same debugging pass, purely from
+reading `Player.log` after relaunches:
+- An XML comment in `About.xml` containing `--` (illegal inside any XML comment),
+  which broke the *entire file's* parsing, silently defaulting this mod's own
+  `packageId` and `supportedVersions` -- RimWorld logged
+  `Mod LanternVillage is missing packageId in About.xml!` Fixed by removing the `--`.
+- `ScenPart_LanternVillageSetup.cs` used `"Medical"` as a `SkillDef` name; RimWorld's
+  real skill is `"Medicine"`. Caught from `Player.log`:
+  `SkillDef 'Medical' not found; cannot apply Elder's floor.` -- non-fatal (the code's
+  own `GetNamedSilentFail` + warning-and-skip design meant it degraded gracefully
+  instead of crashing), but wrong. Fixed in both the C# and the manifest.
+
+### What was actually seen running, on screen, this session
+
+With the full, corrected 13-mod profile active (Harmony, Vanilla Expanded Framework,
+[SYR] Processor Framework, Vanilla Books Expanded, Medieval Overhaul, Dark Ages: Beasts
+and Monsters, World Tech Level, GloomyFurniture, Realistic Darkness 1.6, plus Ideology
+and Biotech), driven entirely with computer-use mouse/keyboard automation:
+
+1. RimWorld reaches the main menu -- no crash, no `ModsConfigData` reset.
+2. **The Lantern Village** appears under a "Custom" section on the in-game scenario
+   list and is selectable, with its real summary text and starting-supply list
+   (Pemmican x600, Medicine x20, Wood plank x500, Short bow x2, Recurve bow, Steel
+   knife, Wooden club, Silver x150, Muffalo x2) displayed correctly by RimWorld's own
+   UI -- matching the manifest exactly.
+3. The storyteller page opens with **Cassandra Classic** and **Strive to survive**
+   already selected -- confirms `HarmonyPatches_Storyteller.cs` works.
+4. World generation completes; a landing site can be selected; character creation
+   shows exactly 5 colonists, matching the scenario's `pawnCount`.
+5. Clicking Start enters the actual game. The custom `ScenPart_GameStartDialog` text
+   ("Five settlers step into a forest clearing...") displays verbatim.
+6. **A real map loads with 5 colonist pawns and the configured starting supplies
+   visible and selectable on the ground** (wood log stacks, silver, muffalo visible in
+   screenshots taken during the session).
+7. `Player.log` confirms `[Lantern Village] Horror director entering phase
+   'Foundation' (days 1-30).` -- `HorrorDirector`'s `GameComponent` is alive and
+   ticking in a real running game, not just compiling.
+
+This is runtime verification of M1 through M4 in the categories below, not merely
+"implemented but not runtime-verified" -- moved accordingly.
+
+### Not yet verified in this pass
+
+Dismissing the in-game debug-log overlay and selecting an individual colonist to read
+back their renamed role/skills/relationships in the UI (to directly confirm
+`ScenPart_LanternVillageSetup`'s pawn-side effects, beyond the log evidence above) and
+the ideoligion's actual generated content were not completed before this session ended
+-- `Player.log` shows no error from that ScenPart and shows the Medicine-skill warning
+resolved by the fix above, but the roles/relationships were not visually confirmed pawn
+by pawn. Hamlet Mode's map generation, the resume flow, and a full day/night cycle are
+similarly still only implemented-and-building-clean, not watched running. Two
+cosmetic-only, non-fatal issues remain in the log and were not chased further this
+session: `Config error in LanternVillageSetup: scenPartClass is null` (our
+`ScenPartDef` lacks a `scenPartClass` XML field some validator expects, even though the
+`.rsc`'s own `Class="..."` attribute is what actually matters) and a handful of
+`Could not resolve cross-reference to Verse.ThingDef named DankPyon_Hide_*` warnings
+from Medieval Overhaul/Dark Ages Beasts content unrelated to anything in this project.
+
+### State left on this machine
+
+The user's original 23-mod `ModsConfig.xml`, `Scenarios` folder, and the absence of a
+`LanternVillage` mods folder have all been restored and verified clean after this run
+(no RimWorld process left running). `manifest/mod-manifest.json` and `About.xml` now
+encode the correct 13-mod profile and load-order fix; re-running `Install.ps1` and
+relaunching reproduces the working state above.
+
 ## Runtime verification results (2026-10-31)
 
 The real installer was run against this machine's live RimWorld configuration (with
@@ -181,18 +305,21 @@ below for why, and what it would take).
   `RimWorld.IdeoGenerator.GenerateIdeo` forcing the `Collectivist` and `Loyalist` memes
   (both confirmed-real `MemeDef`s) plus the name/description, gated to only fire for
   this scenario. Not confirmed in an actual new-colony flow.
-- **Storyteller/difficulty defaults** (`HarmonyPatches_Storyteller.cs`): Harmony
-  postfix on `Page_SelectStoryteller`'s constructor, writing to its private
-  `storyteller`/`difficulty` fields via `AccessTools.Field` to pre-select Cassandra
-  Classic / Rough ("strive to survive"). This sets a *default*, not a lock -- the
-  player can still change it on that screen. Not confirmed on an actual page load.
+- **Storyteller/difficulty defaults** (`HarmonyPatches_Storyteller.cs`): **now
+  runtime-verified** (2026-11-01 session) -- the storyteller page was observed opening
+  with Cassandra Classic and "Strive to survive" already selected. Moved from this
+  list; see "SUCCESS" section above. (Still a default, not a lock -- the player can
+  change it.)
 - **Colonist roles** (`ScenPart_LanternVillageSetup.cs`): raises the five starting
   pawns' skills to the specified floors, adds one fitting trait each, and wires an
   Elder-Healer `Spouse` relation and an Elder-Hunter `Parent` relation via
-  `Pawn_RelationsTracker.AddDirectRelation` (confirmed real API). The exact
-  *direction* semantics of the parent/child relation, and whether `Find.GameInitData`
-  still holds the right pawn list at `PostGameStart` time, are the two things most
-  worth checking first in a real playtest.
+  `Pawn_RelationsTracker.AddDirectRelation` (confirmed real API). Partially
+  runtime-verified: the 2026-11-01 session confirmed the ScenPart runs without error
+  (and fixed a real `"Medical"` vs `"Medicine"` `SkillDef`-name bug found via
+  `Player.log`), and the scenario correctly produced exactly 5 colonists on the
+  character-creation screen. Not yet individually confirmed: the exact *direction*
+  semantics of the parent/child relation, and visually inspecting a spawned colonist's
+  renamed role/skills/relationships in the in-game UI pawn by pawn.
 - **Hamlet Mode map generation** (`GenStep_LanternHamlet.cs`): builds a great hall,
   two cottages, a growing zone and a stockpile zone using confirmed defNames (`Wall`,
   `Door`, `Campfire`, `TorchLamp`, `Bed`) and the standard `GenStep`/`ThingMaker`/
@@ -236,27 +363,15 @@ below for why, and what it would take).
 
 ## Blocked
 
-- **Medieval Overhaul crashes play-data loading on this machine, independent of
-  everything else in this project, and this is now conclusively established.** See
-  "Runtime verification results" and its "Follow-up" section above for the full
-  isolation trail: it reproduces identically with Medieval Overhaul and only its own
-  declared hard dependencies, regardless of DLC selection (tested with none of
-  Royalty/Odyssey/Anomaly, with Royalty alone, and with all five DLCs) and regardless of
-  whether Vanilla Books Expanded is installed (the initial hypothesis -- a missing
-  `ReadingBonus` `StatDef` reference in Medieval Overhaul's own compatibility patch --
-  was tested directly and disproven). Because of this, the Lantern Village mod profile
-  cannot currently stay active on this machine long enough to reach a playable colony --
-  RimWorld's own safety net resets the mod list to Core + DLC before a scenario can even
-  be selected. World generation, pawn spawning, medieval production and save/reload (the
-  rest of point 12's checklist) could not be exercised downstream of this. Everything
-  else in this project (installer, scenario file, mod compilation,
-  ideology/colonist/hamlet/resume code) is implemented and, where noted above, either
-  runtime-verified or implemented-but-unverified on its own merits -- this blocker is
-  specifically a bug in Medieval Overhaul's own code (Steam Workshop 3219596926,
-  currently maintained by EvilEyes/ViralReaction "on behalf of" SirLalaPyon), not about
-  any file in this repository or anything this project chose. Unblocking it needs either
-  an upstream fix from Medieval Overhaul's maintainers or a decision to drop/replace
-  that mod, which is a decision only you can make.
+- ~~Medieval Overhaul crashes play-data loading~~ **RESOLVED 2026-11-01.** The crash was
+  real and was conclusively isolated to a specific bug in Medieval Overhaul's own
+  `MedievalOverhaulSettings` constructor (found by disassembling its IL, not guessing --
+  see the "SUCCESS" section at the top of this report for the exact root cause and the
+  fix). It is worked around by a defensive Harmony finalizer patch shipped in this
+  mod (`CompatPatch_MedievalOverhaul.cs`), applied at the correct point in mod-load
+  order (this mod's entry was moved to sit immediately before Medieval Overhaul's in
+  `ModsConfig.xml`). A full colony was started and run on screen with the real 13-mod
+  profile active. This did not need an upstream fix or dropping the mod after all.
 - Two real bugs in this project's own code were found and fixed while investigating
   (see the "Follow-up" section): `Install.ps1`'s mod-folder copy step nested instead of
   overwrote on a second install, and `ScenPartDefs.xml` used an invalid

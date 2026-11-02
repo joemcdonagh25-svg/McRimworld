@@ -25,11 +25,11 @@ namespace LanternVillage
 
         private static readonly List<RoleSpec> Roles = new List<RoleSpec>
         {
-            new RoleSpec { RoleName = "Elder",    SkillFloors = new Dictionary<string, int> { { "Social", 8 }, { "Intellectual", 5 }, { "Medical", 3 } }, TraitDefName = "Kind" },
+            new RoleSpec { RoleName = "Elder",    SkillFloors = new Dictionary<string, int> { { "Social", 8 }, { "Intellectual", 5 }, { "Medicine", 3 } }, TraitDefName = "Kind" },
             new RoleSpec { RoleName = "Woodsman",  SkillFloors = new Dictionary<string, int> { { "Plants", 8 }, { "Construction", 6 } }, TraitDefName = "Industrious" },
             new RoleSpec { RoleName = "Hunter",    SkillFloors = new Dictionary<string, int> { { "Shooting", 9 }, { "Animals", 6 } }, TraitDefName = "Nimble" },
             new RoleSpec { RoleName = "Smith",     SkillFloors = new Dictionary<string, int> { { "Crafting", 8 }, { "Mining", 5 } }, TraitDefName = "Industrious" },
-            new RoleSpec { RoleName = "Healer",    SkillFloors = new Dictionary<string, int> { { "Medical", 8 }, { "Cooking", 6 } }, TraitDefName = "Kind" },
+            new RoleSpec { RoleName = "Healer",    SkillFloors = new Dictionary<string, int> { { "Medicine", 8 }, { "Cooking", 6 } }, TraitDefName = "Kind" },
         };
 
         public override void PostGameStart()

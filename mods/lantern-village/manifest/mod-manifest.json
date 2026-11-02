@@ -61,7 +61,14 @@
       "workshopId": "2193152410",
       "required": true,
       "modDependencies": ["brrainz.harmony", "OskarPotocki.VanillaFactionsExpanded.Core"],
-      "notes": "Added to work around a Medieval Overhaul bug: Medieval Overhaul's own Patches/Vanilla Books Expanded/BookPatches.xml adds a DankPyon_Library RoomRoleDef with a relatedStats entry (ReadingBonus, a StatDef only Vanilla Books Expanded defines) ONLY when Vanilla Books Expanded is NOT detected -- that fallback branch is what crashed MedievalOverhaul.Utility's static constructor. Installing the real mod makes Medieval Overhaul's PatchOperationFindMod take its normal match branch instead."
+      "notes": "A reasonable Medieval Overhaul compatibility mod to have active regardless, but it turned out NOT to be the fix for the Utility NullReferenceException crash -- see the lanternvillage.thelanternvillage entry below and IMPLEMENTATION_REPORT.md for the real cause and fix."
+    },
+    {
+      "packageId": "lanternvillage.thelanternvillage",
+      "name": "The Lantern Village",
+      "source": "local",
+      "required": true,
+      "notes": "Must be positioned here, BEFORE Medieval Overhaul, in the actual ModsConfig.xml activeMods list -- not just in About.xml's loadBefore. Verse.LoadedModManager.CreateModClasses() instantiates every active mod's Mod-derived class in ModsConfig.xml list order; loadBefore/loadAfter only affects Def/content loading order, not this earlier phase. This mod's own Mod-class constructor applies a Harmony finalizer patch that guards a real bug in MedievalOverhaul.MedievalOverhaulSettings's constructor (see CompatPatch_MedievalOverhaul.cs), and that patch must be in place before RimWorld constructs Medieval Overhaul's own Mod class -- with loadBefore alone (and this entry still last in ModsConfig.xml) the patch still applied too late and the crash still happened; this entry's position is the actual fix for that -- see IMPLEMENTATION_REPORT.md for whether this was confirmed by a real relaunch."
     },
     {
       "packageId": "DankPyon.Medieval.Overhaul",
@@ -132,11 +139,11 @@
     "startingSeason": "Undecided_NorthernHemisphereSummer_or_configuredPerSite"
   },
   "colonists": [
-    { "role": "Elder", "skillFloors": { "Social": 8, "Intellectual": 5, "Medical": 3 } },
+    { "role": "Elder", "skillFloors": { "Social": 8, "Intellectual": 5, "Medicine": 3 } },
     { "role": "Woodsman", "skillFloors": { "Plants": 8, "Construction": 6 } },
     { "role": "Hunter", "skillFloors": { "Shooting": 9, "Animals": 6 } },
     { "role": "Smith", "skillFloors": { "Crafting": 8, "Mining": 5 } },
-    { "role": "Healer", "skillFloors": { "Medical": 8, "Cooking": 6 } }
+    { "role": "Healer", "skillFloors": { "Medicine": 8, "Cooking": 6 } }
   ],
   "ideology": {
     "name": "The Hearthbound",
