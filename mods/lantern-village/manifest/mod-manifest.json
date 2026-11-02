@@ -37,6 +37,15 @@
       "notes": "Dependency for every other mod in this list. Verified present and already active in this machine's ModsConfig.xml."
     },
     {
+      "packageId": "sarg.smartspeed",
+      "name": "Smart Speed",
+      "source": "workshop",
+      "workshopId": "1504723424",
+      "required": true,
+      "modDependencies": ["brrainz.harmony"],
+      "notes": "Added at the user's request: QoL speed-up mod (ultra speed + event speed multiplier). Already present and already active in this machine's original 23-mod profile, so it was already verified-compatible before this project touched anything. No load-order requirements beyond Harmony."
+    },
+    {
       "packageId": "OskarPotocki.VanillaFactionsExpanded.Core",
       "name": "Vanilla Expanded Framework",
       "source": "workshop",
