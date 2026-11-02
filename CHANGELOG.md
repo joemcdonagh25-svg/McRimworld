@@ -4,6 +4,24 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-11-01 — The Lantern Village: Medieval Overhaul crash fixed, full colony start verified
+
+### What shipped
+- Found the real root cause of the Medieval Overhaul crash by disassembling its compiled IL: a null-metadata bug in `MedievalOverhaulSettings`'s own constructor, two calls removed from the exception RimWorld actually reported.
+- Shipped a defensive Harmony finalizer patch (`CompatPatch_MedievalOverhaul.cs`) that works around it, with no hard dependency on Medieval Overhaul being installed. Getting the patch to apply at the right point in mod-load order took two more fixes (Mod-class constructor timing, and `ModsConfig.xml` list-order positioning — `loadBefore` alone doesn't control this).
+- Fixed two more real bugs caught along the way: an illegal `--` inside an XML comment that broke `About.xml` parsing, and a `"Medical"` vs the real `"Medicine"` `SkillDef` name.
+
+### Runtime verification
+- Drove a full playthrough end to end with computer-use automation: main menu → custom scenario selection (correct starting supplies shown) → storyteller/difficulty pre-selected → world generation → 5-colonist character creation → a real running colony with colonists and supplies visible on the map.
+- `Player.log` confirms the `HorrorDirector` `GameComponent` is alive and ticking in the actual running game.
+- Restored the operator's original RimWorld configuration afterward; verified clean.
+
+### Operator notes
+- Full root-cause writeup and exact fix: `mods/lantern-village/IMPLEMENTATION_REPORT.md`.
+- Not yet confirmed: individual colonist roles/relationships inspected pawn-by-pawn in the UI, Hamlet Mode, auto-resume, a full day/night cycle.
+
+---
+
 ## 2026-11-01 — The Lantern Village: Medieval Overhaul bug conclusively isolated (not fixed by Vanilla Books Expanded)
 
 ### What happened
