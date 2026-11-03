@@ -4,7 +4,8 @@
   <ScenPartDef>
     <defName>LanternVillageSetup</defName>
     <label>Lantern Village setup</label>
-    <description>Internal hook that generates The Hearthbound ideoligion and applies the Lantern Village colonist roles. Added automatically by the scenario; not meant to be added by hand in the scenario editor.</description>
+    <description>Places the prebuilt medieval hamlet during map generation and applies The Lantern Village colonist roles after game start. Added automatically by the scenario; not meant to be added by hand in the scenario editor.</description>
+    <scenPartClass>LanternVillage.ScenPart_LanternVillageSetup</scenPartClass>
     <category>Misc</category>
   </ScenPartDef>
 

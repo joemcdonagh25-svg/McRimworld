@@ -20,8 +20,8 @@
 	</meta>
 	<scenario>
 		<name>The Lantern Village</name>
-		<summary>Five villagers settle an isolated forest clearing. Inside the light is community. Outside the light is the unknown.</summary>
-		<description>Grimm-inspired folk horror. An elder, a woodsman, a hunter, a smith and a healer arrive on foot to found a hamlet in a temperate forest. Over roughly two years, ordinary forest dangers give way to folklore threats, then to something stranger. Build your palisade, light your lanterns, and strive to survive.</description>
+		<summary>Five villagers settle into a prebuilt woodland hamlet. Inside the light is community. Outside the light is the unknown.</summary>
+		<description>Grimm-inspired folk horror. An elder, a woodsman, a hunter, a smith and a healer arrive on foot at a partly-palisaded medieval hamlet in a temperate forest — great hall, cottages, kitchen, smithy, barn and gardens already raised. Over roughly two years, ordinary forest dangers give way to folklore threats, then to something stranger. Keep the lanterns burning and finish the walls before the forest finishes you.</description>
 		<playerFaction>
 			<def>PlayerFaction</def>
 			<factionDef>PlayerTribe</factionDef>
@@ -58,17 +58,23 @@
 				<pawnChoiceCount>5</pawnChoiceCount>
 				<pawnCount>5</pawnCount>
 			</li>
+			<!-- Hamlet before pawn arrival / starting gear so walls exist first and we don't wipe supplies (Vampire Lord keep pattern). -->
+			<li Class="LanternVillage.ScenPart_LanternVillageSetup">
+				<def>LanternVillageSetup</def>
+			</li>
 			<li Class="ScenPart_PlayerPawnsArriveMethod">
 				<def>PlayerPawnsArriveMethod</def>
 				<method>Standing</method>
 			</li>
 			<li Class="ScenPart_GameStartDialog">
 				<def>GameStartDialog</def>
-				<text>Five settlers step into a forest clearing with the last of the daylight.
+				<text>Five settlers step into a woodland hamlet with the last of the daylight.
+
+The great hall hearth is lit. Cottages, kitchen, smithy and barn stand ready. The palisade is unfinished — enough to feel safe, not enough to be safe.
 
 Inside the light is community. Outside the light is the unknown.
 
-Build your hearth, raise your cottages, and keep your lanterns burning. The forest will test you slowly at first -- and then less slowly.</text>
+Keep your lanterns burning. The forest will test you slowly at first -- and then less slowly.</text>
 				<textKey>GameStartDialog</textKey>
 				<closeSound>GameStartSting</closeSound>
 			</li>
@@ -118,9 +124,6 @@ Build your hearth, raise your cottages, and keep your lanterns burning. The fore
 				<def>StartingAnimal</def>
 				<animalKind>Muffalo</animalKind>
 				<count>2</count>
-			</li>
-			<li Class="LanternVillage.ScenPart_LanternVillageSetup">
-				<def>LanternVillageSetup</def>
 			</li>
 		</parts>
 	</scenario>
