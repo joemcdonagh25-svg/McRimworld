@@ -7,6 +7,9 @@
     <description>Places the prebuilt medieval hamlet during map generation and applies The Lantern Village colonist roles after game start. Added automatically by the scenario; not meant to be added by hand in the scenario editor.</description>
     <scenPartClass>LanternVillage.ScenPart_LanternVillageSetup</scenPartClass>
     <category>Misc</category>
+    <maxUses>1</maxUses>
+    <canBePlayerAddedRemoved>false</canBePlayerAddedRemoved>
+    <canBeRandomlyAdded>false</canBeRandomlyAdded>
   </ScenPartDef>
 
 </Defs>
