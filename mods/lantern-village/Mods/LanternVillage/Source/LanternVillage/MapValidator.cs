@@ -8,16 +8,13 @@ using Verse;
 namespace LanternVillage
 {
     /// <summary>
-    /// Scores tiles of the currently generated world against The Lantern Village's
-    /// target site (temperate forest, large hills, long growing season, coastal/river
-    /// a bonus) and returns the best candidates within a bounded scan. This does not
-    /// regenerate the world across multiple seeds automatically -- that would require
-    /// driving the world-creation UI flow (Page_CreateWorldParams), which has not been
-    /// verified in this session. What is implemented here is the bounded tile-scoring
-    /// routine itself, callable from a debug action or a future launcher hook.
+    /// Scores tiles for The Lantern Village. Preferred biome is Boreal Forest
+    /// (cold woodland folk-horror clearing).
     /// </summary>
     public static class MapValidator
     {
+        public const string PreferredBiomeDefName = "BorealForest";
+
         public struct Candidate
         {
             public Tile Tile;
@@ -33,13 +30,13 @@ namespace LanternVillage
 
             float score = 0f;
 
-            if (tile.PrimaryBiome?.defName == "TemperateForest")
+            if (tile.PrimaryBiome?.defName == PreferredBiomeDefName)
             {
                 score += 10f;
             }
             else
             {
-                return float.NegativeInfinity; // biome is a hard requirement, not just a preference
+                return float.NegativeInfinity; // biome is a hard requirement
             }
 
             if (tile.hilliness == Hilliness.LargeHills)
@@ -51,10 +48,8 @@ namespace LanternVillage
                 score += 2f;
             }
 
-            // Longer growing season roughly correlates with warmer average temperature
-            // for a temperate biome; this is an approximation, not a verified vanilla
-            // "40/60" formula (no such literal field exists on Tile).
-            if (tile.temperature >= 10f && tile.temperature <= 18f)
+            // Boreal: prefer cool, not arctic-dead.
+            if (tile.temperature >= -5f && tile.temperature <= 10f)
             {
                 score += 3f;
             }
@@ -97,11 +92,8 @@ namespace LanternVillage
         }
 
         /// <summary>
-        /// Same scan as ScoreTile, but without the hard TemperateForest requirement --
-        /// just avoids water and prefers hills/mild temperature. Used only as a fallback
-        /// when no temperate forest tile turns up within the scan limit (e.g. a world
-        /// seed with little temperate forest coverage), so automatic selection always
-        /// finds *something* playable rather than leaving the player stuck.
+        /// Fallback when no Boreal Forest tile is found within the scan limit.
+        /// Prefers other cold forest biomes, then any walkable land with hills.
         /// </summary>
         public static List<Candidate> FindBestTilesRelaxed(int maxTilesToScan, int maxResults)
         {
@@ -127,10 +119,28 @@ namespace LanternVillage
                 }
 
                 float score = 0f;
-                if (tile.hilliness == Hilliness.LargeHills) score += 5f;
-                else if (tile.hilliness == Hilliness.SmallHills) score += 2f;
-                if (tile.temperature >= 5f && tile.temperature <= 22f) score += 3f;
-                if (tile.IsCoastal) score += 1f;
+                string biome = tile.PrimaryBiome?.defName;
+                if (biome == PreferredBiomeDefName)
+                {
+                    score += 10f;
+                }
+                else if (biome == "TemperateForest" || biome == "ColdBog" || biome == "Tundra")
+                {
+                    score += 4f;
+                }
+                else
+                {
+                    score += 1f;
+                }
+
+                if (tile.hilliness == Hilliness.LargeHills)
+                {
+                    score += 5f;
+                }
+                else if (tile.hilliness == Hilliness.SmallHills)
+                {
+                    score += 2f;
+                }
 
                 results.Add(new Candidate { Tile = tile, Score = score });
             }
@@ -138,18 +148,19 @@ namespace LanternVillage
             return results.OrderByDescending(c => c.Score).Take(maxResults).ToList();
         }
 
-        [DebugAction("Lantern Village", "Find best hamlet tile (scan 2000)", requiresIdeology: true, requiresBiotech: true)]
-        public static void DebugFindBestTile()
+        [DebugAction("Lantern Village", "Log best landing tiles", requiresIdeology: true, requiresBiotech: true)]
+        public static void DebugLogBestTiles()
         {
-            List<Candidate> best = FindBestTiles(2000, 5);
+            List<Candidate> best = FindBestTiles(8000, 5);
             if (best.Count == 0)
             {
-                Log.Message("[Lantern Village] No matching temperate forest tile found in the first 2000 scanned.");
-                return;
+                best = FindBestTilesRelaxed(8000, 5);
+                Log.Message("[Lantern Village] No strict BorealForest tiles; showing relaxed matches:");
             }
+
             foreach (Candidate c in best)
             {
-                Log.Message($"[Lantern Village] Candidate tile score {c.Score}: hilliness={c.Tile.hilliness}, temp={c.Tile.temperature}, coastal={c.Tile.IsCoastal}");
+                Log.Message($"[Lantern Village] candidate score={c.Score} biome={c.Tile.PrimaryBiome?.defName} hilliness={c.Tile.hilliness} temp={c.Tile.temperature}");
             }
         }
     }

@@ -142,7 +142,7 @@
     "storytellerLabel": "Cassandra Classic",
     "difficultyDef": "Rough",
     "difficultyLabel": "strive to survive",
-    "biome": "TemperateForest",
+    "biome": "BorealForest",
     "hilliness": "LargeHills",
     "mapSize": 275,
     "startingSeason": "Undecided_NorthernHemisphereSummer_or_configuredPerSite"
