@@ -73,7 +73,8 @@ if (Test-Path $existingSave) {
     Write-Host "    A constructed medieval hamlet will be placed when the map generates."
     Write-Host "    Pick 'The Lantern Village' (New Game -> scenarios). Landing site + ideo auto-advance."
     Write-Host "    (Need a NEW game for the hamlet -- loading an old save will not rebuild it.)"
-    Write-Host "    Tip: use 'git pull' then '.\Launch.ps1 -Reinstall' so the DLL matches this repo."
+    Write-Host "    Tip: run '.\PullAndReinstall.ps1' (checks out PR #44 + rebuilds DLL)."
+    Write-Host "    Player.log must show BUILD LV-START-FIX-2026-03-24a — otherwise the old DLL is still installed."
 }
 
 Write-Step "Launching RimWorld"
