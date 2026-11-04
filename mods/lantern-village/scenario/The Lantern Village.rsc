@@ -20,8 +20,8 @@
 	</meta>
 	<scenario>
 		<name>The Lantern Village</name>
-		<summary>Five villagers settle into a prebuilt woodland hamlet. Inside the light is community. Outside the light is the unknown.</summary>
-		<description>Grimm-inspired folk horror. An elder, a woodsman, a hunter, a smith and a healer arrive on foot at a partly-palisaded medieval hamlet in a temperate forest — great hall, cottages, kitchen, smithy, barn and gardens already raised. Over roughly two years, ordinary forest dangers give way to folklore threats, then to something stranger. Keep the lanterns burning and finish the walls before the forest finishes you.</description>
+		<summary>Five villagers settle into a prebuilt boreal woodland hamlet. Inside the light is community. Outside the light is the unknown.</summary>
+		<description>Grimm-inspired folk horror. An elder, a woodsman, a hunter, a smith and a healer arrive on foot at a partly-palisaded medieval hamlet in a boreal forest - great hall, cottages, kitchen, smithy, barn and gardens already raised. Over roughly two years, ordinary forest dangers give way to folklore threats, then to something stranger. Keep the lanterns burning and finish the walls before the forest finishes you.</description>
 		<playerFaction>
 			<def>PlayerFaction</def>
 			<factionDef>PlayerTribe</factionDef>

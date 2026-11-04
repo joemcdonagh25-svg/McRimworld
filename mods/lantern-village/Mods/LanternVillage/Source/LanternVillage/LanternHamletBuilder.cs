@@ -55,12 +55,14 @@ namespace LanternVillage
             try
             {
                 IntVec3 center = ResolveVillageCenter(map);
-                CellRect village = CellRect.CenteredOn(center, VillageWidth / 2, VillageHeight / 2).ClipInsideMap(map);
-                if (village.Width < 24 || village.Height < 28)
+                // CenteredOn(center, width, height) takes FULL size — not half/radius.
+                // Passing Width/2 previously built a ~20x22 ruin with rooms spilling outside the cleared footprint.
+                CellRect village = CellRect.CenteredOn(center, VillageWidth, VillageHeight).ClipInsideMap(map);
+                if (village.Width < 36 || village.Height < 40)
                 {
                     // Fall back to map center if the start spot sits on the edge.
                     center = map.Center;
-                    village = CellRect.CenteredOn(center, VillageWidth / 2, VillageHeight / 2).ClipInsideMap(map);
+                    village = CellRect.CenteredOn(center, VillageWidth, VillageHeight).ClipInsideMap(map);
                 }
 
                 Faction player = Faction.OfPlayer;
@@ -381,7 +383,7 @@ namespace LanternVillage
             CellRect interior = exterior.ContractedBy(1);
             IntVec3 center = interior.CenterCell;
 
-            SpawnBuilding(LanternHamletDefs.Hearth, null, center, map, player, Rot4.North);
+            SpawnBuilding(LanternHamletDefs.Hearth, wood, center, map, player, Rot4.North);
 
             ThingDef table = LanternHamletDefs.Table;
             ThingDef chair = LanternHamletDefs.Chair;
@@ -492,8 +494,8 @@ namespace LanternVillage
             ThingDef lamp = LanternHamletDefs.Lamp;
             ThingDef shelf = LanternHamletDefs.Shelf;
 
-            SpawnBuilding(hitch, null, new IntVec3(interior.minX + 1, 0, interior.CenterCell.z), map, player, Rot4.North);
-            SpawnBuilding(hitch, null, new IntVec3(interior.maxX - 1, 0, interior.CenterCell.z), map, player, Rot4.North);
+            SpawnBuilding(hitch, wood, new IntVec3(interior.minX + 1, 0, interior.CenterCell.z), map, player, Rot4.North);
+            SpawnBuilding(hitch, wood, new IntVec3(interior.maxX - 1, 0, interior.CenterCell.z), map, player, Rot4.North);
             SpawnBuilding(animalBed, LanternHamletDefs.FurnitureStuff(animalBed) ?? wood, new IntVec3(interior.minX + 1, 0, interior.maxZ), map, player, Rot4.South);
             SpawnBuilding(animalBed, LanternHamletDefs.FurnitureStuff(animalBed) ?? wood, new IntVec3(interior.maxX - 1, 0, interior.maxZ), map, player, Rot4.South);
             SpawnBuilding(shelf, LanternHamletDefs.FurnitureStuff(shelf) ?? wood, new IntVec3(interior.CenterCell.x, 0, interior.minZ), map, player, Rot4.North);
@@ -713,10 +715,7 @@ namespace LanternVillage
                 }
             }
 
-            if (zone.Cells.Count > 0)
-            {
-                map.zoneManager.RegisterZone(zone);
-            }
+            // Zone(ZoneManager) already registers with the manager — do not RegisterZone again.
         }
 
         private static void MakeStockpileZone(Map map, CellRect rect, StorageSettingsPreset preset, string label)
@@ -735,10 +734,7 @@ namespace LanternVillage
                 }
             }
 
-            if (zone.Cells.Count > 0)
-            {
-                map.zoneManager.RegisterZone(zone);
-            }
+            // Zone(ZoneManager) already registers with the manager — do not RegisterZone again.
         }
 
         private static void TryPlantCrops(Map map, CellRect rect)
@@ -831,8 +827,14 @@ namespace LanternVillage
                     ClearCell(map, c, clearItems: true);
                 }
 
-                Thing thing = def.MadeFromStuff && stuff != null
-                    ? ThingMaker.MakeThing(def, stuff)
+                ThingDef useStuff = stuff;
+                if (def.MadeFromStuff && useStuff == null)
+                {
+                    useStuff = GenStuff.DefaultStuffFor(def);
+                }
+
+                Thing thing = def.MadeFromStuff
+                    ? ThingMaker.MakeThing(def, useStuff)
                     : ThingMaker.MakeThing(def);
 
                 if (player != null && thing.def.CanHaveFaction)
