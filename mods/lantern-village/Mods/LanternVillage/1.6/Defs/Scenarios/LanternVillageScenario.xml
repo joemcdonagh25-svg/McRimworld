@@ -108,6 +108,13 @@ Keep your lanterns burning. The forest will test you slowly at first -- and then
           <animalKind>Muffalo</animalKind>
           <count>2</count>
         </li>
+        <!-- Combat-trained in ScenPart_LanternVillageSetup.PostGameStart (Obedience + Release). -->
+        <li Class="ScenPart_StartingAnimal">
+          <def>StartingAnimal</def>
+          <animalKind>Dog</animalKind>
+          <count>1</count>
+          <bondToRandomPlayerPawnChance>1</bondToRandomPlayerPawnChance>
+        </li>
 
       </parts>
     </scenario>

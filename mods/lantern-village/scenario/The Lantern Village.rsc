@@ -125,6 +125,12 @@ Keep your lanterns burning. The forest will test you slowly at first -- and then
 				<animalKind>Muffalo</animalKind>
 				<count>2</count>
 			</li>
+			<li Class="ScenPart_StartingAnimal">
+				<def>StartingAnimal</def>
+				<animalKind>Dog</animalKind>
+				<count>1</count>
+				<bondToRandomPlayerPawnChance>1</bondToRandomPlayerPawnChance>
+			</li>
 		</parts>
 	</scenario>
 </savedscenario>
