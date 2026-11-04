@@ -64,6 +64,11 @@ namespace LanternVillage
                 LanternHamletBuilder.TryBuild(map);
             }
 
+            // Always stabilize settlement + colonist faction — even if ScenarioGate naming
+            // fails — so tick-0 SettlementDefeat / Non-colonist apparel errors stop.
+            TryEnsureStartingPawnsAreColonists();
+            LanternVillagePlayerHome.TryEnsure("PostGameStart");
+
             if (!ScenarioGate.IsActive())
             {
                 return;
@@ -88,6 +93,35 @@ namespace LanternVillage
             catch (Exception ex)
             {
                 Log.Error($"[Lantern Village] Failed while applying colonist roles: {ex}");
+            }
+        }
+
+        private static void TryEnsureStartingPawnsAreColonists()
+        {
+            Map map = Find.CurrentMap ?? Find.AnyPlayerHomeMap;
+            if (map == null || Faction.OfPlayer == null || map.mapPawns == null)
+            {
+                return;
+            }
+
+            int fixedCount = 0;
+            foreach (Pawn pawn in map.mapPawns.AllPawnsSpawned.ToList())
+            {
+                if (pawn?.RaceProps == null || !pawn.RaceProps.Humanlike)
+                {
+                    continue;
+                }
+
+                if (pawn.Faction != Faction.OfPlayer)
+                {
+                    pawn.SetFaction(Faction.OfPlayer);
+                    fixedCount++;
+                }
+            }
+
+            if (fixedCount > 0)
+            {
+                Log.Message($"[Lantern Village] Reassigned {fixedCount} humanlike pawn(s) to player faction.");
             }
         }
 
