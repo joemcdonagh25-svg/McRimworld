@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    In-mod ScenarioDef (Vampire Lord pattern). The installer .rsc alone was not
+    reliably invoking ScenPart.GenerateIntoMap on Joe's machine (Player.log showed
+    HorrorDirector running but zero hamlet-build lines, plus scenPartClass null on
+    the ScenPartDef). Shipping the scenario inside the mod guarantees the setup
+    ScenPart is present whenever this scenario is chosen.
+    ASCII-only scenario copy — special punctuation has broken listing/parsing before.
+  -->
+  <ScenarioDef ParentName="ScenarioBase">
+    <defName>LanternVillage_Hamlet</defName>
+    <label>The Lantern Village</label>
+    <description>Grimm-inspired folk horror. Five villagers arrive at a partly-palisaded medieval hamlet in a temperate forest - great hall, cottages, kitchen, smithy, barn and gardens already raised. Inside the light is community. Outside the light is the unknown.\n\nRequires Ideology and Biotech.</description>
+    <scenario>
+      <name>The Lantern Village</name>
+      <summary>Five villagers settle into a prebuilt woodland hamlet. Inside the light is community. Outside the light is the unknown.</summary>
+      <description>Keep the lanterns burning and finish the walls before the forest finishes you.</description>
+      <parts>
+
+        <li Class="ScenPart_PlayerFaction">
+          <def>PlayerFaction</def>
+          <factionDef>PlayerTribe</factionDef>
+        </li>
+
+        <li Class="ScenPart_PlanetLayerFixed">
+          <def>PlanetLayerFixed</def>
+          <layer>Surface</layer>
+          <settingsDef>Surface</settingsDef>
+          <tag>Surface</tag>
+        </li>
+
+        <li Class="ScenPart_ConfigPage_ConfigureStartingPawns">
+          <def>ConfigPage_ConfigureStartingPawns</def>
+          <pawnChoiceCount>5</pawnChoiceCount>
+          <pawnCount>5</pawnCount>
+        </li>
+
+        <!-- Hamlet before pawn arrival so walls exist first and we don't wipe starting gear. -->
+        <li Class="LanternVillage.ScenPart_LanternVillageSetup">
+          <def>LanternVillageSetup</def>
+        </li>
+
+        <li Class="ScenPart_PlayerPawnsArriveMethod">
+          <def>PlayerPawnsArriveMethod</def>
+          <method>Standing</method>
+        </li>
+
+        <li Class="ScenPart_GameStartDialog">
+          <def>GameStartDialog</def>
+          <text>Five settlers step into a woodland hamlet with the last of the daylight.
+
+The great hall hearth is lit. Cottages, kitchen, smithy and barn stand ready. The palisade is unfinished -- enough to feel safe, not enough to be safe.
+
+Inside the light is community. Outside the light is the unknown.
+
+Keep your lanterns burning. The forest will test you slowly at first -- and then less slowly.</text>
+          <textKey>GameStartDialog</textKey>
+          <closeSound>GameStartSting</closeSound>
+        </li>
+
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>Pemmican</thingDef>
+          <count>600</count>
+        </li>
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MedicineHerbal</thingDef>
+          <count>20</count>
+        </li>
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>WoodLog</thingDef>
+          <count>500</count>
+        </li>
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>Bow_Short</thingDef>
+          <count>2</count>
+        </li>
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>Bow_Recurve</thingDef>
+          <count>1</count>
+        </li>
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MeleeWeapon_Knife</thingDef>
+          <stuff>Steel</stuff>
+          <count>1</count>
+        </li>
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MeleeWeapon_Club</thingDef>
+          <stuff>WoodLog</stuff>
+          <count>1</count>
+        </li>
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>Silver</thingDef>
+          <count>150</count>
+        </li>
+        <li Class="ScenPart_StartingAnimal">
+          <def>StartingAnimal</def>
+          <animalKind>Muffalo</animalKind>
+          <count>2</count>
+        </li>
+
+      </parts>
+    </scenario>
+  </ScenarioDef>
+
+</Defs>
