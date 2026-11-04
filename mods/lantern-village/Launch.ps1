@@ -71,8 +71,9 @@ if (Test-Path $existingSave) {
     "Hamlet" | Out-File $modeMarker -Encoding ascii -NoNewline
     Remove-Item $resumeMarker -ErrorAction SilentlyContinue
     Write-Host "    A constructed medieval hamlet will be placed when the map generates."
-    Write-Host "    Pick 'The Lantern Village' from the custom scenario list once RimWorld opens."
+    Write-Host "    Pick 'The Lantern Village' (New Game -> scenarios). Landing site + ideo auto-advance."
     Write-Host "    (Need a NEW game for the hamlet -- loading an old save will not rebuild it.)"
+    Write-Host "    Tip: use 'git pull' then '.\Launch.ps1 -Reinstall' so the DLL matches this repo."
 }
 
 Write-Step "Launching RimWorld"
