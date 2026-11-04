@@ -144,28 +144,65 @@ namespace LanternVillage
 
         private static IntVec3 ResolveVillageCenter(Map map)
         {
-            IntVec3 center = MapGenerator.PlayerStartSpotValid
+            IntVec3 seed = MapGenerator.PlayerStartSpotValid
                 ? MapGenerator.PlayerStartSpot
                 : map.Center;
 
-            if (!center.InBounds(map))
+            if (!seed.InBounds(map))
             {
-                center = map.Center;
+                seed = map.Center;
             }
 
-            // Nudge off water / impassable if the start spot is awkward.
-            if (!IsBuildableFootprintCell(map, center))
+            // Prefer a center whose full village footprint is mostly dry. Joe's last log
+            // skipped kitchen/barn rooms for water and the hamlet looked "destroyed".
+            IntVec3 best = seed;
+            int bestWater = CountFootprintWater(map, seed);
+            if (bestWater == 0)
             {
-                foreach (IntVec3 candidate in GenRadial.RadialCellsAround(center, 12f, true))
+                return seed;
+            }
+
+            foreach (IntVec3 candidate in GenRadial.RadialCellsAround(seed, 40f, true))
+            {
+                if (!candidate.InBounds(map) || !IsBuildableFootprintCell(map, candidate))
                 {
-                    if (candidate.InBounds(map) && IsBuildableFootprintCell(map, candidate))
+                    continue;
+                }
+
+                int water = CountFootprintWater(map, candidate);
+                if (water < bestWater)
+                {
+                    bestWater = water;
+                    best = candidate;
+                    if (water == 0)
                     {
-                        return candidate;
+                        break;
                     }
                 }
             }
 
-            return center;
+            if (bestWater > 0)
+            {
+                Log.Warning($"{LogPrefix} Best village center still has {bestWater} water cells in the footprint; rooms will reclaim water as soil.");
+            }
+
+            return best;
+        }
+
+        private static int CountFootprintWater(Map map, IntVec3 center)
+        {
+            CellRect rect = CellRect.CenteredOn(center, VillageWidth, VillageHeight).ClipInsideMap(map);
+            int water = 0;
+            foreach (IntVec3 cell in rect.Cells)
+            {
+                TerrainDef terrain = cell.GetTerrain(map);
+                if (terrain != null && terrain.IsWater)
+                {
+                    water++;
+                }
+            }
+
+            return water;
         }
 
         private static bool IsBuildableFootprintCell(Map map, IntVec3 cell)
@@ -185,6 +222,21 @@ namespace LanternVillage
             return cell.Walkable(map);
         }
 
+        private static void ReclaimWaterAsSoil(Map map, IntVec3 cell)
+        {
+            TerrainDef terrain = cell.GetTerrain(map);
+            if (terrain == null || !terrain.IsWater)
+            {
+                return;
+            }
+
+            TerrainDef soil = TerrainDefOf.Soil;
+            if (soil != null)
+            {
+                map.terrainGrid.SetTerrain(cell, soil);
+            }
+        }
+
         private static CellRect RectAt(IntVec3 origin, int localX, int localZ, int width, int height)
         {
             IntVec3 min = new IntVec3(origin.x + localX, 0, origin.z + localZ);
@@ -200,12 +252,7 @@ namespace LanternVillage
                     continue;
                 }
 
-                TerrainDef terrain = cell.GetTerrain(map);
-                if (terrain != null && terrain.IsWater)
-                {
-                    continue;
-                }
-
+                ReclaimWaterAsSoil(map, cell);
                 ClearCell(map, cell, clearItems);
             }
         }
@@ -309,7 +356,7 @@ namespace LanternVillage
             }
 
             CellRect interior = exterior.ContractedBy(1);
-            int waterCells = 0;
+            int reclaimed = 0;
             foreach (IntVec3 cell in exterior.Cells)
             {
                 if (!cell.InBounds(map))
@@ -320,18 +367,16 @@ namespace LanternVillage
                 TerrainDef existing = cell.GetTerrain(map);
                 if (existing != null && existing.IsWater)
                 {
-                    waterCells++;
-                    continue;
+                    ReclaimWaterAsSoil(map, cell);
+                    reclaimed++;
                 }
 
                 ClearCell(map, cell, clearItems: true);
             }
 
-            // Skip rooms that would be mostly flooded.
-            if (waterCells > Math.Max(2, exterior.Area / 5))
+            if (reclaimed > 0)
             {
-                Log.Warning($"{LogPrefix} Skipping room at {exterior.CenterCell}: too much water ({waterCells} cells).");
-                return;
+                Log.Message($"{LogPrefix} Reclaimed {reclaimed} water cell(s) as soil for room at {exterior.CenterCell}.");
             }
 
             Pave(map, interior, floor);

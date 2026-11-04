@@ -68,6 +68,8 @@ namespace LanternVillage
             // fails — so tick-0 SettlementDefeat / Non-colonist apparel errors stop.
             TryEnsureStartingPawnsAreColonists();
             LanternVillagePlayerHome.TryEnsure("PostGameStart");
+            // Second pass after Settle — some arrival paths attach pawns after home exists.
+            TryEnsureStartingPawnsAreColonists();
 
             if (!ScenarioGate.IsActive())
             {
@@ -86,6 +88,11 @@ namespace LanternVillage
                 for (int i = 0; i < Roles.Count; i++)
                 {
                     ApplyRole(pawns[i], Roles[i]);
+                    // Role rename can run while Faction is still unset — force after rename.
+                    if (pawns[i] != null && Faction.OfPlayer != null && pawns[i].Faction != Faction.OfPlayer)
+                    {
+                        pawns[i].SetFaction(Faction.OfPlayer);
+                    }
                 }
 
                 ApplyRelationships(pawns);
@@ -98,24 +105,46 @@ namespace LanternVillage
 
         private static void TryEnsureStartingPawnsAreColonists()
         {
-            Map map = Find.CurrentMap ?? Find.AnyPlayerHomeMap;
-            if (map == null || Faction.OfPlayer == null || map.mapPawns == null)
+            if (Faction.OfPlayer == null)
             {
                 return;
             }
 
             int fixedCount = 0;
-            foreach (Pawn pawn in map.mapPawns.AllPawnsSpawned.ToList())
-            {
-                if (pawn?.RaceProps == null || !pawn.RaceProps.Humanlike)
-                {
-                    continue;
-                }
 
-                if (pawn.Faction != Faction.OfPlayer)
+            // GameInitData pawns may not be spawned yet when apparel jobs race tick 0.
+            if (Find.GameInitData?.startingAndOptionalPawns != null)
+            {
+                foreach (Pawn pawn in Find.GameInitData.startingAndOptionalPawns)
                 {
-                    pawn.SetFaction(Faction.OfPlayer);
-                    fixedCount++;
+                    if (pawn?.RaceProps == null || !pawn.RaceProps.Humanlike)
+                    {
+                        continue;
+                    }
+
+                    if (pawn.Faction != Faction.OfPlayer)
+                    {
+                        pawn.SetFaction(Faction.OfPlayer);
+                        fixedCount++;
+                    }
+                }
+            }
+
+            Map map = Find.CurrentMap ?? Find.AnyPlayerHomeMap;
+            if (map?.mapPawns != null)
+            {
+                foreach (Pawn pawn in map.mapPawns.AllPawnsSpawned.ToList())
+                {
+                    if (pawn?.RaceProps == null || !pawn.RaceProps.Humanlike)
+                    {
+                        continue;
+                    }
+
+                    if (pawn.Faction != Faction.OfPlayer)
+                    {
+                        pawn.SetFaction(Faction.OfPlayer);
+                        fixedCount++;
+                    }
                 }
             }
 

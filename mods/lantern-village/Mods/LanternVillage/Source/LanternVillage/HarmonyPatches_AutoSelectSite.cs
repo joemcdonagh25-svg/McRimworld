@@ -6,18 +6,9 @@ using Verse;
 namespace LanternVillage
 {
     /// <summary>
-    /// Automatically picks a landing site when The Lantern Village scenario is active,
-    /// instead of leaving the player to scroll the globe and guess. Scores a bounded
-    /// scan of the generated world's tiles with MapValidator (Boreal Forest, large
-    /// hills, cool temperature, coastal a bonus), sets the real,
-    /// confirmed-settable Verse.WorldInterface.SelectedTile to the best one, and calls
-    /// the page's own DoNext() to advance -- the same thing clicking "Next" does.
-    ///
-    /// Falls back to MapValidator's relaxed scorer if no Boreal Forest tile turns up
-    /// within the scan limit, so this never leaves the player stuck with nothing
-    /// selected. If even that finds nothing, it leaves manual selection in place.
-    /// Does NOT auto-click DoNext (that was crashing Page_ChooseIdeoPreset on this
-    /// profile) — only selects the tile so the player can press Next.
+    /// Auto-picks a Boreal landing site and advances past the globe page so the player
+    /// is not stuck selecting a tile. Safe to DoNext now that ChooseIdeoPreset is
+    /// Harmony-guarded for this scenario.
     /// </summary>
     [HarmonyPatch(typeof(Page_SelectStartingSite), nameof(Page_SelectStartingSite.PostOpen))]
     public static class Patch_AutoSelectLandingSite
@@ -43,17 +34,34 @@ namespace LanternVillage
 
                 if (best == null)
                 {
-                    Log.Warning("[Lantern Village] Auto-select landing site: no candidate tile found at all; leaving manual selection in place.");
+                    Log.Warning("[Lantern Village] Auto-select landing site: no candidate tile found; leaving manual selection.");
                     return;
                 }
 
                 Find.WorldInterface.SelectedTile = best.Value.Tile.tile;
-                Log.Message($"[Lantern Village] Auto-selected Boreal landing site (score {best.Value.Score}){fallbackNote}. Press Next when ready.");
-                _ = __instance; // Harmony requires the patched instance parameter.
+                Log.Message(
+                    $"[Lantern Village] Auto-selected Boreal landing site (score {best.Value.Score}){fallbackNote}; advancing.");
+
+                // Defer DoNext so PostOpen finishes and the window is fully on the stack.
+                LongEventHandler.ExecuteWhenFinished(() =>
+                {
+                    try
+                    {
+                        if (__instance != null && Find.WindowStack != null && Find.WindowStack.WindowOfType<Page_SelectStartingSite>() == __instance)
+                        {
+                            // DoNext is protected on Page — invoke via AccessTools.
+                            AccessTools.Method(typeof(Page), "DoNext")?.Invoke(__instance, null);
+                        }
+                    }
+                    catch (System.Exception e)
+                    {
+                        Log.Warning($"[Lantern Village] Auto-advance from starting site failed (press Next manually): {e.Message}");
+                    }
+                });
             }
             catch (System.Exception ex)
             {
-                Log.Warning($"[Lantern Village] Auto-select landing site failed (non-fatal, falling back to manual selection): {ex}");
+                Log.Warning($"[Lantern Village] Auto-select landing site failed (non-fatal): {ex}");
             }
         }
     }
