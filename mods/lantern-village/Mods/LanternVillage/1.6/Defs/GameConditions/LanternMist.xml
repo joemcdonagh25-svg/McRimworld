@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Folk-horror mist via vanilla ForceWeather. No Anomaly UnnaturalDarkness. -->
+  <GameConditionDef>
+    <defName>LanternVillage_ForestMist</defName>
+    <conditionClass>RimWorld.GameCondition_ForceWeather</conditionClass>
+    <label>forest mist</label>
+    <description>A cold mist rolls out of the trees and swallows the clearing. Keep the lanterns lit.</description>
+    <endMessage>The forest mist thins.</endMessage>
+    <letterDef>NeutralEvent</letterDef>
+    <weatherDef>Fog</weatherDef>
+    <natural>true</natural>
+    <canBePermanent>false</canBePermanent>
+    <preventRain>false</preventRain>
+    <displayOnUI>true</displayOnUI>
+  </GameConditionDef>
+
+  <GameConditionDef>
+    <defName>LanternVillage_ThickMist</defName>
+    <conditionClass>RimWorld.GameCondition_ForceWeather</conditionClass>
+    <label>thick forest mist</label>
+    <description>Rain and fog braid together until the palisade is only a suggestion. Something moves beyond the light.</description>
+    <endMessage>The thick mist loosens its grip.</endMessage>
+    <letterDef>NegativeEvent</letterDef>
+    <weatherDef>FoggyRain</weatherDef>
+    <natural>true</natural>
+    <canBePermanent>false</canBePermanent>
+    <preventRain>false</preventRain>
+    <displayOnUI>true</displayOnUI>
+  </GameConditionDef>
+
+</Defs>

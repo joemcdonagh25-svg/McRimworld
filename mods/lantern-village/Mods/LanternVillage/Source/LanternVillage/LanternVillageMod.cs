@@ -19,8 +19,7 @@ namespace LanternVillage
             // own Mod-class constructor does.
             CompatPatch_MedievalOverhaul.Apply();
 
-            Log.Message("[Lantern Village] Loaded. Supernatural horror events: " +
-                        (HorrorDirector.EnableSupernatural ? "ENABLED" : "disabled (behind feature flag)"));
+            Log.Message("[Lantern Village] Loaded. Mist/Darkness Director: enabled by default for The Lantern Village scenario (Dev Mode can toggle).");
         }
     }
 }
