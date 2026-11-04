@@ -6,14 +6,15 @@ using Verse;
 namespace LanternVillage
 {
     /// <summary>
-    /// Auto-picks a Boreal landing site and advances past the globe page so the player
-    /// is not stuck selecting a tile. Safe to DoNext now that ChooseIdeoPreset is
-    /// Harmony-guarded for this scenario.
+    /// Auto-picks a Boreal landing site and advances past the globe page.
+    /// Combined with Patch_SettlementProximityGoodwillUtility_CheckConfirmSettle so
+    /// DoNext does not stall on the proximity-confirm dialog.
     /// </summary>
     [HarmonyPatch(typeof(Page_SelectStartingSite), nameof(Page_SelectStartingSite.PostOpen))]
     public static class Patch_AutoSelectLandingSite
     {
         private const int ScanLimit = 8000;
+        private static bool s_advanceScheduled;
 
         public static void Postfix(Page_SelectStartingSite __instance)
         {
@@ -42,26 +43,46 @@ namespace LanternVillage
                 Log.Message(
                     $"[Lantern Village] Auto-selected Boreal landing site (score {best.Value.Score}){fallbackNote}; advancing.");
 
-                // Defer DoNext so PostOpen finishes and the window is fully on the stack.
-                LongEventHandler.ExecuteWhenFinished(() =>
+                TryAdvance(__instance, "immediate");
+
+                // Also defer — PostOpen can run before the page is fully interactive.
+                if (!s_advanceScheduled)
                 {
-                    try
+                    s_advanceScheduled = true;
+                    LongEventHandler.ExecuteWhenFinished(() =>
                     {
-                        if (__instance != null && Find.WindowStack != null && Find.WindowStack.WindowOfType<Page_SelectStartingSite>() == __instance)
-                        {
-                            // DoNext is protected on Page — invoke via AccessTools.
-                            AccessTools.Method(typeof(Page), "DoNext")?.Invoke(__instance, null);
-                        }
-                    }
-                    catch (System.Exception e)
-                    {
-                        Log.Warning($"[Lantern Village] Auto-advance from starting site failed (press Next manually): {e.Message}");
-                    }
-                });
+                        s_advanceScheduled = false;
+                        TryAdvance(__instance, "deferred");
+                    });
+                }
             }
             catch (System.Exception ex)
             {
                 Log.Warning($"[Lantern Village] Auto-select landing site failed (non-fatal): {ex}");
+            }
+        }
+
+        private static void TryAdvance(Page_SelectStartingSite page, string phase)
+        {
+            try
+            {
+                if (page == null || Find.WindowStack == null)
+                {
+                    return;
+                }
+
+                // Already left the page (e.g. immediate DoNext worked).
+                if (!Find.WindowStack.IsOpen(page))
+                {
+                    return;
+                }
+
+                AccessTools.Method(typeof(Page), "DoNext")?.Invoke(page, null);
+                Log.Message($"[Lantern Village] Landing-site DoNext invoked ({phase}).");
+            }
+            catch (System.Exception e)
+            {
+                Log.Warning($"[Lantern Village] Auto-advance from starting site failed ({phase}): {e.Message}");
             }
         }
     }
