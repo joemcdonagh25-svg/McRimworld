@@ -92,6 +92,6 @@ categorized list (complete & verified / implemented but not runtime-verified / p
 - Storyteller/difficulty are pre-selected defaults on that screen, not locked choices.
 - Fluid-ideoligion rituals (The First Fire, Harvest Supper, The Long Night, Remembering)
   are not force-seeded; RimWorld assigns rituals to fluid ideos dynamically over play.
-- The horror phase controller's supernatural events are implemented as a disabled
-  feature flag (`HorrorDirector.EnableSupernatural = false`) pending real playtesting
-  against this exact mod list.
+- Mist/Darkness Director is ON by default for The Lantern Village: escalating Fog /
+  FoggyRain game conditions and short Eclipse windows across five phases. No Anomaly
+  Unnatural Darkness. Dev Mode: "Fire mist/darkness pulse now" / toggle.

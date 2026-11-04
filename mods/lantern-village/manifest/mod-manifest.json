@@ -163,7 +163,7 @@
     "ritualStatus": "Planned. Fluid ideoligions assign rituals dynamically at runtime; there is no verified supported API in this RimWorld build for pre-seeding named rituals on a fluid ideo, so these are not force-generated. See IMPLEMENTATION_REPORT.md."
   },
   "horrorDirector": {
-    "enabledByDefault": false,
+    "enabledByDefault": true,
     "phases": [
       { "name": "Foundation", "startDay": 1, "endDay": 30 },
       { "name": "Folklore threats", "startDay": 31, "endDay": 60 },
@@ -171,7 +171,7 @@
       { "name": "The darkness awakens", "startDay": 91, "endDay": 120 },
       { "name": "The last light", "startDay": 121, "endDay": 180 }
     ],
-    "notes": "Supernatural/darkness incidents stay behind EnableSupernatural=false until tested against this exact mod list."
+    "notes": "Mist via LanternVillage_ForestMist/ThickMist (ForceWeather Fog/FoggyRain). Darkness via vanilla Eclipse. No Anomaly UnnaturalDarkness. Absolute-tick pulse schedule persisted on HorrorDirector."
   },
   "discoveredEnvironment": {
     "steamPath": "C:/Program Files (x86)/Steam",
