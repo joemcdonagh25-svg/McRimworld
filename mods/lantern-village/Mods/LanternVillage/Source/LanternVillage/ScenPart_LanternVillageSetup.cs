@@ -7,15 +7,28 @@ using Verse;
 namespace LanternVillage
 {
     /// <summary>
-    /// Applies the five founding colonists' roles (skill floors, a fitting trait, and
-    /// the married-couple / parent-child relationship) after the game starts. Runs
-    /// through the ordinary, supported pawn-generation output (Find.GameInitData's
-    /// starting pawns) rather than hand-authoring save XML, per the project's own
-    /// instructions. Skills/traits are only ever raised to a floor, never lowered, so
-    /// nothing here fights the generator's own output more than necessary.
+    /// Scenario setup for The Lantern Village:
+    /// 1) During map generation (<see cref="GenerateIntoMap"/>), place the prebuilt
+    ///    medieval hamlet (Vampire Lord ScenPart courtyard pattern — real buildings,
+    ///    once per new colony, never on save load).
+    /// 2) After game start, apply the five founding colonists' roles (skill floors,
+    ///    fitting traits, Elder–Healer spouse and Elder–Hunter parent relations).
+    /// Skills/traits are only ever raised to a floor, never lowered.
     /// </summary>
     public class ScenPart_LanternVillageSetup : ScenPart
     {
+        public override void GenerateIntoMap(Map map)
+        {
+            base.GenerateIntoMap(map);
+
+            if (!ScenarioGate.IsActive())
+            {
+                return;
+            }
+
+            LanternHamletBuilder.TryBuild(map);
+        }
+
         private class RoleSpec
         {
             public string RoleName;

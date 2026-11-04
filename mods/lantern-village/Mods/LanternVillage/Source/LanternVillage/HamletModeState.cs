@@ -1,12 +1,12 @@
 namespace LanternVillage
 {
     /// <summary>
-    /// Whether the player picked Hamlet Mode or Founding Mode. Set by the launcher
-    /// (via a marker file read at startup -- see ResumeHelper's sibling check in
-    /// LanternVillageMod) or left false for Founding Mode's undeveloped clearing.
+    /// Legacy launch-mode marker (Founding vs Hamlet). The prebuilt hamlet now always
+    /// generates for The Lantern Village scenario via ScenPart.GenerateIntoMap; this
+    /// flag is retained only so older launcher marker files remain harmless.
     /// </summary>
     public static class HamletModeState
     {
-        public static bool HamletModeRequested = false;
+        public static bool HamletModeRequested = true;
     }
 }

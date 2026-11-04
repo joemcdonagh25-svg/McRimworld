@@ -13,6 +13,12 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
+  <!-- Prefer local Steam RimWorld when present (Joe's Windows box); else NuGet ref assemblies for CI/Cloud. -->
+  <PropertyGroup>
+    <RimWorldDir Condition="'$(RimWorldDir)' == ''">C:\Program Files (x86)\Steam\steamapps\common\RimWorld</RimWorldDir>
+    <RimWorldManaged Condition="'$(RimWorldManaged)' == ''">$(RimWorldDir)\RimWorldWin64_Data\Managed</RimWorldManaged>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Lib.Harmony" Version="2.3.6">
       <PrivateAssets>all</PrivateAssets>
@@ -23,7 +29,7 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="Exists('$(RimWorldManaged)\Assembly-CSharp.dll')">
     <Reference Include="Assembly-CSharp">
       <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
       <Private>false</Private>
@@ -40,5 +46,9 @@
       <HintPath>$(RimWorldManaged)\UnityEngine.TextRenderingModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup Condition="!Exists('$(RimWorldManaged)\Assembly-CSharp.dll')">
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4871" />
   </ItemGroup>
 </Project>
