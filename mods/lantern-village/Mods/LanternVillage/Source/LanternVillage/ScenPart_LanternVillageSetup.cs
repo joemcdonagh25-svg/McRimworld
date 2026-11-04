@@ -20,13 +20,20 @@ namespace LanternVillage
         public override void GenerateIntoMap(Map map)
         {
             base.GenerateIntoMap(map);
-
-            if (!ScenarioGate.IsActive())
-            {
-                return;
-            }
-
+            // Do not gate on Find.Scenario here — during map gen it can be unset.
+            // This ScenPart only exists on The Lantern Village scenario / ScenarioDef.
+            Log.Message("[Lantern Village] ScenPart.GenerateIntoMap — building hamlet.");
             LanternHamletBuilder.TryBuild(map);
+        }
+
+        public override void PostMapGenerate(Map map)
+        {
+            base.PostMapGenerate(map);
+            if (!LanternHamletBuilder.WasBuiltFor(map))
+            {
+                Log.Message("[Lantern Village] ScenPart.PostMapGenerate — hamlet missing; building now.");
+                LanternHamletBuilder.TryBuild(map);
+            }
         }
 
         private class RoleSpec
@@ -48,6 +55,14 @@ namespace LanternVillage
         public override void PostGameStart()
         {
             base.PostGameStart();
+
+            // Last-chance hamlet placement if map-gen hooks were skipped for any reason.
+            Map map = Find.CurrentMap ?? Find.AnyPlayerHomeMap;
+            if (map != null && !LanternHamletBuilder.WasBuiltFor(map))
+            {
+                Log.Warning("[Lantern Village] PostGameStart — hamlet still missing; building now (pawns may already be on the map).");
+                LanternHamletBuilder.TryBuild(map);
+            }
 
             if (!ScenarioGate.IsActive())
             {

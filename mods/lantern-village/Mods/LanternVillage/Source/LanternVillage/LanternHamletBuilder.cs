@@ -20,17 +20,20 @@ namespace LanternVillage
 
         private static int s_lastBuiltMapId = -1;
 
+        public static bool WasBuiltFor(Map map)
+        {
+            return map != null && s_lastBuiltMapId == map.uniqueID;
+        }
+
         public static bool TryBuild(Map map)
         {
             if (map == null)
             {
+                Log.Warning($"{LogPrefix} TryBuild called with null map.");
                 return false;
             }
 
-            if (!ScenarioGate.IsActive())
-            {
-                return false;
-            }
+            Log.Message($"{LogPrefix} TryBuild starting on map {map.uniqueID} (size {map.Size}).");
 
             if (s_lastBuiltMapId == map.uniqueID)
             {

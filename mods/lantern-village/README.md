@@ -9,8 +9,9 @@ horror hamlet. Inside the light is community. Outside the light is the unknown.
 1. Double-click [`Launch The Lantern Village.bat`](Launch%20The%20Lantern%20Village.bat).
 2. First run installs everything (mods, scenario, the custom support mod) and asks
    Founding Mode or Hamlet Mode.
-3. RimWorld opens. Pick **The Lantern Village** from the custom scenario list (this one
-   click is still manual -- see [Known limitations](#known-limitations)).
+3. RimWorld opens. Pick **The Lantern Village** from the scenario list (mod ScenarioDef;
+   may also appear under Custom if the installer .rsc is present). Start a **new** game —
+   loading an old save will not rebuild the hamlet.
 4. Later runs offer to resume your save automatically.
 
 To undo everything and get your previous RimWorld setup back, run
