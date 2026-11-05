@@ -4,6 +4,32 @@ Newest entries first. Records what shipped, what we learned, key paths, operator
 
 ---
 
+## 2026-11-04 — Joe git cadence rubric (always-on agent rule)
+
+### What shipped
+- New always-applied Cursor rule: `.cursor/rules/joe-git-cadence.mdc`.
+- Locks a shared plain-English cadence for **commit / push / pull / PR / merge**: when to offer each, and a required **Why now** line every time an agent offers one.
+- Adds a **too-far** interrupt (diff no longer one sentence, mixed outcomes, second experiment without a checkpoint, pull with dirty local work).
+- Restates the progress ladder agents must use: planned → implemented locally → playable locally → committed → pushed → PR opened → approved → merged → deployed.
+
+### What we learned
+- Agents already had soft guidance to explain git in plain English, but no shared checklist for *timing*. Without that, “good time to save” was improvised per chat.
+- Requiring **Why now** on every offer is the important part — the table alone is not enough if agents skip the reason.
+
+### Key paths
+- `.cursor/rules/joe-git-cadence.mdc` (alwaysApply: true)
+- Sibling pace rule unchanged: `.cursor/rules/vampire-lord-pace.mdc`
+
+### Operator notes
+- No mod DLL rebuild. No RimWorld restart.
+- After merge: `git pull` on `C:\McRimworld` is enough for agents to pick up the rule on later chats.
+- Expect agents to end substantial work with **current state + one next action**, and to say why before asking you to commit/push/pull.
+
+### Next steps
+- Joe: merge when the rule wording looks right; later chats should start prompting with Why now without being asked.
+
+---
+
 ## 2026-11-01 — The Lantern Village: Medieval Overhaul crash fixed, full colony start verified
 
 ### What shipped

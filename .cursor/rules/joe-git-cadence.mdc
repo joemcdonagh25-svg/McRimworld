@@ -1,0 +1,90 @@
+---
+description: Plain-English git cadence for Joe — when to commit/push/pull, and always say why
+alwaysApply: true
+---
+
+# Joe — git cadence (plain English)
+
+Joe is an experienced game/product director learning software development by shipping. Prefer player/product language over terminal jargon. Never assume he knows git conventions.
+
+## States (say which one we're in)
+
+Use these labels exactly when reporting progress:
+
+1. **planned** — decided, not built
+2. **implemented locally** — code exists on this machine only
+3. **playable locally** — can be tried in RimWorld on this machine
+4. **committed** — saved as a labeled restore point in git (still only this machine / this branch)
+5. **pushed** — copy is on GitHub for other machines/agents
+6. **pull request opened** — waiting for review/merge
+7. **approved** — review said yes
+8. **merged** — on the target branch (usually `main`)
+9. **deployed** — only if something beyond merge is required; otherwise stop at merged
+
+Never say shipped / live / merged / on main unless that remote state was checked.
+
+## Offer format (required every time)
+
+Whenever you suggest **commit**, **push**, **pull**, **open PR**, or **merge**, use this shape:
+
+1. **Action** — one plain-English verb (“Save a restore point”, “Send this to GitHub”, “Get the latest from GitHub”)
+2. **Why now** — one concrete sentence tied to the current work (not a generic slogan)
+3. **What success looks like** — one short check Joe can trust
+4. **Repo facts** — repository, remote, branch, target, and whether the step is **local** or **remote**
+
+Do not offer a git action without the **Why now** line.
+
+## Rubric — good time to act
+
+| Signal | Offer | Why (use the real reason, not this table text verbatim) |
+|---|---|---|
+| One player-facing outcome works, or one bug is fixed | **Commit** | Lock a restore point before the next change |
+| Joe wants another machine, agent, or future-you to see it | **Push** | Put the restore point on GitHub so it isn’t only here |
+| About to try a risky rewrite, second experiment, or large delete | **Commit first** (or stash) | Make undo cheap before the risky move |
+| Diff is hard to explain in one sentence | **Stop and commit a smaller slice** | Work has drifted past a clean restore point |
+| Need someone else’s merged work, or a PR just landed | **Pull** | Refresh this machine before play/review |
+| Mod files / DLLs / Defs changed after pull | Say **restart RimWorld** after pull | The game only picks up those files after restart |
+| Work is ready for review or merge | **Push**, then open/update PR | Review needs the remote copy |
+
+## Too-far alert (proactive)
+
+If any of these are true, **interrupt with a checkpoint prompt** before continuing more work:
+
+- More than one unrelated outcome is unfinished in the same dirty tree
+- The change set can no longer be described in one sentence
+- A second experiment started without a commit after the first success
+- Local playable work has sat uncommitted across a context switch (new chat, new agent, or “next milestone”)
+- Joe is about to pull while local uncommitted work could conflict
+
+Say it plainly, for example:
+
+> Checkpoint: we’re past a clean restore point.  
+> **Action:** Save a restore point (commit) — **local**, repo `McRimworld`, branch `<name>`.  
+> **Why now:** the next edit would mix two outcomes and make undo messy.  
+> **Success:** `git status` is clean and the commit message names one outcome.
+
+## Safety (never skip)
+
+Before any material git/GitHub action, state: **repository, remote, branch, intended target, local vs remote**.
+
+Never:
+
+- force-push
+- rewrite history
+- discard Joe’s local work
+- delete a branch
+- change a remote
+- merge into a protected branch
+
+…without clear authorization in that turn.
+
+Preserve existing work. Ask only questions that change the result or prevent a safe step.
+
+## End of substantial work
+
+Always end with:
+
+1. **Current state** (from the list above)
+2. **One next action** (with Why now + success check)
+
+If the next action is a git step Joe must approve or run, use the Offer format.
