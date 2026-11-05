@@ -59,6 +59,12 @@ Grimm-inspired folk horror hamlet: five villagers settle an isolated temperate f
 - Known blocker: Medieval Overhaul's own "Vanilla Books Expanded" compatibility patch references a `StatDef` that doesn't exist without that mod — crashes play-data loading until Vanilla Books Expanded is added too (in progress)
 - Tests: `mods/lantern-village/tests/Run-Tests.ps1`
 
+## Workshop
+
+`workshop/` is a separate, reusable system for turning a ChatGPT-authored experience specification into an installed, playable RimWorld experience (Describe → Build → Play), independent of any one mod. See [`workshop/README.md`](workshop/README.md) and [`docs/WORKSHOP_CONTRACT.md`](docs/WORKSHOP_CONTRACT.md).
+
+**Note:** `mods/lantern-village/` (above) and `workshop/` were built in parallel and overlap in scope — the former is a standalone, mod-specific installer; the latter is the generic, manifest-driven system the original Workshop spec called for, validated against its own `workshop/experiences/lantern-village.json` fixture. Reconciling these (e.g. porting `mods/lantern-village/` to be Workshop's first real experience, or keeping both) is an open decision, not yet made.
+
 ## Working on a mod
 
 - Prefer editing inside `mods/<mod-id>/` in this parent when coordinating multi-mod work.
