@@ -13,7 +13,8 @@
     <defName>LanternVillage_Hamlet</defName>
     <label>The Lantern Village</label>
     <description>Grimm-inspired folk horror. Five villagers arrive at a partly-palisaded medieval hamlet in a boreal forest - great hall, cottages, kitchen, smithy, barn and gardens already raised. Inside the light is community. Outside the light is the unknown.\n\nRequires Ideology and Biotech.</description>
-    <scenario>
+    <!-- Custom Scenario class skips Ideology ChooseIdeoPreset (CultureDef NRE on PlayerTribe). -->
+    <scenario Class="LanternVillage.LanternVillageScenario">
       <name>The Lantern Village</name>
       <summary>Five villagers settle into a prebuilt woodland hamlet. Inside the light is community. Outside the light is the unknown.</summary>
       <description>Keep the lanterns burning and finish the walls before the forest finishes you.</description>
@@ -21,7 +22,7 @@
 
         <li Class="ScenPart_PlayerFaction">
           <def>PlayerFaction</def>
-          <factionDef>PlayerTribe</factionDef>
+          <factionDef>PlayerColony</factionDef>
         </li>
 
         <li Class="ScenPart_PlanetLayerFixed">
@@ -106,6 +107,13 @@ Keep your lanterns burning. The forest will test you slowly at first -- and then
           <def>StartingAnimal</def>
           <animalKind>Muffalo</animalKind>
           <count>2</count>
+        </li>
+        <!-- Combat-trained in ScenPart_LanternVillageSetup.PostGameStart (Obedience + Release). -->
+        <li Class="ScenPart_StartingAnimal">
+          <def>StartingAnimal</def>
+          <animalKind>Dog</animalKind>
+          <count>1</count>
+          <bondToRandomPlayerPawnChance>1</bondToRandomPlayerPawnChance>
         </li>
 
       </parts>

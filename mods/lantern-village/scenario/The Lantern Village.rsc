@@ -24,7 +24,7 @@
 		<description>Grimm-inspired folk horror. An elder, a woodsman, a hunter, a smith and a healer arrive on foot at a partly-palisaded medieval hamlet in a boreal forest - great hall, cottages, kitchen, smithy, barn and gardens already raised. Over roughly two years, ordinary forest dangers give way to folklore threats, then to something stranger. Keep the lanterns burning and finish the walls before the forest finishes you.</description>
 		<playerFaction>
 			<def>PlayerFaction</def>
-			<factionDef>PlayerTribe</factionDef>
+			<factionDef>PlayerColony</factionDef>
 		</playerFaction>
 		<surfaceLayer>
 			<def>SurfaceLayerFixed</def>
@@ -124,6 +124,12 @@ Keep your lanterns burning. The forest will test you slowly at first -- and then
 				<def>StartingAnimal</def>
 				<animalKind>Muffalo</animalKind>
 				<count>2</count>
+			</li>
+			<li Class="ScenPart_StartingAnimal">
+				<def>StartingAnimal</def>
+				<animalKind>Dog</animalKind>
+				<count>1</count>
+				<bondToRandomPlayerPawnChance>1</bondToRandomPlayerPawnChance>
 			</li>
 		</parts>
 	</scenario>

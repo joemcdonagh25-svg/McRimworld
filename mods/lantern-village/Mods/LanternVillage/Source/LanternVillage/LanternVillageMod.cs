@@ -5,6 +5,12 @@ namespace LanternVillage
 {
     public class LanternVillageMod : Mod
     {
+        /// <summary>
+        /// Bump whenever the installed DLL must be distinguishable from older builds.
+        /// Appears as the first Lantern Village line in Player.log after load.
+        /// </summary>
+        public const string BuildStamp = "LV-START-FIX-2026-11-04a";
+
         public static Harmony HarmonyInstance;
 
         public LanternVillageMod(ModContentPack content) : base(content)
@@ -19,7 +25,10 @@ namespace LanternVillage
             // own Mod-class constructor does.
             CompatPatch_MedievalOverhaul.Apply();
 
-            Log.Message("[Lantern Village] Loaded. Mist/Darkness Director: enabled by default for The Lantern Village scenario (Dev Mode can toggle).");
+            Log.Message(
+                $"[Lantern Village] BUILD {BuildStamp} — Ideo skip + dry hamlet + auto-site + settle-confirm + " +
+                "early Anomaly throttle (max 1) + combat dog. " +
+                "Mist/Darkness Director: enabled by default for The Lantern Village scenario (Dev Mode can toggle).");
         }
     }
 }

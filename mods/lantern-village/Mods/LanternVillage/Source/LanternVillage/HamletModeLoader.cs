@@ -5,9 +5,8 @@ using Verse;
 namespace LanternVillage
 {
     /// <summary>
-    /// Reads the Founding/Hamlet mode choice the launcher wrote before starting RimWorld.
-    /// The marker lives next to saves (GenFilePaths.SaveDataFolderPath), same convention
-    /// as ResumeHelper's resume marker.
+    /// Legacy Founding/Hamlet marker reader. The prebuilt hamlet always generates now;
+    /// we force HamletModeRequested = true so older Founding marker files cannot flip it off.
     /// </summary>
     [StaticConstructorOnStartup]
     public static class HamletModeLoader
@@ -17,14 +16,19 @@ namespace LanternVillage
 
         static HamletModeLoader()
         {
+            HamletModeState.HamletModeRequested = true;
             try
             {
                 string path = MarkerFilePath;
                 if (File.Exists(path))
                 {
                     string mode = File.ReadAllText(path).Trim();
-                    HamletModeState.HamletModeRequested = mode.Equals("Hamlet", StringComparison.OrdinalIgnoreCase);
-                    Log.Message($"[Lantern Village] Launch mode: {(HamletModeState.HamletModeRequested ? "Hamlet" : "Founding")}");
+                    Log.Message(
+                        $"[Lantern Village] Launch marker was '{mode}' — prebuilt hamlet always enabled.");
+                }
+                else
+                {
+                    Log.Message("[Lantern Village] Launch mode: Hamlet (always on).");
                 }
             }
             catch (Exception ex)

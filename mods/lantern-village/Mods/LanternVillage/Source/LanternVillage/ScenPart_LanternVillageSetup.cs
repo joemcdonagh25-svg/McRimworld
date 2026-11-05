@@ -64,6 +64,13 @@ namespace LanternVillage
                 LanternHamletBuilder.TryBuild(map);
             }
 
+            // Always stabilize settlement + colonist faction — even if ScenarioGate naming
+            // fails — so tick-0 SettlementDefeat / Non-colonist apparel errors stop.
+            TryEnsureStartingPawnsAreColonists();
+            LanternVillagePlayerHome.TryEnsure("PostGameStart");
+            // Second pass after Settle — some arrival paths attach pawns after home exists.
+            TryEnsureStartingPawnsAreColonists();
+
             if (!ScenarioGate.IsActive())
             {
                 return;
@@ -75,19 +82,79 @@ namespace LanternVillage
                 if (pawns == null || pawns.Count < Roles.Count)
                 {
                     Log.Warning($"[Lantern Village] Expected {Roles.Count} starting pawns, found {pawns?.Count ?? 0}. Skipping role assignment.");
-                    return;
                 }
-
-                for (int i = 0; i < Roles.Count; i++)
+                else
                 {
-                    ApplyRole(pawns[i], Roles[i]);
+                    for (int i = 0; i < Roles.Count; i++)
+                    {
+                        ApplyRole(pawns[i], Roles[i]);
+                        // Role rename can run while Faction is still unset — force after rename.
+                        if (pawns[i] != null && Faction.OfPlayer != null && pawns[i].Faction != Faction.OfPlayer)
+                        {
+                            pawns[i].SetFaction(Faction.OfPlayer);
+                        }
+                    }
+
+                    ApplyRelationships(pawns);
                 }
 
-                ApplyRelationships(pawns);
+                // Guard dog softens the one allowed early Anomaly scrape.
+                TryTrainStartingGuardDog(pawns);
             }
             catch (Exception ex)
             {
                 Log.Error($"[Lantern Village] Failed while applying colonist roles: {ex}");
+            }
+        }
+
+        private static void TryEnsureStartingPawnsAreColonists()
+        {
+            if (Faction.OfPlayer == null)
+            {
+                return;
+            }
+
+            int fixedCount = 0;
+
+            // GameInitData pawns may not be spawned yet when apparel jobs race tick 0.
+            if (Find.GameInitData?.startingAndOptionalPawns != null)
+            {
+                foreach (Pawn pawn in Find.GameInitData.startingAndOptionalPawns)
+                {
+                    if (pawn?.RaceProps == null || !pawn.RaceProps.Humanlike)
+                    {
+                        continue;
+                    }
+
+                    if (pawn.Faction != Faction.OfPlayer)
+                    {
+                        pawn.SetFaction(Faction.OfPlayer);
+                        fixedCount++;
+                    }
+                }
+            }
+
+            Map map = Find.CurrentMap ?? Find.AnyPlayerHomeMap;
+            if (map?.mapPawns != null)
+            {
+                foreach (Pawn pawn in map.mapPawns.AllPawnsSpawned.ToList())
+                {
+                    if (pawn?.RaceProps == null || !pawn.RaceProps.Humanlike)
+                    {
+                        continue;
+                    }
+
+                    if (pawn.Faction != Faction.OfPlayer)
+                    {
+                        pawn.SetFaction(Faction.OfPlayer);
+                        fixedCount++;
+                    }
+                }
+            }
+
+            if (fixedCount > 0)
+            {
+                Log.Message($"[Lantern Village] Reassigned {fixedCount} humanlike pawn(s) to player faction.");
             }
         }
 
@@ -157,6 +224,131 @@ namespace LanternVillage
             {
                 elder.relations.AddDirectRelation(PawnRelationDefOf.Parent, hunter);
             }
+        }
+
+        /// <summary>
+        /// Starting Dog from the scenario gets full Obedience + Release training and
+        /// follows the Hunter (or first colonist) when drafted.
+        /// </summary>
+        private static void TryTrainStartingGuardDog(List<Pawn> startingHumans)
+        {
+            List<Pawn> dogs = FindStartingDogs();
+            if (dogs.Count == 0)
+            {
+                Log.Warning("[Lantern Village] No starting Dog found to train as guard.");
+                return;
+            }
+
+            Pawn master = PreferHunterMaster(startingHumans);
+            foreach (Pawn dog in dogs)
+            {
+                TrainCombatReady(dog, master);
+            }
+        }
+
+        private static List<Pawn> FindStartingDogs()
+        {
+            List<Pawn> dogs = new List<Pawn>();
+
+            void Consider(Pawn pawn)
+            {
+                if (pawn?.RaceProps == null || !pawn.RaceProps.Animal)
+                {
+                    return;
+                }
+
+                if (pawn.kindDef == null || pawn.kindDef.defName != "Dog")
+                {
+                    return;
+                }
+
+                if (Faction.OfPlayer != null && pawn.Faction != Faction.OfPlayer)
+                {
+                    pawn.SetFaction(Faction.OfPlayer);
+                }
+
+                if (!dogs.Contains(pawn))
+                {
+                    dogs.Add(pawn);
+                }
+            }
+
+            if (Find.GameInitData?.startingAndOptionalPawns != null)
+            {
+                foreach (Pawn pawn in Find.GameInitData.startingAndOptionalPawns)
+                {
+                    Consider(pawn);
+                }
+            }
+
+            Map map = Find.CurrentMap ?? Find.AnyPlayerHomeMap;
+            if (map?.mapPawns != null)
+            {
+                foreach (Pawn pawn in map.mapPawns.PawnsInFaction(Faction.OfPlayer).ToList())
+                {
+                    Consider(pawn);
+                }
+            }
+
+            return dogs;
+        }
+
+        private static Pawn PreferHunterMaster(List<Pawn> startingHumans)
+        {
+            if (startingHumans != null && startingHumans.Count > 2 && startingHumans[2] != null)
+            {
+                // Index 2 = Hunter after role assignment.
+                return startingHumans[2];
+            }
+
+            return Find.CurrentMap?.mapPawns?.FreeColonists?.FirstOrDefault();
+        }
+
+        private static void TrainCombatReady(Pawn dog, Pawn master)
+        {
+            if (dog.training == null)
+            {
+                Log.Warning($"[Lantern Village] Dog '{dog.LabelShort}' has no training tracker; cannot combat-train.");
+                return;
+            }
+
+            // Obedience then Release — Release is the vanilla "fight when released / with drafted master" trainable.
+            TrainFully(dog, TrainableDefOf.Obedience);
+            TrainFully(dog, TrainableDefOf.Release);
+
+            if (dog.playerSettings != null)
+            {
+                if (master != null && TrainableUtility.CanBeMaster(master, dog, checkSpawned: false))
+                {
+                    dog.playerSettings.Master = master;
+                }
+
+                dog.playerSettings.followDrafted = true;
+                dog.playerSettings.followFieldwork = true;
+            }
+
+            string masterLabel = master != null ? master.LabelShort : "(none)";
+            Log.Message(
+                $"[Lantern Village] Guard dog '{dog.LabelShort}' combat-trained (Obedience+Release); master={masterLabel}.");
+        }
+
+        private static void TrainFully(Pawn animal, TrainableDef trainable)
+        {
+            if (trainable == null || animal?.training == null)
+            {
+                return;
+            }
+
+            AcceptanceReport canAssign = animal.training.CanAssignToTrain(trainable);
+            if (!canAssign.Accepted && !animal.training.HasLearned(trainable))
+            {
+                // Still try Train — some animals report visibility quirks at tick 0.
+                Log.Message(
+                    $"[Lantern Village] Trainable '{trainable.defName}' for '{animal.LabelShort}' reported: {canAssign.Reason}");
+            }
+
+            animal.training.SetWantedRecursive(trainable, true);
+            animal.training.Train(trainable, trainer: null, complete: true);
         }
 
         public override void ExposeData()
